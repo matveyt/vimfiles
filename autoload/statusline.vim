@@ -16,8 +16,8 @@ function! statusline#get()
     let l:status .= '%#DiffChange#%( %{'
         \ . get(function('s:branch2str'), 'name')
         \ . '()} %)'                            "[branch]
-    let l:status .= '%* %n:%t%( %m%) '          "buffer:file [modified]
-    let l:status .= '%#CursorLine#%='           "====================
+    let l:status .= '%* %n:%<%t%( %m%) '        "buffer:file [modified]
+    let l:status .= '%#CursorLine#%= '          "====================
     let l:status .= '%(%{&ft} | %)'             "type
     let l:status .= '%(%{&ff} | %)'             "format
     let l:status .= '%{empty(&fenc)?&enc:&fenc}'"encoding
