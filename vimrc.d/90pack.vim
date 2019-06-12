@@ -25,6 +25,7 @@ command! PackClean call minpac#clean()
 command! PackStatus call minpac#status()
 command! PackUpdate call minpac#update()
 
+" plugin specific variables
 let g:c_gnu = 1
 let g:c_no_curly_error = 1
 let g:loaded_netrwPlugin = 1
@@ -39,12 +40,16 @@ command! -count=1 -nargs=* Nread let s:svpos=winsaveview()<bar>
     \ call netrw#NetRead(<count>,<f-args>)<bar>
     \ call winrestview(s:svpos)
 
+" some utility mappings for plugins
 autocmd vimrc FileType dirvish nmap <buffer><BS> <Plug>(dirvish_up)
 nmap <kMinus> <Plug>(dirvish_up)
 nnoremap <Leader>s :SignifyToggle<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 nnoremap <Leader>u :UndotreeToggle<CR>
 
-packadd! vim-dirvish
-call dirvish#add_icon_fn({p -> has('gui_running') ?
-    \ nr2char(p[-1:] == '/' ? 0x1F4C2 : 0x1F4C4, 1) : ''})
+" set nice icons for vim-dirvish to use
+packadd vim-dirvish
+if exists('g:loaded_dirvish') && g:loaded_dirvish
+    call dirvish#add_icon_fn({p -> has('gui_running') ?
+        \ nr2char(p[-1:] == '/' ? 0x1F4C2 : 0x1F4C4, 1) : ''})
+endif

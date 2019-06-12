@@ -20,14 +20,17 @@ set sessionoptions=curdir,folds,help,tabpages,winsize,slash,unix
 set switchbuf=usetab,split undofile virtualedit=all
 let &path = '.,,' . g:my_projects . '/**'
 let &undodir = g:my_dotvim . '/undo'
+
 " indents and folds
 set autoindent smartindent formatoptions=tcrqj matchpairs+=<:>
 set foldmethod=indent foldcolumn=1 foldlevelstart=1
 let &fillchars = 'stl: ,stlnc: ,vert: ,fold: ,diff: '
+
 " tabs, wraps and case
 set nojoinspaces nowrap ignorecase infercase smartcase
 set expandtab tabstop=4 softtabstop=-1 shiftround shiftwidth=0
 set list listchars=tab:<->,trail:_ textwidth=89
+
 " Russian keyboard and spelling support
 set keymap=russian-jcukenwin iminsert& imsearch&
 set fileformats=unix,dos spelllang=ru_yo,en
