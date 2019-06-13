@@ -13,5 +13,5 @@ elseif &term =~# '256color'
     set ttyfast ttymouse=xterm2
     silent! colorscheme flattened_dark
 else
-    colorscheme industry
+    silent! colorscheme modest
 endif
