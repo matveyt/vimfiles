@@ -24,7 +24,7 @@ let &undodir = g:my_dotvim . '/undo'
 " indents and folds
 set autoindent smartindent formatoptions=tcrqj matchpairs+=<:>
 set foldmethod=indent foldcolumn=1 foldlevelstart=1
-let &fillchars = 'stl: ,stlnc: ,vert: ,fold: ,diff: '
+let &fillchars = 'vert: ,fold: ,diff: '
 
 " tabs, wraps and case
 set nojoinspaces nowrap ignorecase infercase smartcase

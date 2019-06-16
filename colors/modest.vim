@@ -34,19 +34,16 @@ function! s:hilink(to_group, ...)
 endfunction
 
 call s:hilite('Normal', 'LightGrey', 'Black')
-call s:hilite('Constant', 'Green', 'NONE')
 call s:hilite('Comment', 'DarkGrey', 'NONE', [&t_Co == 8, 0])
-call s:hilite('IncSearch', 'bg', 'Green', [0, 1])
-call s:hilite('Search', 'bg', 'fg', [0, 0])
-call s:hilite('StatusLine', 'bg', 'fg', [0, 1])
+call s:hilite('Constant', 'Green', 'NONE')
+call s:hilite('Todo', 'bg', 'Green', [0, 1])
 
 call s:hilink('Normal', 'CursorColumn', 'CursorLine', 'CursorLineNr', 'Folded',
     \ 'Function', 'Identifier', 'ModeMsg', 'PreProc', 'Statement', 'Type')
+call s:hilink('Comment', 'FoldColumn', 'LineNr', 'NonText', 'SignColumn', 'SpecialKey')
 call s:hilink('Constant', 'Directory', 'helpHyperTextEntry', 'helpHyperTextJump',
     \ 'helpOption', 'MoreMsg', 'Question', 'Special', 'Title')
-call s:hilink('Comment', 'FoldColumn', 'LineNr', 'NonText', 'SignColumn', 'SpecialKey')
-call s:hilink('IncSearch', 'DiffAdd', 'DiffText', 'PmenuSel', 'Todo', 'WildMenu')
-call s:hilink('Search', 'DiffChange', 'MatchParen', 'Pmenu', 'StatusLineNC',
-    \ 'StatusLineTermNC', 'Visual')
-call s:hilink('StatusLine', 'ColorColumn', 'DiffDelete', 'helpNote', 'StatusLineTerm',
-    \ 'VertSplit')
+call s:hilink('Todo', 'IncSearch', 'DiffAdd', 'DiffText', 'PmenuSel', 'WildMenu')
+call s:hilink('StatusLine', 'DiffDelete', 'helpNote', 'StatusLineTerm')
+call s:hilink('StatusLineNC', 'ColorColumn', 'DiffChange', 'MatchParen', 'Pmenu',
+    \ 'Search', 'StatusLineTermNC', 'VertSplit', 'Visual')
