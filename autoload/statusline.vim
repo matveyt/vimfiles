@@ -13,11 +13,11 @@ function! statusline#get()
         \ . get(function('s:emodes'), 'name')
         \ . '()[1]:""} %)'
     let l:status .= '%#StatusLineTerm#%( %{mode()==#"t"?"TERMNL":""} %)'
-    let l:status .= '%#DiffChange#%( %{'
+    let l:status .= '%#Identifier#%( %{'
         \ . get(function('s:branch2str'), 'name')
         \ . '()} %)'                            "[branch]
     let l:status .= '%* %n:%<%t%( %m%) '        "buffer:file [modified]
-    let l:status .= '%#CursorLine#%= '          "====================
+    let l:status .= '%#CursorLine# %= '         "====================
     let l:status .= '%(%{&ft} | %)'             "type
     let l:status .= '%(%{&ff} | %)'             "format
     let l:status .= '%{empty(&fenc)?&enc:&fenc}'"encoding
@@ -36,10 +36,10 @@ endfunction
 
 function! s:emodes()
     let l:emodes = {
-        \ '' : ['INSERT', 'RPLACE'],
+        \ 'en' : ['INSERT', 'RPLACE'],
         \ 'ru' : ['ВСТВКА', 'ЗАМЕНА']
     \ }
-    return get(l:emodes, &iminsert ? b:keymap_name[:4] : '', l:emodes[''])
+    return get(l:emodes, &iminsert ? b:keymap_name[:4] : 'en', l:emodes['en'])
 endfunction
 
 function! s:branch2str()
@@ -48,6 +48,6 @@ function! s:branch2str()
     endif
     let l:prefix = has('gui_running') ? nr2char(0x2325, 1) : '['
     let l:branch = fugitive#Head()
-    let l:suffix = has('gui_running') ? ' ' : ']'
+    let l:suffix = has('gui_running') ? nr2char(0x00A0, 1) : ']'
     return empty(l:branch) ? '' : l:prefix . l:branch . l:suffix
 endfunction

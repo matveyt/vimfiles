@@ -36,8 +36,9 @@ let g:undotree_WindowLayout = 4
 
 " needed to make auto-download working (e.g. spell files)
 " note: taken from netrwPlugin
-command! -count=1 -nargs=* Nread let s:svpos=winsaveview()<bar>
-    \ call netrw#NetRead(<count>,<f-args>)<bar>
+command! -count=1 -nargs=* Nread
+    \ let s:svpos=winsaveview() |
+    \ call netrw#NetRead(<count>,<f-args>) |
     \ call winrestview(s:svpos)
 
 " some utility mappings for plugins
