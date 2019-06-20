@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:   matveyt
-" Last Change:  2019 Jun 18
+" Last Change:  2019 Jun 20
 " URL:          https://github.com/matveyt/vimfiles/colors
 
 set bg=dark
@@ -16,7 +16,7 @@ let s:palette.Black     = '#16161d' " Eigengrau
 let s:palette.DarkGrey  = '#5e716a' " Grey-green
 let s:palette.LightGrey = '#b2beb5' " Ash grey
 let s:palette.DarkGreen = '#74c365' " Mantis
-let s:palette.Brown     = '#882d17' " Sienna
+let s:palette.Brown     = '#882d17' " Kobe/Sienna
 
 function! s:hilite(group, fg, bg, ...)
     if !a:0
@@ -42,30 +42,28 @@ endfunction
 call s:hilite('Normal', 'LightGrey', 'Black')
 call s:hilite('Comment', 'DarkGrey', 'NONE')
 call s:hilite('Constant', 'DarkGreen', 'NONE')
-call s:hilite('Bold', 'NONE', 'NONE', 'bold')
-call s:hilite('Reverse', 'NONE', 'NONE', 'reverse')
-call s:hilite('Standout', 'NONE', 'NONE', 'bold,reverse')
+call s:hilite('Error', 'NONE', 'Brown')
+call s:hilite('StatusLine', 'NONE', 'NONE', 'bold,reverse')
+call s:hilite('StatusLineNC', 'NONE', 'NONE', 'reverse')
+call s:hilite('TabLine', 'NONE', 'DarkGrey', 'underline')
+call s:hilite('TabLineSel', 'NONE', 'NONE', 'bold')
+call s:hilite('Underlined', 'fg', 'Brown', 'underline')
 call s:hilite('Visual', 'bg', 'fg', 'NONE')
-call s:hilite('Standout1', 'bg', 'DarkGreen', 'gui=bold')
-call s:hilite('Standout2', 'NONE', 'Brown')
-call s:hilite('Underline1', 'fg', 'Brown', 'underline')
-call s:hilite('Underline2', 'NONE', 'DarkGrey', 'underline')
+call s:hilite('WildMenu', 'bg', 'DarkGreen', 'gui=bold')
 
-call s:hilink('Normal', 'CursorColumn', 'CursorLine', 'CursorLineNr', 'Folded',
-    \ 'Function', 'Identifier', 'ModeMsg', 'PreProc', 'Statement', 'Type')
-call s:hilink('Comment', 'Conceal', 'FoldColumn', 'LineNr', 'MatchParen', 'NonText',
-    \'SignColumn', 'SpecialKey')
+call s:hilink('Normal', 'CursorColumn', 'CursorLine', 'CursorLineNr', 'Function',
+    \ 'Identifier', 'ModeMsg', 'PreProc', 'Statement', 'Type')
+call s:hilink('Comment', 'Conceal', 'FoldColumn', 'Folded', 'LineNr', 'NonText',
+    \ 'SignColumn', 'SpecialKey')
 call s:hilink('Constant', 'Directory', 'helpHyperTextEntry', 'helpHyperTextJump',
     \ 'helpOption', 'MoreMsg', 'Question', 'Special', 'Title')
-call s:hilink('Bold', 'TabLineSel')
-call s:hilink('Reverse', 'ColorColumn', 'Cursor', 'DiffChange', 'lCursor', 'Pmenu',
-    \ 'PmenuSbar', 'Search', 'StatusLineNC', 'StatusLineTermNC', 'TabLineFill',
-    \ 'VertSplit')
-call s:hilink('Standout', 'helpNote', 'StatusLine', 'StatusLineTerm', 'ToolbarButton')
-call s:hilink('Standout1', 'IncSearch', 'DiffAdd', 'DiffText', 'PmenuSel', 'Todo',
-    \ 'WildMenu')
-call s:hilink('Standout2', 'DiffDelete', 'Error', 'ErrorMsg', 'PMenuThumb',
+call s:hilink('Error', 'DiffDelete', 'ErrorMsg', 'MatchParen', 'PmenuThumb',
     \ 'WarningMsg')
-call s:hilink('Underline1', 'SpellBad', 'SpellCap', 'SpellLocal', 'SpellRare',
-    \ 'Underlined', 'VisualNOS')
-call s:hilink('Underline2', 'TabLine', 'ToolbarLine')
+call s:hilink('StatusLine', 'StatusLineTerm', 'ToolbarButton')
+call s:hilink('StatusLineNC', 'ColorColumn', 'Cursor', 'DiffChange', 'lCursor',
+    \ 'Search', 'StatusLineTermNC')
+call s:hilink('TabLine', 'ToolbarLine')
+call s:hilink('Underlined', 'SpellBad', 'SpellCap', 'SpellLocal', 'SpellRare',
+    \ 'VisualNOS')
+call s:hilink('Visual', 'helpNote', 'Pmenu', 'PmenuSbar', 'TabLineFill', 'VertSplit')
+call s:hilink('WildMenu', 'DiffAdd', 'DiffText', 'IncSearch', 'PmenuSel', 'Todo')

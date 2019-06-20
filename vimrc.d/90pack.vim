@@ -34,7 +34,7 @@ let g:signify_vcs_list = ['git']
 let g:signify_disable_by_default = 1
 let g:undotree_WindowLayout = 4
 
-" needed to make auto-download working (e.g. spell files)
+" needed to have auto-download working (e.g. spell files)
 " note: taken from netrwPlugin
 command! -count=1 -nargs=* Nread
     \ let s:svpos=winsaveview() |
@@ -48,7 +48,7 @@ nnoremap <Leader>s :SignifyToggle<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 nnoremap <Leader>u :UndotreeToggle<CR>
 
-" set nice icons for vim-dirvish to use
+" set some nice icons for vim-dirvish to use
 packadd vim-dirvish
 if exists('g:loaded_dirvish') && g:loaded_dirvish
     call dirvish#add_icon_fn({p -> has('gui_running') ?
