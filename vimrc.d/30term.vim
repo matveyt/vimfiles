@@ -8,7 +8,7 @@ if has('gui_running')
     if !exists('g:colors_name')
         silent! colorscheme hybrid
     endif
-elseif &term =~# '256color'
+elseif &term =~# '256color' || has('vcon')
     set background=dark termguicolors
     set ttyfast ttymouse=xterm2
     silent! colorscheme flattened_dark
