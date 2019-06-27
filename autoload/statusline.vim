@@ -43,11 +43,11 @@ function! s:emodes()
 endfunction
 
 function! s:branch2str()
-    if !exists('g:loaded_fugitive') || !g:loaded_fugitive
+    if !exists('g:loaded_fugitive')
         return ''
     endif
-    let l:prefix = has('gui_running') ? nr2char(0x652f, 1) : '['
+    let l:prefix = exists('g:GuiLoaded') ? nr2char(0x652f, 1) : '['
     let l:branch = fugitive#Head(-1)
-    let l:suffix = has('gui_running') ? '' : ']'
+    let l:suffix = exists('g:GuiLoaded') ? '' : ']'
     return empty(l:branch) ? '' : l:prefix . l:branch . l:suffix
 endfunction

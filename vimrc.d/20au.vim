@@ -14,7 +14,7 @@ augroup vimrc | au!
         \ execute 'terminal' &shell expand('%:S')<CR>
     " save GUI session on exit (use 'gvim -S' to load session)
     autocmd VimLeavePre *
-        \ if has('gui_running') |
+        \ if exists('g:GuiLoaded') |
         \     execute 'mks!' empty(v:this_session) ?
         \         '~/Session.vim' : v:this_session |
         \ endif

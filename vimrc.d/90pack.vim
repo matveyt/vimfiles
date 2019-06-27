@@ -28,7 +28,7 @@ command! PackUpdate call minpac#update()
 " plugin specific variables
 let g:c_gnu = 1
 let g:c_no_curly_error = 1
-let g:loaded_netrwPlugin = 1
+let g:loaded_netrwPlugin = 0
 let g:dirvish_mode = ':sort i /^.*\//'
 let g:signify_vcs_list = ['git']
 let g:signify_disable_by_default = 1
@@ -47,10 +47,3 @@ nmap <kMinus> <Plug>(dirvish_up)
 nnoremap <Leader>s :SignifyToggle<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 nnoremap <Leader>u :UndotreeToggle<CR>
-
-" set some nice icons for vim-dirvish to use
-packadd vim-dirvish
-if exists('g:loaded_dirvish') && g:loaded_dirvish
-    call dirvish#add_icon_fn({p -> has('gui_running') ?
-        \ nr2char(p[-1:] == '/' ? 0x1F4C2 : 0x1F4C4, 1) : ''})
-endif

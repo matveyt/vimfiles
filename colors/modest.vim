@@ -44,15 +44,7 @@ function! s:hilink(to_group, ...)
     endfor
 endfunction
 
-if &bg ==# 'dark'
-    call s:hilite('Normal', 'AshGrey', 'Eigengrau')
-    call s:hilite('Comment', 'GreyGreen', 'NONE')
-    call s:hilite('Constant', 'Mantis', 'NONE')
-    call s:hilite('Error', 'fg', 'Sienna')
-    call s:hilite('TabLine', 'NONE', 'GreyGreen', 'underline')
-    call s:hilite('Underlined', 'fg', 'Sienna', 'underline')
-    call s:hilite('WildMenu', 'bg', 'Mantis', 'gui=bold')
-else
+if &bg ==# 'light'
     call s:hilite('Normal', 'EgyptianBlue', 'Beige')
     call s:hilite('Comment', 'GreyGreen', 'NONE')
     call s:hilite('Constant', 'Cocoa', 'NONE')
@@ -60,21 +52,31 @@ else
     call s:hilite('TabLine', 'NONE', 'Aquamarine', 'NONE')
     call s:hilite('Underlined', 'fg', 'Aquamarine', 'underline')
     call s:hilite('WildMenu', 'NONE', 'Aquamarine')
+else
+    call s:hilite('Normal', 'AshGrey', 'Eigengrau')
+    call s:hilite('Comment', 'GreyGreen', 'NONE')
+    call s:hilite('Constant', 'Mantis', 'NONE')
+    call s:hilite('Error', 'fg', 'Sienna')
+    call s:hilite('TabLine', 'NONE', 'GreyGreen', 'underline')
+    call s:hilite('Underlined', 'fg', 'Sienna', 'underline')
+    call s:hilite('WildMenu', 'bg', 'Mantis', 'gui=bold')
 endif
 
+call s:hilite('CursorLine', 'NONE', 'NONE', 'NONE')
 call s:hilite('StatusLine', 'NONE', 'NONE', 'bold,reverse')
 call s:hilite('StatusLineNC', 'NONE', 'NONE', 'reverse')
 call s:hilite('TabLineSel', 'fg', 'bg', 'bold')
 call s:hilite('Visual', 'bg', 'fg', 'NONE')
 
-call s:hilink('Normal', 'CursorColumn', 'CursorLine', 'CursorLineNr', 'Function',
-    \ 'Identifier', 'ModeMsg', 'PreProc', 'Statement', 'Type')
+call s:hilink('Normal', 'CursorLineNr', 'Function', 'Identifier', 'ModeMsg', 'PreProc',
+    \ 'Statement', 'Type')
 call s:hilink('Comment', 'Conceal', 'FoldColumn', 'Folded', 'LineNr', 'NonText',
     \ 'SignColumn', 'SpecialKey')
 call s:hilink('Constant', 'Directory', 'helpHyperTextEntry', 'helpHyperTextJump',
     \ 'helpOption', 'MoreMsg', 'Question', 'Special', 'Title')
 call s:hilink('Error', 'DiffDelete', 'ErrorMsg', 'MatchParen', 'PmenuThumb',
     \ 'WarningMsg')
+call s:hilink('CursorLine', 'CursorColumn')
 call s:hilink('StatusLine', 'StatusLineTerm', 'ToolbarButton')
 call s:hilink('StatusLineNC', 'ColorColumn', 'Cursor', 'DiffChange', 'lCursor',
     \ 'Search', 'StatusLineTermNC')

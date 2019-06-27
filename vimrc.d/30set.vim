@@ -15,7 +15,7 @@ set autoread belloff=all colorcolumn=+1 complete=.,w,b,t confirm
 set cursorline lazyredraw scrolloff=3 splitright title
 set keymodel=startsel mousemodel=popup selection=exclusive
 set laststatus=2 number relativenumber showmatch showtabline=2
-set noruler noshowcmd noshowmode noswapfile nowritebackup
+set nohlsearch noruler noshowcmd noshowmode noswapfile nowritebackup
 set sessionoptions=curdir,folds,help,tabpages,winsize,slash,unix
 set switchbuf=usetab,split undofile virtualedit=all
 let &path = '.,,' . g:my_projects . '/**'

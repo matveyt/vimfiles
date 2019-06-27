@@ -19,6 +19,11 @@ else
     let g:my_projects = 'E:/Work/projects'
 endif
 
+" g:GuiLoaded is set in Neovim (by a plugin); set it for gVim too
+if has('gui_running')
+    let g:GuiLoaded = 1
+endif
+
 " source startup scripts
 for s:fname in sort(glob(g:my_dotvim . '/vimrc.d/*.vim', 0, 1))
     execute 'source' s:fname
