@@ -31,5 +31,5 @@ endfor
 
 " autoload'ed stuff
 let &statusline = statusline#get()
-nnoremap <F8> :<C-U>call colorswitcher#next(v:count1)<CR>
-nnoremap <S-F8> :<C-U>call colorswitcher#next(-v:count1)<CR>
+nnoremap <silent><F8> :<C-U>call colorswitcher#next(v:count1)<CR>
+nnoremap <silent><S-F8> :<C-U>call colorswitcher#next(-v:count1)<CR>

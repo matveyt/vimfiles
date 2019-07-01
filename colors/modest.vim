@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:   matveyt
-" Last Change:  2019 Jun 23
+" Last Change:  2019 Jun 30
 " URL:          https://github.com/matveyt/vimfiles/colors
 
 hi clear
@@ -12,8 +12,10 @@ let g:colors_name = 'modest'
 
 let s:palette = {}
 let s:palette.Eigengrau = ['Black', 234, '#16161d']
+let s:palette.Grey19 = ['NONE', 236, '#272733']
 let s:palette.GreyGreen = ['DarkGrey', 242, '#5e716a']
 let s:palette.AshGrey = ['LightGrey', 250, '#b2beb5']
+let s:palette.Grey85 = ['NONE', 187, '#e6e6cf']
 let s:palette.Beige = ['White', 230, '#f5f5dc']
 let s:palette.Sienna = ['Brown', 130, '#882d17']
 let s:palette.Cocoa = ['Brown', 166, '#d2691e']
@@ -44,25 +46,26 @@ function! s:hilink(to_group, ...)
     endfor
 endfunction
 
-if &bg ==# 'light'
-    call s:hilite('Normal', 'EgyptianBlue', 'Beige')
-    call s:hilite('Comment', 'GreyGreen', 'NONE')
-    call s:hilite('Constant', 'Cocoa', 'NONE')
-    call s:hilite('Error', 'fg', 'Cocoa')
-    call s:hilite('TabLine', 'NONE', 'Aquamarine', 'NONE')
-    call s:hilite('Underlined', 'fg', 'Aquamarine', 'underline')
-    call s:hilite('WildMenu', 'NONE', 'Aquamarine')
-else
+if &bg ==# 'dark'
     call s:hilite('Normal', 'AshGrey', 'Eigengrau')
     call s:hilite('Comment', 'GreyGreen', 'NONE')
     call s:hilite('Constant', 'Mantis', 'NONE')
+    call s:hilite('CursorLine', 'NONE', 'Grey19', 'NONE')
     call s:hilite('Error', 'fg', 'Sienna')
     call s:hilite('TabLine', 'NONE', 'GreyGreen', 'underline')
     call s:hilite('Underlined', 'fg', 'Sienna', 'underline')
     call s:hilite('WildMenu', 'bg', 'Mantis', 'gui=bold')
+else
+    call s:hilite('Normal', 'EgyptianBlue', 'Beige')
+    call s:hilite('Comment', 'GreyGreen', 'NONE')
+    call s:hilite('Constant', 'Cocoa', 'NONE')
+    call s:hilite('CursorLine', 'NONE', 'Grey85', 'NONE')
+    call s:hilite('Error', 'fg', 'Cocoa')
+    call s:hilite('TabLine', 'NONE', 'Aquamarine', 'NONE')
+    call s:hilite('Underlined', 'fg', 'Aquamarine', 'underline')
+    call s:hilite('WildMenu', 'NONE', 'Aquamarine')
 endif
 
-call s:hilite('CursorLine', 'NONE', 'NONE', 'NONE')
 call s:hilite('StatusLine', 'NONE', 'NONE', 'bold,reverse')
 call s:hilite('StatusLineNC', 'NONE', 'NONE', 'reverse')
 call s:hilite('TabLineSel', 'fg', 'bg', 'bold')
@@ -70,8 +73,8 @@ call s:hilite('Visual', 'bg', 'fg', 'NONE')
 
 call s:hilink('Normal', 'CursorLineNr', 'Function', 'Identifier', 'ModeMsg', 'PreProc',
     \ 'Statement', 'Type')
-call s:hilink('Comment', 'Conceal', 'FoldColumn', 'Folded', 'LineNr', 'NonText',
-    \ 'SignColumn', 'SpecialKey')
+call s:hilink('Comment', 'FoldColumn', 'Folded', 'LineNr', 'NonText', 'SignColumn',
+    \ 'SpecialKey')
 call s:hilink('Constant', 'Directory', 'helpHyperTextEntry', 'helpHyperTextJump',
     \ 'helpOption', 'MoreMsg', 'Question', 'Special', 'Title')
 call s:hilink('Error', 'DiffDelete', 'ErrorMsg', 'MatchParen', 'PmenuThumb',

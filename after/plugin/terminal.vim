@@ -2,13 +2,10 @@
 " https://github.com/matveyt/vimfiles
 
 if exists('g:GuiLoaded')
-    if has('nvim')
-        call GuiWindowMaximized(1)
-    endif
-    set guifont=Inconsolata\ LGC:h14:cRUSSIAN
     if has('directx')
         set renderoptions=type:directx
     endif
+    set guifont=Inconsolata\ LGC:h14:cRUSSIAN
     " in case the colors were set by a desktop shortcut
     if !exists('g:colors_name')
         set background=dark
