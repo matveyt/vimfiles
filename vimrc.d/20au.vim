@@ -4,8 +4,6 @@
 augroup vimrc | au!
     " C/C++ specific stuff
     autocmd Syntax c,cpp setlocal equalprg=indent foldmethod=syntax
-    " minor color scheme fixes
-    autocmd ColorScheme * hi! link SignColumn FoldColumn
     " 'q' to close a non-modifiable window/buffer (e.g. 'help')
     autocmd BufWinEnter * if !&modifiable | nnoremap <buffer>q ZQ | endif
     " <F5> to execute script

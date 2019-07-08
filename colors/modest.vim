@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:   matveyt
-" Last Change:  2019 Jun 30
+" Last Change:  2019 Jul 05
 " URL:          https://github.com/matveyt/vimfiles/colors
 
 hi clear
@@ -17,11 +17,10 @@ let s:palette.GreyGreen = ['DarkGrey', 242, '#5e716a']
 let s:palette.AshGrey = ['LightGrey', 250, '#b2beb5']
 let s:palette.Grey85 = ['NONE', 187, '#e6e6cf']
 let s:palette.Beige = ['White', 230, '#f5f5dc']
-let s:palette.Sienna = ['Brown', 130, '#882d17']
-let s:palette.Cocoa = ['Brown', 166, '#d2691e']
-let s:palette.Mantis = ['DarkGreen', 77, '#74c365']
 let s:palette.EgyptianBlue = ['DarkBlue', 19, '#1034a6']
-let s:palette.Aquamarine = ['Cyan', 122, '#7fffd4']
+let s:palette.LightSeaGreen = ['DarkCyan', 37, '#20b2aa']
+let s:palette.Mantis = ['DarkGreen', 77, '#74c365']
+let s:palette.DarkChestnut = ['Brown', 95, '#986960']
 
 function! s:hilite(group, fg, bg, ...)
     let l:fg = get(s:palette, a:fg, [a:fg])
@@ -48,43 +47,43 @@ endfunction
 
 if &bg ==# 'dark'
     call s:hilite('Normal', 'AshGrey', 'Eigengrau')
-    call s:hilite('Comment', 'GreyGreen', 'NONE')
-    call s:hilite('Constant', 'Mantis', 'NONE')
+    call s:hilite('Statement', 'Mantis', 'NONE', 'NONE')
     call s:hilite('CursorLine', 'NONE', 'Grey19', 'NONE')
-    call s:hilite('Error', 'fg', 'Sienna')
     call s:hilite('TabLine', 'NONE', 'GreyGreen', 'underline')
-    call s:hilite('Underlined', 'fg', 'Sienna', 'underline')
+    call s:hilite('Underlined', 'fg', 'DarkChestnut', 'underline')
     call s:hilite('WildMenu', 'bg', 'Mantis', 'gui=bold')
 else
     call s:hilite('Normal', 'EgyptianBlue', 'Beige')
-    call s:hilite('Comment', 'GreyGreen', 'NONE')
-    call s:hilite('Constant', 'Cocoa', 'NONE')
+    call s:hilite('Statement', 'DarkChestnut', 'NONE', 'NONE')
     call s:hilite('CursorLine', 'NONE', 'Grey85', 'NONE')
-    call s:hilite('Error', 'fg', 'Cocoa')
-    call s:hilite('TabLine', 'NONE', 'Aquamarine', 'NONE')
-    call s:hilite('Underlined', 'fg', 'Aquamarine', 'underline')
-    call s:hilite('WildMenu', 'NONE', 'Aquamarine')
+    call s:hilite('TabLine', 'NONE', 'LightSeaGreen', 'NONE')
+    call s:hilite('Underlined', 'fg', 'LightSeaGreen', 'underline')
+    call s:hilite('WildMenu', 'bg', 'LightSeaGreen')
 endif
 
+call s:hilite('Comment', 'GreyGreen', 'NONE')
+call s:hilite('PreProc', 'LightSeaGreen', 'NONE')
+call s:hilite('Error', 'fg', 'DarkChestnut')
 call s:hilite('StatusLine', 'NONE', 'NONE', 'bold,reverse')
 call s:hilite('StatusLineNC', 'NONE', 'NONE', 'reverse')
 call s:hilite('TabLineSel', 'fg', 'bg', 'bold')
 call s:hilite('Visual', 'bg', 'fg', 'NONE')
 
-call s:hilink('Normal', 'CursorLineNr', 'Function', 'Identifier', 'ModeMsg', 'PreProc',
-    \ 'Statement', 'Type')
+call s:hilink('Normal', 'CursorLineNr', 'Function', 'Identifier', 'ModeMsg')
 call s:hilink('Comment', 'FoldColumn', 'Folded', 'LineNr', 'NonText', 'SignColumn',
     \ 'SpecialKey')
-call s:hilink('Constant', 'Directory', 'helpHyperTextEntry', 'helpHyperTextJump',
-    \ 'helpOption', 'MoreMsg', 'Question', 'Special', 'Title')
+call s:hilink('PreProc', 'cDefine', 'cInclude', 'cPreCondit', 'cPreProc')
+call s:hilink('Statement', 'Constant', 'Directory', 'helpHyperTextEntry',
+    \ 'helpHyperTextJump', 'helpOption', 'MoreMsg', 'Question', 'Special',
+    \ 'texStatement', 'Title', 'Type')
+call s:hilink('CursorLine', 'CursorColumn')
 call s:hilink('Error', 'DiffDelete', 'ErrorMsg', 'MatchParen', 'PmenuThumb',
     \ 'WarningMsg')
-call s:hilink('CursorLine', 'CursorColumn')
 call s:hilink('StatusLine', 'StatusLineTerm', 'ToolbarButton')
-call s:hilink('StatusLineNC', 'ColorColumn', 'Cursor', 'DiffChange', 'lCursor',
-    \ 'Search', 'StatusLineTermNC')
+call s:hilink('StatusLineNC', 'ColorColumn', 'Cursor', 'DiffChange', 'helpNote',
+    \ 'lCursor', 'Search', 'StatusLineTermNC')
 call s:hilink('TabLine', 'ToolbarLine')
 call s:hilink('Underlined', 'SpellBad', 'SpellCap', 'SpellLocal', 'SpellRare',
     \ 'VisualNOS')
-call s:hilink('Visual', 'helpNote', 'Pmenu', 'PmenuSbar', 'TabLineFill', 'VertSplit')
+call s:hilink('Visual', 'Pmenu', 'PmenuSbar', 'TabLineFill', 'VertSplit')
 call s:hilink('WildMenu', 'DiffAdd', 'DiffText', 'IncSearch', 'PmenuSel', 'Todo')
