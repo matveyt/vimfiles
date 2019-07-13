@@ -8,14 +8,19 @@ if has('win32unix')
     " ensure LANG is set for msys/vim
     language ru_RU.UTF-8
 endif
+" make vimtex happy
+filetype plugin indent on
+" source Vim's default settings (no-op in Neovim)
 runtime defaults.vim
 
 " local paths
 if has('unix')
     let g:my_dotvim = '~/.vim'
+    let g:my_misc = '/e/Misc'
     let g:my_projects = '/e/Work/projects'
 else
     let g:my_dotvim = 'E:/msys64/home/' . $USERNAME . '/.vim'
+    let g:my_misc = 'E:/Misc'
     let g:my_projects = 'E:/Work/projects'
 endif
 

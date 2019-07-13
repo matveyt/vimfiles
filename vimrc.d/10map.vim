@@ -31,8 +31,8 @@ nnoremap <S-Insert> "+gP
 noremap! <S-Insert> <C-R>+
 " '\=' to cd to the current file's directory
 nnoremap <Leader>= :lcd %:p:h \| pwd<CR>
-" '\l' to show what function we are in (like 'diff -p')
-nnoremap <Leader>l :echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
+" '\p' to show what function we are in (like 'diff -p')
+nnoremap <Leader>p :echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
 " '\h' to show the current highlight group
 nnoremap <Leader>h :call <SID>say_hi()<CR>
 function! s:say_hi()

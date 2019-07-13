@@ -1,6 +1,6 @@
 " Vim color file
 " Maintainer:   matveyt
-" Last Change:  2019 Jul 05
+" Last Change:  2019 Jul 13
 " URL:          https://github.com/matveyt/vimfiles/colors
 
 hi clear
@@ -23,8 +23,8 @@ let s:palette.Mantis = ['DarkGreen', 77, '#74c365']
 let s:palette.DarkChestnut = ['Brown', 95, '#986960']
 
 function! s:hilite(group, fg, bg, ...)
-    let l:fg = get(s:palette, a:fg, [a:fg])
-    let l:bg = get(s:palette, a:bg, [a:bg])
+    let l:fg = get(s:palette, a:fg, [a:fg, a:fg, a:fg])
+    let l:bg = get(s:palette, a:bg, [a:bg, a:bg, a:bg])
     if !a:0
         let l:term = ''
     elseif stridx(a:1, '=') != -1
@@ -32,10 +32,10 @@ function! s:hilite(group, fg, bg, ...)
     else
         let l:term = 'term=' . a:1 . ' cterm=' . a:1 . ' gui=' . a:1
     endif
-    let l:ctermfg = 'ctermfg=' . get(l:fg, &t_Co>=256, l:fg[0])
-    let l:ctermbg = 'ctermbg=' . get(l:bg, &t_Co>=256, l:bg[0])
-    let l:guifg = 'guifg=' . get(l:fg, 2, l:fg[0])
-    let l:guibg = 'guibg=' . get(l:bg, 2, l:bg[0])
+    let l:ctermfg = 'ctermfg=' . l:fg[&t_Co>=256]
+    let l:ctermbg = 'ctermbg=' . l:bg[&t_Co>=256]
+    let l:guifg = 'guifg=' . l:fg[2]
+    let l:guibg = 'guibg=' . l:bg[2]
     execute 'hi' a:group l:term l:ctermfg l:ctermbg l:guifg l:guibg
 endfunction
 

@@ -17,10 +17,10 @@ call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('justinmk/vim-dirvish')
 call minpac#add('Yggdroot/indentLine')
-call minpac#add('vim-latex/vim-latex')
 call minpac#add('mhinz/vim-signify')
 call minpac#add('majutsushi/tagbar')
 call minpac#add('mbbill/undotree')
+call minpac#add('lervag/vimtex')
 
 command! PackClean call minpac#clean()
 command! PackStatus call minpac#status()
@@ -36,6 +36,10 @@ let g:dirvish_mode = ':sort i /^.*\//'
 let g:signify_vcs_list = ['git']
 let g:signify_disable_by_default = 1
 let g:undotree_WindowLayout = 4
+let g:vimtex_compiler_method = 'arara'
+let g:vimtex_compiler_arara = {'options': []}
+let g:vimtex_view_general_viewer = g:my_misc . '/SumatraPDF/SumatraPDF'
+let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
 
 " needed to have auto-download working (e.g. spell files)
 " note: taken from netrwPlugin
