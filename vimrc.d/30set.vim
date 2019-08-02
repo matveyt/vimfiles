@@ -34,3 +34,6 @@ set list listchars=tab:<->,trail:_ textwidth=89
 " Russian keyboard and spelling support
 set keymap=russian-jcukenwin iminsert& imsearch&
 set fileformats=unix,dos spelllang=ru_yo,en
+
+" set my cool status line ;-)
+let &statusline = statusline#get()

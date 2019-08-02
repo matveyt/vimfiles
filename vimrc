@@ -33,8 +33,3 @@ endif
 for s:fname in sort(glob(g:my_dotvim . '/vimrc.d/*.vim', 0, 1))
     execute 'source' s:fname
 endfor
-
-" autoload'ed stuff
-let &statusline = statusline#get()
-nnoremap <silent><F8> :<C-U>call colorswitcher#next(v:count1)<CR>
-nnoremap <silent><S-F8> :<C-U>call colorswitcher#next(-v:count1)<CR>
