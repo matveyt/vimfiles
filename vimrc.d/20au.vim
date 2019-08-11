@@ -9,7 +9,7 @@ augroup vimrc | au!
     " <F5> to execute script
     autocmd FileType vim nnoremap <buffer><silent><F5> :update \| source %<CR>
     autocmd FileType sh nnoremap <buffer><silent><F5> :update \|
-        \ execute 'terminal' &shell expand('%:S')<CR>
+        \ execute 'terminal' &shell expand('%:p:S')<CR>
     " save GUI session on exit (use 'gvim -S' to load session)
     autocmd VimLeavePre *
         \ if exists('g:GuiLoaded') |

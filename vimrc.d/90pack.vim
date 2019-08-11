@@ -33,6 +33,7 @@ let g:loaded_netrwPlugin = 0
 let g:tex_conceal = ''
 let g:tex_flavor = 'latex'
 let g:dirvish_mode = ':sort i /^.*\//'
+let g:indentLine_bufTypeExclude = ['help', 'terminal']
 let g:signify_vcs_list = ['git']
 let g:signify_disable_by_default = 1
 let g:undotree_WindowLayout = 4
