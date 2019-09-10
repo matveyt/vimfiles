@@ -1,7 +1,7 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-if exists('g:GuiLoaded')
+if get(g:, 'GuiLoaded')
     if has('directx')
         set renderoptions=type:directx
     endif
@@ -22,9 +22,12 @@ else
     silent! colorscheme modest
 endif
 
+" set my status line
+let &statusline = stalin#build("mode,branch,buffer,,flags,ruler")
+
 " set some nice icons for vim-dirvish to use
-if exists('g:loaded_dirvish') && !has('nvim')
+if exists(':Dirvish') && !has('nvim')
     " Neovim-qt cannot display Unicode SMP characters for some reason
-    call dirvish#add_icon_fn({p -> exists('g:GuiLoaded') ?
+    call dirvish#add_icon_fn({p -> get(g:, 'GuiLoaded') ?
         \ nr2char(p[-1:] == '/' ? 0x1F4C2 : 0x1F4C4, 1) : ''})
 endif

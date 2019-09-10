@@ -1,7 +1,7 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-compiler gcc
+compiler! gcc
 set grepprg=grep\ -nH keywordprg=:help shell=bash
 set shellcmdflag=-c shellredir=&>%s shellslash
 set shellquote= shellxescape= shellxquote=\"
@@ -34,6 +34,3 @@ set list listchars=tab:<->,trail:_ textwidth=89
 " Russian keyboard and spelling support
 set keymap=russian-jcukenwin iminsert& imsearch&
 set fileformats=unix,dos spelllang=ru_yo,en
-
-" set my cool status line ;-)
-let &statusline = statusline#get()
