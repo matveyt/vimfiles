@@ -23,7 +23,10 @@ else
 endif
 
 " set my status line
-let &statusline = stalin#build("mode,branch,buffer,,flags,ruler")
+silent! let &statusline = stalin#build("mode,branch,buffer,,flags,ruler")
+
+" init scratch buffer
+silent! call scratch#init({'var': "@s"})
 
 " set some nice icons for vim-dirvish to use
 if exists(':Dirvish') && !has('nvim')

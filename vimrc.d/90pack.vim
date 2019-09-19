@@ -21,6 +21,12 @@ call minpac#add('mhinz/vim-signify')
 call minpac#add('majutsushi/tagbar')
 call minpac#add('mbbill/undotree')
 call minpac#add('lervag/vimtex')
+" my local plugins under pack/bundle/start are not managed by minpac
+" call minpac#add('matveyt/vim-colorswitcher')
+" call minpac#add('matveyt/vim-modest')
+" call minpac#add('matveyt/vim-moveit')
+" call minpac#add('matveyt/vim-scratch')
+" call minpac#add('matveyt/vim-stalin')
 
 command! PackClean call minpac#clean()
 command! PackStatus call minpac#status()
@@ -33,7 +39,7 @@ let g:loaded_netrwPlugin = 0
 let g:tex_conceal = ''
 let g:tex_flavor = 'latex'
 let g:dirvish_mode = ':sort i /^.*\//'
-let g:indentLine_bufTypeExclude = ['help', 'terminal']
+let g:indentLine_bufTypeExclude = ['quickfix', 'help', 'terminal', 'directory']
 let g:signify_vcs_list = ['git']
 let g:signify_disable_by_default = 1
 let g:undotree_WindowLayout = 4
@@ -43,15 +49,20 @@ let g:vimtex_view_general_viewer = g:my_misc . '/SumatraPDF/SumatraPDF'
 let g:vimtex_view_general_options = '-reuse-instance -forward-search @tex @line @pdf'
 
 " needed to have auto-download working (e.g. spell files)
-" note: taken from netrwPlugin
+" note: stolen from netrwPlugin
 command! -count=1 -nargs=* Nread
-    \ let s:svpos=winsaveview() |
-    \ call netrw#NetRead(<count>,<f-args>) |
-    \ call winrestview(s:svpos)
+    \ let s:svpos = winsaveview() |
+    \ call netrw#NetRead(<count>, <f-args>) |
+    \ call winrestview(s:svpos) |
+    \ unlet s:svpos
+
+" switch to the Scratch buffer
+command! Scratch call scratch#open()
 
 " some utility mappings for plugins
 autocmd vimrc FileType dirvish nmap <buffer><BS> <Plug>(dirvish_up)
 nmap <kMinus> <Plug>(dirvish_up)
-nnoremap <Leader>s :SignifyToggle<CR>
+nnoremap <Leader>g :SignifyToggle<CR>
+nnoremap <Leader>s :split +Scratch<CR>
 nnoremap <Leader>t :TagbarToggle<CR>
 nnoremap <Leader>u :UndotreeToggle<CR>
