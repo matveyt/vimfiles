@@ -14,7 +14,7 @@ endif
 set autoread belloff=all colorcolumn=+1 complete=.,w,b,t confirm
 set cursorline guicursor+=a:blinkon0 lazyredraw scrolloff=3 splitright
 set keymodel=startsel mousemodel=popup selection=exclusive
-set laststatus=2 number relativenumber showmatch showtabline=2 title
+set laststatus=2 number showmatch showtabline=2 title
 set nohlsearch noruler noshowcmd noshowmode noswapfile nowritebackup
 set sessionoptions=curdir,folds,help,tabpages,winsize,slash,unix
 set switchbuf=usetab,split undofile virtualedit=all

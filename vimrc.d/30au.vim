@@ -5,15 +5,13 @@ augroup vimrc | au!
     " C/C++ specific stuff
     autocmd Syntax c,cpp setlocal equalprg=indent foldmethod=syntax
     " 'q' to close a non-modifiable window/buffer (e.g. 'help')
-    autocmd BufWinEnter * if !&modifiable | nnoremap <buffer>q ZQ | endif
-    " <F5> to execute script
-    autocmd FileType vim nnoremap <buffer><silent><F5> :update \| source %<CR>
-    autocmd FileType sh nnoremap <buffer><silent><F5> :update \|
-        \ execute 'terminal' &shell expand('%:p:S')<CR>
+    autocmd BufWinEnter *
+        \ if !&modifiable || &buftype ==# 'nofile' |
+        \     execute 'nnoremap <buffer>q <C-W>q' |
+        \ endif
     " save GUI session on exit (use 'gvim -S' to load session)
     autocmd VimLeavePre *
         \ if get(g:, 'GuiLoaded') |
-        \     execute 'mks!' empty(v:this_session) ?
-        \         '~/Session.vim' : v:this_session |
+        \     execute 'mksession!' Or(v:this_session, '~/Session.vim') |
         \ endif
 augroup end
