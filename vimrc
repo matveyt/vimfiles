@@ -4,11 +4,7 @@
 " setup defaults
 set encoding=utf-8
 scriptencoding utf-8
-if has('win32unix')
-    " ensure LANG is set for msys/vim
-    language ru_RU.UTF-8
-endif
-" make vimtex happy
+" before 'defaults.vim' to make vimtex happy
 filetype plugin indent on
 " source Vim's default settings (no-op in Neovim)
 runtime defaults.vim
@@ -29,7 +25,7 @@ if has('gui_running')
     let g:GuiLoaded = 1
 endif
 
-" Logical and/or: returns first empty/non-empty argument, or the last one
+" Logical and/or: returns first empty/non-empty argument or the last one
 function s:junction(test, ...)
     let l:arg = 0
     for l:arg in a:000

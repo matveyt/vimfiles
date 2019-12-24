@@ -60,4 +60,4 @@ nnoremap <silent>gtt :Trim<CR>
 " gx to execute script
 vnoremap <silent>gx :Execute<CR>
 nnoremap <expr>gx misc#xoper('Execute')
-nnoremap <silent>gxx :Execute!<CR>
+nnoremap <silent>gxx :Execute<CR>
