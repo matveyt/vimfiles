@@ -12,8 +12,6 @@ noremap <Leader>, ,
 ounmap <Leader>,
 " <Space> to toggle fold
 nnoremap <Space> za
-" <F4> to find file in path and open it
-nnoremap <F4> :find<Space>
 " <F8>/<S-F8> to switch colorscheme
 nnoremap <silent><F8> :<C-U>call misc#switchcolor(v:count1)<CR>
 nnoremap <silent><S-F8> :<C-U>call misc#switchcolor(-v:count1)<CR>
