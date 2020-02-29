@@ -10,19 +10,6 @@ runtime defaults.vim
 
 " remember our root path
 let g:dotvim = expand('<sfile>:h')
-if has('win32') && !has('nvim')
-    " resolve symlink
-    let g:dotvim = tr(resolve(g:dotvim), '\', '/')
-    " fix &runtimepath...
-    let &rtp = expand('$VIMRUNTIME')
-    for s:item in [expand('$VIM/vimfiles'), g:dotvim]
-        let &rtp = printf('%s,%s,%s/after', s:item, &rtp, s:item)
-    endfor
-    " ...and &packpath
-    if exists('+packpath')
-        let &pp = &rtp
-    endif
-endif
 
 " source startup scripts
 let s:rclist = sort(glob(g:dotvim . '/vimrc.d/*.vim', 1, 1))
