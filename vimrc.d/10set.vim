@@ -3,25 +3,33 @@
 
 compiler! gcc
 set fileformats=unix,dos grepprg=grep\ -nH keywordprg=:help
-set shell=bash shellcmdflag=-c shellredir=&>%s
+set shell=bash shellcmdflag=-c shellredir=>%s\ 2>&1 noshelltemp
 set shellquote= shellxescape= shellxquote=
 if has('win32')
     " prevent MSYS apps (Git etc.) from expanding wildcards on their own
     let $MSYS = 'noglob'
+    if !has('nvim')
+        " needed for Vim on Windows
+        set shellxquote=\"
+    endif
 endif
 
 " note: move cursor and press 'K' to get help on a particular option
-set autoread belloff=all colorcolumn=+1 complete=.,w,b,t confirm
-set cursorline guicursor+=a:blinkon0 lazyredraw scrolloff=3 splitright
+set autoread backspace=indent,eol,start belloff=all colorcolumn=+1
+set complete=.,w,b,t confirm cursorline display=truncate guioptions-=t
+set guicursor+=a:blinkon0 history=1000 incsearch lazyredraw nrformats-=octal
+set scrolloff=3 splitright ttimeout ttimeoutlen=100 wildmenu
 set keymodel=startsel mousemodel=popup selection=exclusive
 set laststatus=2 mouse=ar number showmatch showtabline=2 title
-set nohlsearch noruler noshowcmd noshowmode noswapfile nowritebackup
+set nohlsearch nolangremap noruler noshowcmd noshowmode noswapfile nowritebackup
 set sessionoptions=curdir,folds,help,tabpages,winsize,slash,unix
-set switchbuf=usetab,split tagfunc=misc#urltags undofile virtualedit=all
+set switchbuf=usetab,split undofile virtualedit=all
 let &undodir = g:dotvim..'/undo'
-" Neovim only
 if exists('+inccommand')
     set inccommand=split
+endif
+if exists('+tagfunc')
+    set tagfunc=misc#urltags
 endif
 
 " indents and folds
@@ -42,6 +50,7 @@ endif
 
 " standard plugins config
 let g:asmsyntax = 'fasm'
+let g:c_comment_strings = 1
 let g:c_gnu = 1
 let g:c_no_curly_error = 1
 let g:is_bash = 1

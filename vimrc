@@ -2,11 +2,15 @@
 " https://github.com/matveyt/vimfiles
 
 " setup defaults
-set encoding=utf-8
+if &compatible
+    set nocompatible
+endif
 if exists('+shellslash')
     set shellslash
 endif
-runtime defaults.vim
+set encoding=utf-8
+syntax on
+filetype plugin indent on
 
 " remember our root path
 let g:dotvim = expand('<sfile>:h')
