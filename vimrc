@@ -1,15 +1,13 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-" setup defaults
-if &compatible
-    set nocompatible
-endif
+" setup critical defaults
+set encoding=utf-8
 if exists('+shellslash')
     set shellslash
 endif
-set encoding=utf-8
 
+" enable filetype, indent and syntax
 filetype plugin indent on
 syntax on
 
