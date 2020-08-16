@@ -14,8 +14,9 @@ if exists('+shellslash')
 endif
 let g:dotvim = expand('<sfile>:h')
 
-" source startup scripts
-let s:rclist = sort(glob(g:dotvim..'/vimrc.d/*.vim', v:true, v:true))
+" do :runtime! vimrc.d/*.vim
+" Note: glob() is always sorted
+let s:rclist = glob(g:dotvim..'/vimrc.d/*.vim', 1, 1)
 if !empty(s:rclist) && !v:vim_did_enter
     " the last script is delayed until VimEnter
     execute 'autocmd VimEnter * ++once ++nested source' remove(s:rclist, -1)
