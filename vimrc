@@ -2,8 +2,8 @@
 " https://github.com/matveyt/vimfiles
 
 " missing defaults for Vim
-set encoding=utf-8
-filetype plugin indent on
+let g:did_install_syntax_menu = 1
 syntax on
+filetype plugin indent on
 
 source <sfile>:h/init.vim
