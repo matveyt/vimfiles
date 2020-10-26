@@ -3,7 +3,7 @@
 
 " save config dir
 set shellslash
-const g:dotvim = expand('<sfile>:h')
+let g:dotvim = expand('<sfile>:h')
 
 " do :runtime! vimrc.d/*.vim
 " Note: glob() is always sorted
