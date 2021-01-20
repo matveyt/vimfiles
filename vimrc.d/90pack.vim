@@ -58,6 +58,7 @@ function s:pack_setup() abort
     "call s:pack_add('matveyt/vim-filters')
     "call s:pack_add('matveyt/vim-guidedspace')
     "call s:pack_add('matveyt/vim-jmake')
+    "call s:pack_add('matveyt/vim-qmake')
     "call s:pack_add('matveyt/vim-modest')
     "call s:pack_add('matveyt/vim-moveit', {'type': 'opt'})
     "call s:pack_add('matveyt/vim-opera')
