@@ -1,1 +1,1 @@
-/e/Work/projects/github.com/vimfiles/vimrc
+vimrc
