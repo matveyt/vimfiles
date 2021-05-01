@@ -93,8 +93,6 @@ endfunction
 
 " the rest for Neovim only
 if !has('nvim')
-    let &cpo = s:save_cpo
-    unlet s:save_cpo
     finish
 endif
 
