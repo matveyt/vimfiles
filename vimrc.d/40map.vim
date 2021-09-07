@@ -105,5 +105,13 @@ for _ in ['ae', 'ie', 'al', 'il', 'ai', 'ii', 'aI', 'iI']
     execute printf('xmap %s <plug>%s', _, _)
 endfor
 
+if has('nvim')
+    " disable default-mappings
+    nunmap Y
+    nunmap <C-L>
+    iunmap <C-U>
+    iunmap <C-W>
+endif
+
 " extra mappings like in tpope/vim-unimpaired
 call unimpaired#emulate()

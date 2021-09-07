@@ -1,12 +1,11 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-set encoding=utf-8
 compiler! gcc
-
-set shell=bash shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash noshelltemp
+set shell=bash shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash shelltemp&
 set shellquote= shellxescape= shellxquote=
 if has('win32')
+    set noshelltemp
     let &shellxquote = has('nvim') ? '' : '"'
     let $CYGWIN = 'noglob'
     let $MSYS = 'noglob'
@@ -21,9 +20,9 @@ set lazyredraw nrformats=alpha,bin,hex shortmess=cfilnxoOtTI pyxversion=3
 set scrolloff=2 sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu
 set keymodel=startsel mousemodel=extend selection=exclusive selectmode=
 set cursorline laststatus=2 mouse=ar number showmatch showtabline=2 title
-set switchbuf=useopen undofile virtualedit=all whichwrap+=<,>,[,]
-set nobackup nowritebackup nofsync nolangremap noruler noshowcmd noshowmode
-set nostartofline noswapfile viminfo=!,'100,<1000,s100,h
+set switchbuf=useopen tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,]
+set nobackup nowritebackup nofsync nohidden nolangremap noruler noshowcmd
+set noshowmode nostartofline noswapfile viminfo=!,'100,<1000,s100,h
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
 set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
 call better#safe('set scrollfocus')
@@ -39,7 +38,7 @@ set foldmethod=indent foldcolumn=1 foldlevel=3
 " tabs, wraps and case
 set nohlsearch nojoinspaces nowrap ignorecase incsearch infercase smartcase
 set tabstop& expandtab nosmarttab softtabstop=-1 shiftround shiftwidth=4
-set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
+set list listchars=tab:<->,trail:_,nbsp:+ textwidth=89 colorcolumn=+1
 
 " Russian keyboard and spelling
 if v:lang =~? '^ru'
@@ -71,6 +70,6 @@ let g:vimsyn_embed = 'l'
 let g:vimsyn_folding = 'afl'
 let g:vimsyn_noerror = 1
 
-" other plugins config
+" other plugin config
 let g:targets_nl = 'nN'
 let g:undotree_WindowLayout = 4

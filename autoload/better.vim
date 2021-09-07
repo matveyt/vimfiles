@@ -33,7 +33,7 @@ endfunction
 " better#is_blank_buffer()
 " check if current buffer is blank
 function! better#is_blank_buffer() abort
-    return !&modified && empty(&buftype) && line('$') == 1 && empty(getline(1))
+    return !&modified && empty(&buftype) && empty(bufname())
 endfunction
 
 " better#oldfiles(max)
@@ -46,7 +46,7 @@ endfunction
 " better#or({expr1} ...)
 " logical or: returns first non-empty argument or the last one
 function! better#or(...) abort
-    let l:arg = 0
+    let l:arg = v:false
     for l:arg in a:000
         if !empty(l:arg)
             break

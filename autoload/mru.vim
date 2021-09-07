@@ -12,13 +12,11 @@ function! mru#show(sesdir = '~', max = 10) abort
  \/  \/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/   \___/|_|_| |_| |_(_)
 
 END
-    let l:sesdir = fnamemodify(better#or(a:sesdir, '~'), ':p')
-
     if !better#is_blank_buffer()
         new
     endif
     call setline(1, l:header)
-    call s:add_group('Session', glob(l:sesdir..'*.vim', 0, 1))
+    call s:add_group('Session', glob(fnamemodify(a:sesdir, ':p')..'*.vim', 0, 1))
     if exists('*getmarklist')
         call s:add_group('Mark', getmarklist())
     endif
@@ -29,23 +27,16 @@ END
     syntax match Title /^[^[].*$/
     syntax match Comment /^\[[0-9A-Z]\+\] \zs.\+[\/]/
     nnoremap <buffer><expr><silent><CR> <SID>on_enter()
+    nnoremap <buffer><expr><silent><kEnter> <SID>on_enter()
     nnoremap <buffer><expr><silent><2-LeftMouse> <SID>on_enter()
     nnoremap <buffer><expr><silent>q <SID>on_quit()
 endfunction
 
 function s:add_group(title, items) abort
     if !empty(a:items)
-        call append('$', ['', a:title])
-        let l:num = 0
-        for l:item in a:items
-            if type(l:item) == v:t_string
-                call append('$', printf('[%d] %s', l:num, l:item))
-            else
-                call append('$', printf('[%s] %s:%d', l:item.mark[1:],
-                    \ l:item.file, l:item.pos[1]))
-            endif
-            let l:num += 1
-        endfor
+        call append('$', ['', a:title] + map(a:items[:], {k, v ->
+            \ type(v) == v:t_string ? printf('[%d] %s', k, v) :
+            \ printf('[%s] %s:%d', v.mark[1:], v.file, v.pos[1])}))
     endif
 endfunction
 
