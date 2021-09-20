@@ -10,22 +10,6 @@ function! misc#bwipeout(listed = 0) abort
     endif
 endfunction
 
-" misc#command({cmd} [, {items} [, {fmt}]])
-" complete and execute {cmd}
-function! misc#command(cmd, ...) abort
-    function! s:callback(id, result) abort closure
-        if a:result >= 1 && a:result <= len(l:items)
-            let [l:cmd, l:id, l:result] = [a:cmd, a:id, a:result]
-            execute substitute(l:fmt, '${\([^}]\+\)}', '\=eval(submatch(1))', 'g')
-        endif
-    endfunction
-    let l:items = a:0 ? a:1 : getcompletion(a:cmd..' ', 'cmdline')
-    let l:fmt = get(a:, 2, '${cmd} ${items[result - 1]}')
-    call popup#menu(l:items, {'title': printf('[%s]', a:cmd),
-        \ 'maxheight': &pumheight ? &pumheight : &lines / 2, 'minwidth': &pumwidth,
-        \ 'callback': funcref('s:callback')})
-endfunction
-
 " misc#comment({line1}, {line2} [, {preserveindent}])
 " (un)comment line range
 function! misc#comment(line1, line2, pi = &preserveindent) abort
@@ -89,4 +73,16 @@ function! misc#guifont(typeface, height) abort
         \ printf('\=%s..%d', string(l:prefix), l:height), '')})
     silent! let &guifont = join(l:fonts, ',')
     let s:fontheight = l:height
+endfunction
+
+" misc#pick({name} [, {items} [, {cmd}]])
+" pick parameter and execute {cmd}
+function! misc#pick(...) abort
+    let l:name = a:1
+    let l:items = a:0 > 1 ? a:2 : getcompletion(l:name..' ', 'cmdline')
+    let l:cmd = a:0 > 2 ? a:3 : '%{name} %{items[result - 1]}'
+    call popup#menu(l:items, #{title: printf('[%s]', l:name), maxheight: &pumheight ?
+        \ &pumheight : &lines / 2, minwidth: &pumwidth, callback: {id, result ->
+        \ (result < 1 || result > len(items)) ? v:null :
+        \ execute(substitute(l:cmd, '%{\([^}]\+\)}', '\=eval(submatch(1))', 'g'), '')}})
 endfunction

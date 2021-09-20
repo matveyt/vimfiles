@@ -1,6 +1,17 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+" disable default-mappings
+if has('nvim')
+    nunmap Y
+    nunmap <C-L>
+    iunmap <C-U>
+    iunmap <C-W>
+endif
+
+" extra mappings as in tpope/vim-unimpaired
+call unimpaired#emulate()
+
 " ';' to get to the command line quickly
 nnoremap ; :
 xnoremap ; :
@@ -8,22 +19,21 @@ xnoremap ; :
 nnoremap <leader>; ;
 xnoremap <leader>; ;
 " Q to zoom current window
-nnoremap <silent>Q :Zoom<CR>
+nnoremap <silent>Q <cmd>Zoom<CR>
 " <Space> to toggle fold
 nnoremap <Space> za
 " <F8> to set colorscheme
-nnoremap <silent><F8> :call misc#command('colorscheme')<CR>
-" <F9> to set new &guifont
-" [count]<C-F9>/[count]<S-F9> to change font size
-nnoremap <silent><F9> :call misc#command('Font', g:fontlist)<CR>
-nnoremap <silent><C-F9> :<C-U>call misc#guifont(v:null, v:count1)<CR>
-nnoremap <silent><S-F9> :<C-U>call misc#guifont(v:null, -v:count1)<CR>
+nmap <F8> <plug>colorscheme
+" <F9> to set &guifont; [count]<C-F9>/[count]<S-F9> to change font size
+nmap <F9> <plug>font
+nnoremap <silent><C-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
+nnoremap <silent><S-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
-nnoremap <silent><F11> :call term#start()<CR>
+nnoremap <silent><F11> <cmd>call term#start()<CR>
 " <Ctrl-N> to add new tab
-nnoremap <silent><C-N> :$tabnew<CR>
+nnoremap <silent><C-N> <cmd>$tabnew<CR>
 " <Ctrl-S> to save file
-nnoremap <silent><C-S> :update<CR>
+nnoremap <silent><C-S> <cmd>update<CR>
 " move cursor inside quotes while typing
 noremap! "" ""<Left>
 noremap! '' ''<Left>
@@ -39,39 +49,37 @@ noremap! <S-Insert> <C-R>+
 " [count]<BS> to open "File Explorer" (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 " '\=' to cd to the current file's directory
-nnoremap <leader>= :lcd %:p:h <Bar> pwd<CR>
-" edit (a)rglist, (b)uffer, (f)ind, script(n)ames, (o)ldfiles, (w)indows
-nnoremap <silent><leader>a :call misc#command('args', argv(), 'argument ${result}')<CR>
-nnoremap <silent><leader>b :call misc#command('buffer', map(getbufinfo({'buflisted': 1}),
-    \ {_, v -> printf('%2d %s', v.bufnr, better#or(fnamemodify(bufname(v.bufnr), ':t'),
-    \ '[No Name]'))}), '${cmd} ${split(items[result - 1])[0]}')<CR>
-nnoremap <silent><leader>f :call misc#command('find')<CR>
-nnoremap <silent><leader>n :call misc#command('scriptnames',
-    \ map(split(execute('scriptnames'), "\n"), 'v:val[1:]'), '${cmd} ${result}')<CR>
-nnoremap <silent><leader>o :<C-U>call misc#command('oldfiles', better#oldfiles(v:count),
-    \ 'edit ${items[result - 1]}')<CR>
-nnoremap <silent><leader>w :call misc#command('windows', map(sort(getwininfo(),
-    \ {w1, w2 -> w1.winid - w2.winid}), {_, v -> printf('%d %s', v.winid,
-    \ better#or(fnamemodify(bufname(v.bufnr), ':t'), '#'..v.bufnr))}),
-    \ 'call win_gotoid(${split(items[result - 1])[0]})')<CR>
-" '\h' to show the current highlight group
-nnoremap <silent><leader>h :Highlight!<CR>
+nnoremap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
+" '\H' to show the current highlight group
+nnoremap <silent><leader>H <cmd>Highlight!<CR>
 " '\p' to show what function we are in (like 'diff -p')
-nnoremap <leader>p :echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
+nnoremap <leader>p <cmd>echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
 " '\l' to toggle location list
-nnoremap <expr><silent><leader>l printf(":l%s\<CR>",
-    \ getloclist(0, {'winid': 0}).winid ? 'close' : 'open')
+nnoremap <expr><silent><leader>l printf('<cmd>l%s<CR>',
+    \ getloclist(0, #{winid: 0}).winid ? 'close' : 'open')
 " '\q' to toggle quickfix
-nnoremap <expr><silent><leader>q printf(":c%s\<CR>",
-    \ getqflist({'winid': 0}).winid ? 'close' : 'open')
+nnoremap <expr><silent><leader>q printf('<cmd>c%s<CR>',
+    \ getqflist(#{winid: 0}).winid ? 'close' : 'open')
 " '\s' to open scratch buffer
-nnoremap <silent><leader>s :split +Scratch<CR>
+nnoremap <silent><leader>s <cmd>split +Scratch<CR>
 " '\u' to toggle undotree
-nnoremap <leader>u :UndotreeToggle<CR>
+nnoremap <leader>u <cmd>UndotreeToggle<CR>
 " '\x' to execute command and put output into a buffer
 " '\X' to eval expression and put result into a buffer
-nnoremap <silent><leader>x :put =trim(execute(input(':', '', 'command')))<CR>
-nnoremap <silent><leader>X :put =eval(input('=', '', 'expression'))<CR>
+nnoremap <silent><leader>x <cmd>put =trim(execute(input(':', '', 'command')))<CR>
+nnoremap <silent><leader>X <cmd>put =eval(input('=', '', 'expression'))<CR>
+" browse (a)rglist, (b)uffers, (f)ind, command-line (h)istory, (m)arks, script(n)ames,
+" (o)ldfiles, (r)egisters, (w)indows; '\\' for everything
+nmap <leader><leader> <plug>pick
+nmap <leader>a <plug>args
+nmap <leader>b <plug>buffers
+nmap <leader>f <plug>find
+nmap <leader>h <plug>history
+nmap <leader>m <plug>marks
+nmap <leader>n <plug>scriptnames
+nmap <leader>o <plug>oldfiles
+nmap <leader>r <plug>registers
+nmap <leader>w <plug>windows
 " gc to toggle comments
 nnoremap <expr><silent>gc opera#mapto('Comment!')
 xnoremap <expr><silent>gc opera#mapto('Comment!')
@@ -105,13 +113,33 @@ for _ in ['ae', 'ie', 'al', 'il', 'ai', 'ii', 'aI', 'iI']
     execute printf('xmap %s <plug>%s', _, _)
 endfor
 
-if has('nvim')
-    " disable default-mappings
-    nunmap Y
-    nunmap <C-L>
-    iunmap <C-U>
-    iunmap <C-W>
-endif
-
-" extra mappings like in tpope/vim-unimpaired
-call unimpaired#emulate()
+" implement various pickers
+nnoremap <silent><plug>pick <cmd>call misc#pick('pick', ['args', 'buffers',
+    \ 'colorscheme', 'find', 'font', 'history', 'marks', 'oldfiles', 'registers',
+    \ 'scriptnames', 'windows'], '%{substitute(maparg("<lt>plug>"..items[result - 1],
+    \ "n"), "<[-[:alnum:]]\\+>", "", "g")}')<CR>
+nnoremap <silent><plug>args <cmd>call misc#pick('args', argv(), '%{result}argument')<CR>
+nnoremap <silent><plug>buffers <cmd>call misc#pick('buffer', map(getbufinfo({'buflisted':
+    \ v:count == 0}), {_, v -> printf('%2d %s', v.bufnr, empty(v.name) ? '[No Name]' :
+    \ fnamemodify(v.name, ':t'))}), '%{name} %{items[result - 1]->split()[0]}')<CR>
+nnoremap <silent><plug>colorscheme <cmd>call misc#pick('colorscheme')<CR>
+nnoremap <silent><plug>find <cmd>call misc#pick('find')<CR>
+nnoremap <silent><plug>font <cmd>call misc#pick('Font', g:fontlist)<CR>
+nnoremap <silent><plug>history <cmd>call misc#pick('history', map(range(1, v:count ?
+    \ v:count : 50), {_, v -> histget(':', -v)}), '%{items[result - 1]}')<CR>
+nnoremap <silent><plug>marks <cmd>call misc#pick('marks', map(getmarklist('') +
+    \ getmarklist(), {_, v -> printf('%s %6d:%-4d %s', v.mark[1:], v.pos[1], v.pos[2],
+    \ has_key(v, 'file') ? fnamemodify(v.file, ':t') : getline(v.pos[1]))}),
+    \ 'normal! `%{items[result - 1][0]}')<CR>
+nnoremap <silent><plug>oldfiles <cmd>call misc#pick('oldfiles', better#oldfiles(v:count),
+    \ 'edit %{fnameescape(items[result - 1])}')<CR>
+nnoremap <silent><plug>registers <cmd>call misc#pick('registers',
+    \ map(filter(split('"0123456789-abcdefghijklmnopqrstuvwxyz:.%#=*+/', '\zs'),
+    \ {_, v -> !empty(getreg(v))}), {_, v -> printf('%s %.*s', v, &columns / 2,
+    \ strtrans(getreg(v)))}), 'normal! "%{items[result - 1][0]}p')<CR>
+nnoremap <silent><plug>scriptnames <cmd>call misc#pick('scriptnames',
+    \ map(split(execute('scriptnames'), "\n"), 'v:val[1:]'), '%{result}%{name}')<CR>
+nnoremap <silent><plug>windows <cmd>call misc#pick('windows', map(sort(getwininfo(),
+    \ {w1, w2 -> w1.winid - w2.winid}), {_, v -> printf('%d %s', v.winid,
+    \ empty(bufname(v.bufnr)) ? '#'..v.bufnr : fnamemodify(bufname(v.bufnr), ':t'))}),
+    \ 'call win_gotoid(%{items[result - 1]->split()[0]})')<CR>

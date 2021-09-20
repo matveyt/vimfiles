@@ -168,7 +168,7 @@ function s:floatwin(lines, opts) abort
         \ a:opts.padding[1] + a:opts.border[1]
 
     " calc height and width
-    let l:height = max([len(a:lines), a:opts.minheight])
+    let l:height = max([len(a:lines), a:opts.minheight, 1])
     let l:height = min([l:height, a:opts.maxheight, &lines - &cmdheight - l:extraV])
     let l:height += l:extraV
     let l:width = max(extend(map(a:lines[:], 'strwidth(v:val)'), [a:opts.minwidth,
