@@ -2,7 +2,7 @@
 " https://github.com/matveyt/vimfiles
 
 " disable default-mappings
-if has('nvim')
+if has('nvim-0.6.0')
     nunmap Y
     nunmap <C-L>
     iunmap <C-U>
@@ -121,7 +121,7 @@ nnoremap <silent><plug>pick <cmd>call misc#pick('pick', ['args', 'buffers',
 nnoremap <silent><plug>args <cmd>call misc#pick('args', argv(), '%{result}argument')<CR>
 nnoremap <silent><plug>buffers <cmd>call misc#pick('buffer', map(getbufinfo({'buflisted':
     \ v:count == 0}), {_, v -> printf('%2d %s', v.bufnr, empty(v.name) ? '[No Name]' :
-    \ fnamemodify(v.name, ':t'))}), '%{name} %{items[result - 1]->split()[0]}')<CR>
+    \ fnamemodify(v.name, ':t'))}), '%{name} %{split(items[result - 1])[0]}')<CR>
 nnoremap <silent><plug>colorscheme <cmd>call misc#pick('colorscheme')<CR>
 nnoremap <silent><plug>find <cmd>call misc#pick('find')<CR>
 nnoremap <silent><plug>font <cmd>call misc#pick('Font', g:fontlist)<CR>
@@ -142,4 +142,4 @@ nnoremap <silent><plug>scriptnames <cmd>call misc#pick('scriptnames',
 nnoremap <silent><plug>windows <cmd>call misc#pick('windows', map(sort(getwininfo(),
     \ {w1, w2 -> w1.winid - w2.winid}), {_, v -> printf('%d %s', v.winid,
     \ empty(bufname(v.bufnr)) ? '#'..v.bufnr : fnamemodify(bufname(v.bufnr), ':t'))}),
-    \ 'call win_gotoid(%{items[result - 1]->split()[0]})')<CR>
+    \ 'call win_gotoid(%{split(items[result - 1])[0]})')<CR>
