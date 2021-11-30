@@ -46,9 +46,9 @@ function s:pack_setup() abort
     endif
 
     " git-clone package manager
-    let l:remote = printf('%s/%s/%s', s:pack.site, s:pack.author, s:pack.name)
     let l:local = better#stdpath('config', 'pack/%s/opt/%s', s:pack_byname(),
         \ s:pack.name)
+    let l:remote = printf('%s/%s/%s', s:pack.site, s:pack.author, s:pack.name)
     if !isdirectory(l:local)
         echomsg 'Cloning into' l:local
         silent call system(printf('git clone --depth=1 %s.git %s',
@@ -75,17 +75,19 @@ function s:pack_setup() abort
     call s:pack_add('nightsense/snow', {'type': 'opt', 'frozen': 1})
     call s:pack_add('nightsense/stellarized', {'type': 'opt', 'frozen': 1})
 
-    " my own plugins under ~/.vim/pack/bundle are managed manually
-    "call s:pack_add('matveyt/neoclip', {'type': 'opt'})
-    "call s:pack_add('matveyt/vim-drvo')
-    "call s:pack_add('matveyt/vim-filters')
-    "call s:pack_add('matveyt/vim-guidedspace')
-    "call s:pack_add('matveyt/vim-jmake')
-    "call s:pack_add('matveyt/vim-qmake', {'type': 'opt'})
-    "call s:pack_add('matveyt/vim-modest', {'type': 'opt'})
-    "call s:pack_add('matveyt/vim-moveit', {'type': 'opt'})
-    "call s:pack_add('matveyt/vim-opera')
-    "call s:pack_add('matveyt/vim-ranger', {'type': 'opt'})
-    "call s:pack_add('matveyt/vim-scratch')
-    "call s:pack_add('matveyt/vim-stalin')
+    " my own plugins could sit under ~/.vim/pack/manual
+    if !isdirectory(better#stdpath('config', 'pack/manual'))
+        call s:pack_add('matveyt/neoclip', {'type': 'opt'})
+        call s:pack_add('matveyt/vim-drvo')
+        call s:pack_add('matveyt/vim-filters')
+        call s:pack_add('matveyt/vim-guidedspace')
+        call s:pack_add('matveyt/vim-jmake')
+        call s:pack_add('matveyt/vim-qmake', {'type': 'opt'})
+        call s:pack_add('matveyt/vim-modest', {'type': 'opt'})
+        call s:pack_add('matveyt/vim-moveit', {'type': 'opt'})
+        call s:pack_add('matveyt/vim-opera')
+        call s:pack_add('matveyt/vim-ranger', {'type': 'opt'})
+        call s:pack_add('matveyt/vim-scratch')
+        call s:pack_add('matveyt/vim-stalin')
+    endif
 endfunction

@@ -50,8 +50,8 @@ noremap! <S-Insert> <C-R>+
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 " '\=' to cd to the current file's directory
 nnoremap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
-" '\H' to show the current highlight group
-nnoremap <silent><leader>H <cmd>Highlight!<CR>
+" '\h' to show the current highlight group
+nnoremap <silent><leader>h <cmd>Highlight!<CR>
 " '\p' to show what function we are in (like 'diff -p')
 nnoremap <leader>p <cmd>echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
 " '\l' to toggle location list
@@ -68,17 +68,20 @@ nnoremap <leader>u <cmd>UndotreeToggle<CR>
 " '\X' to eval expression and put result into a buffer
 nnoremap <silent><leader>x <cmd>put =trim(execute(input(':', '', 'command')))<CR>
 nnoremap <silent><leader>X <cmd>put =eval(input('=', '', 'expression'))<CR>
-" browse (a)rglist, (b)uffers, (f)ind, command-line (h)istory, (m)arks, script(n)ames,
-" (o)ldfiles, (r)egisters, (w)indows; '\\' for everything
+" browse (a)rglist, (b)uffers, (f)ind, command-line (H)istory, (m)arks, (S)essions,
+" script(n)ames, (o)ldfiles, (r)egisters, (S)essions, (t)emplates, (w)indows;
+" '\\' for everything
 nmap <leader><leader> <plug>pick
 nmap <leader>a <plug>args
 nmap <leader>b <plug>buffers
 nmap <leader>f <plug>find
-nmap <leader>h <plug>history
+nmap <leader>H <plug>history
 nmap <leader>m <plug>marks
 nmap <leader>n <plug>scriptnames
 nmap <leader>o <plug>oldfiles
 nmap <leader>r <plug>registers
+nmap <leader>S <plug>sessions
+nmap <leader>t <plug>templates
 nmap <leader>w <plug>windows
 " gc to toggle comments
 nnoremap <expr><silent>gc opera#mapto('Comment!')
@@ -114,32 +117,54 @@ for _ in ['ae', 'ie', 'al', 'il', 'ai', 'ii', 'aI', 'iI']
 endfor
 
 " implement various pickers
-nnoremap <silent><plug>pick <cmd>call misc#pick('pick', ['args', 'buffers',
-    \ 'colorscheme', 'find', 'font', 'history', 'marks', 'oldfiles', 'registers',
-    \ 'scriptnames', 'windows'], '%{substitute(maparg("<lt>plug>"..items[result - 1],
-    \ "n"), "<[-[:alnum:]]\\+>", "", "g")}')<CR>
-nnoremap <silent><plug>args <cmd>call misc#pick('args', argv(), '%{result}argument')<CR>
-nnoremap <silent><plug>buffers <cmd>call misc#pick('buffer', map(getbufinfo({'buflisted':
-    \ v:count == 0}), {_, v -> printf('%2d %s', v.bufnr, empty(v.name) ? '[No Name]' :
-    \ fnamemodify(v.name, ':t'))}), '%{name} %{split(items[result - 1])[0]}')<CR>
+nnoremap <silent><plug>pick <cmd>call misc#pick('pick',
+    \ '%{substitute(maparg("<lt>plug>"..items[result - 1], "n"), "<[-[:alnum:]]\\+>",
+        \ "", "g")}',
+    \ ['args', 'buffers', 'colorscheme', 'find', 'font', 'history', 'marks', 'oldfiles',
+        \ 'registers', 'scriptnames', 'sessions', 'templates', 'windows'])<CR>
+nnoremap <silent><plug>args <cmd>call misc#pick('args', '%{result}argument', argv())<CR>
+nnoremap <silent><plug>buffers <cmd>call misc#pick('buffer',
+    \ '%{name} %{items[result - 1].bufnr}',
+    \ getbufinfo({'buflisted': v:count == 0}),
+    \ 'printf("%2d %s", v:val.bufnr, empty(v:val.name) ? "[No Name]" :
+        \ fnamemodify(v:val.name, ":t"))')<CR>
 nnoremap <silent><plug>colorscheme <cmd>call misc#pick('colorscheme')<CR>
 nnoremap <silent><plug>find <cmd>call misc#pick('find')<CR>
-nnoremap <silent><plug>font <cmd>call misc#pick('Font', g:fontlist)<CR>
-nnoremap <silent><plug>history <cmd>call misc#pick('history', map(range(1, v:count ?
-    \ v:count : 50), {_, v -> histget(':', -v)}), '%{items[result - 1]}')<CR>
-nnoremap <silent><plug>marks <cmd>call misc#pick('marks', map(getmarklist('') +
-    \ getmarklist(), {_, v -> printf('%s %6d:%-4d %s', v.mark[1:], v.pos[1], v.pos[2],
-    \ has_key(v, 'file') ? fnamemodify(v.file, ':t') : getline(v.pos[1]))}),
-    \ 'normal! `%{items[result - 1][0]}')<CR>
-nnoremap <silent><plug>oldfiles <cmd>call misc#pick('oldfiles', better#oldfiles(v:count),
-    \ 'edit %{fnameescape(items[result - 1])}')<CR>
+nnoremap <silent><plug>font <cmd>call misc#pick('Font', v:null, g:fontlist)<CR>
+nnoremap <silent><plug>history <cmd>call misc#pick('history',
+    \ '%{lines[result - 1]}',
+    \ range(1, v:count ? v:count : 50),
+    \ 'histget(":", -v:val)')<CR>
+nnoremap <silent><plug>marks <cmd>call misc#pick('marks',
+    \ 'normal! `%{items[result - 1].mark[1:]}',
+    \ getmarklist('') + getmarklist(),
+    \ 'printf("%s %6d:%-4d %s", v:val.mark[1:], v:val.pos[1], v:val.pos[2],
+        \ has_key(v:val, "file") ? fnamemodify(v:val.file, ":t") :
+            \ getline(v:val.pos[1]))')<CR>
+nnoremap <silent><plug>oldfiles <cmd>call misc#pick('oldfiles',
+    \ 'edit %{fnameescape(items[result - 1])}',
+    \ better#oldfiles(v:count))<CR>
 nnoremap <silent><plug>registers <cmd>call misc#pick('registers',
-    \ map(filter(split('"0123456789-abcdefghijklmnopqrstuvwxyz:.%#=*+/', '\zs'),
-    \ {_, v -> !empty(getreg(v))}), {_, v -> printf('%s %.*s', v, &columns / 2,
-    \ strtrans(getreg(v)))}), 'normal! "%{items[result - 1][0]}p')<CR>
+    \ 'normal! "%{items[result - 1]}p',
+    \ split('"0123456789-abcdefghijklmnopqrstuvwxyz:.%#=*+/', '\zs')
+        \ ->filter('!empty(getreg(v:val))'),
+    \ 'printf("%s %.*s", v:val, &columns / 2, strtrans(getreg(v:val)))')<CR>
 nnoremap <silent><plug>scriptnames <cmd>call misc#pick('scriptnames',
-    \ map(split(execute('scriptnames'), "\n"), 'v:val[1:]'), '%{result}%{name}')<CR>
-nnoremap <silent><plug>windows <cmd>call misc#pick('windows', map(sort(getwininfo(),
-    \ {w1, w2 -> w1.winid - w2.winid}), {_, v -> printf('%d %s', v.winid,
-    \ empty(bufname(v.bufnr)) ? '#'..v.bufnr : fnamemodify(bufname(v.bufnr), ':t'))}),
-    \ 'call win_gotoid(%{split(items[result - 1])[0]})')<CR>
+    \ '%{result}%{name}',
+    \ split(execute('scriptnames'), "\n"),
+    \ 'v:val[1:]')<CR>
+nnoremap <silent><plug>sessions <cmd>call misc#pick('sessions',
+    \ 'source %{fnameescape(items[result - 1])}',
+    \ glob(better#stdpath('data', 'sessions/*.vim'), v:false, v:true),
+    \ 'fnamemodify(v:val, ":t")')<CR>
+nnoremap <silent><plug>templates <cmd>call misc#pick('templates',
+    \ '-read ++edit %{fnameescape(items[result - 1])} <Bar>
+        \ Nomove ''[,'']s/\v\%\{([^}]+)\}/\=eval(submatch(1))/ge',
+    \ glob(better#stdpath('data', 'templates/%s/*', better#or(&filetype, 'default')),
+        \ v:false, v:true),
+    \ 'fnamemodify(v:val, ":t")')<CR>
+nnoremap <silent><plug>windows <cmd>call misc#pick('windows',
+    \ 'call win_gotoid(%{items[result - 1].winid})',
+    \ getwininfo()->sort({w1, w2 -> w1.winid - w2.winid}),
+    \ 'printf("%d %s", v:val.winid, empty(bufname(v:val.bufnr)) ? "#"..v:val.bufnr :
+        \ fnamemodify(bufname(v:val.bufnr), ":t"))')<CR>

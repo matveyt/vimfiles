@@ -75,13 +75,14 @@ function! misc#guifont(typeface, height) abort
     let s:fontheight = l:height
 endfunction
 
-" misc#pick({name} [, {items} [, {cmd}]])
+" misc#pick({name} [, {cmd} [, {items} [, {items2lines}]]])
 " pick parameter and execute {cmd}
 function! misc#pick(...) abort
-    let l:name = a:1
-    let l:items = a:0 > 1 ? a:2 : getcompletion(l:name..' ', 'cmdline')
-    let l:cmd = a:0 > 2 ? a:3 : '%{name} %{items[result - 1]}'
-    call popup#menu(l:items, #{title: printf('[%s]', l:name), maxheight: &pumheight ?
+    let l:name  = get(a:, 1)->empty() ? 'help' : a:1
+    let l:cmd   = get(a:, 2)->empty() ? '%{name} %{items[result - 1]}' : a:2
+    let l:items = get(a:, 3)->empty() ? getcompletion(l:name..' ', 'cmdline') : a:3
+    let l:lines = get(a:, 4)->empty() ? l:items : copy(l:items)->map(a:4)
+    call popup#menu(l:lines, #{title: printf('[%s]', l:name), maxheight: &pumheight ?
         \ &pumheight : &lines / 2, minwidth: &pumwidth, callback: {id, result ->
         \ (result < 1 || result > len(items)) ? v:null :
         \ execute(substitute(l:cmd, '%{\([^}]\+\)}', '\=eval(submatch(1))', 'g'), '')}})
