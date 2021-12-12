@@ -15,8 +15,8 @@ command! -nargs=1 -complete=command Nomove
 " :[mods]Sorted[!] {cmd}
 " sorted "quasi-modifier"
 command! -bang -nargs=1 -complete=command Sorted
-    \ echo join(sort(split(execute(<q-mods>..' '..<q-args>), "\n"),
-    \     {s1, s2 -> <bang>(s1 ># s2) - <bang>(s1 <# s2)}), "\n")
+    \   echo join(sort(split(execute(<q-mods>..' '..<q-args>), "\n"),
+    \       {s1, s2 -> <bang>(s1 ># s2) - <bang>(s1 <# s2)}), "\n")
 
 " :Bwipeout[!]
 " wipe all deleted/unloaded buffers
@@ -25,16 +25,16 @@ command! -bar -bang Bwipeout call misc#bwipeout(<bang>0)
 " :[range]Comment[!]
 " toggle comments
 command! -range -bar -bang Comment
-    \ call misc#comment(<line1>, <line2>, <bang>&preserveindent)
+    \   call misc#comment(<line1>, <line2>, <bang>&preserveindent)
 
-" :Diff [spec]
+" :Diff[!] [spec]
 " show diff with original file or git object
-command! -nargs=? Diff call misc#diff(<q-args>)
+command! -bang -nargs=? Diff call misc#diff(<bang>0, <f-args>)
 
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script
 command! -range=% -bar -nargs=? Execute
-    \ call shebang#execute('%', <line1>, <line2>, <args>)
+    \   call shebang#execute('%', <line1>, <line2>, <args>)
 
 " :[count]Font [typeface]...
 " set &guifont
@@ -58,19 +58,21 @@ command! -nargs=* -complete=custom,s:gitcomplete Git !git -C %:p:h:S <args>
 
 " :GccInclude[!] [/path/to/gcc]
 " set local &path to GCC include dirs
-command! -bar -bang -nargs=? -complete=file GccInclude let &l:path = join(['.'] +
-    \ misc#gcc_include(better#or(<q-args>, 'gcc'), <bang>0) + [','], ',')
+command! -bar -bang -nargs=? -complete=file GccInclude
+    \   let &l:path = misc#gcc_include(better#or(<q-args>, 'gcc'), <bang>0)
+    \       ->insert('.')->add(',')->join(',')
 
 " :Highlight[!]
 " show :highlight under cursor
 command! -bar -bang Highlight
-    \ execute <bang>0..'verbose highlight'
-    \     better#or(synIDattr(synID(line('.'), col('.'), 1), 'name'), 'Normal')
+    \   execute <bang>0..'verbose highlight'
+    \       better#or(synIDattr(synID(line('.'), col('.'), 1), 'name'), 'Normal')
 
 " :[count]MRU [sesdir]
 " show MRU and Session files
 command! -count=10 -bar -nargs=? -complete=dir MRU
-    \ call mru#show(better#or(<q-args>, better#stdpath('data', 'sessions')), <count>)
+    \   call mru#show(better#or(<q-args>, better#stdpath('data', 'site/sessions')),
+    \       <count>)
 
 " :[range]Trim[!]
 " trim trailing/leading space

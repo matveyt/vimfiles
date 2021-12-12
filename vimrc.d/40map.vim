@@ -3,10 +3,10 @@
 
 " disable default-mappings
 if has('nvim-0.6.0')
-    nunmap Y
-    nunmap <C-L>
-    iunmap <C-U>
-    iunmap <C-W>
+    silent! nunmap Y
+    silent! nunmap <C-L>
+    silent! iunmap <C-U>
+    silent! iunmap <C-W>
 endif
 
 " extra mappings as in tpope/vim-unimpaired
@@ -155,13 +155,13 @@ nnoremap <silent><plug>scriptnames <cmd>call misc#pick('scriptnames',
     \ 'v:val[1:]')<CR>
 nnoremap <silent><plug>sessions <cmd>call misc#pick('sessions',
     \ 'source %{fnameescape(items[result - 1])}',
-    \ glob(better#stdpath('data', 'sessions/*.vim'), v:false, v:true),
+    \ glob(better#stdpath('data', 'site/sessions/*.vim'), v:false, v:true),
     \ 'fnamemodify(v:val, ":t")')<CR>
 nnoremap <silent><plug>templates <cmd>call misc#pick('templates',
     \ '-read ++edit %{fnameescape(items[result - 1])} <Bar>
         \ Nomove ''[,'']s/\v\%\{([^}]+)\}/\=eval(submatch(1))/ge',
-    \ glob(better#stdpath('data', 'templates/%s/*', better#or(&filetype, 'default')),
-        \ v:false, v:true),
+    \ glob(better#stdpath('data', 'site/templates/%s/*',
+        \ better#or(&filetype, 'empty')), v:false, v:true),
     \ 'fnamemodify(v:val, ":t")')<CR>
 nnoremap <silent><plug>windows <cmd>call misc#pick('windows',
     \ 'call win_gotoid(%{items[result - 1].winid})',

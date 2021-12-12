@@ -27,10 +27,11 @@ function! misc#comment(line1, line2, pi = &preserveindent) abort
     endif
 endfunction
 
-" misc#diff({spec})
+" misc#diff([{org} [, {spec}]])
 " improved implementation of :DiffOrig
-function! misc#diff(spec) abort
-    let [l:org, l:spec] = empty(a:spec) ? [&modified, 'HEAD'] : [v:false, a:spec]
+function! misc#diff(org = v:false, ...) abort
+    let l:org = a:org || &modified && !a:0
+    let l:spec = get(a:, 1, 'HEAD')
     execute matchstr(&diffopt, 'vertical') 'new'
     setlocal bufhidden=wipe buftype=nofile noswapfile
     let &l:filetype = getbufvar(0, '&filetype')
@@ -46,7 +47,7 @@ endfunction
 
 " misc#gcc_include([{gcc} [, {force} [, {ft}]]])
 " get GCC include dirs
-function! misc#gcc_include(gcc = 'gcc', force = 0, ft = &filetype) abort
+function! misc#gcc_include(gcc = 'gcc', force = v:false, ft = &filetype) abort
     let l:var = printf('%s_include_%s', fnamemodify(a:gcc, ':t:gs?[-.]?_?'), a:ft)
     if a:force || !has_key(s:, l:var)
         " $INCLUDE

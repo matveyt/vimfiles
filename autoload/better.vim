@@ -23,6 +23,17 @@ function! better#bufwinid(buf) abort
     return l:winid
 endfunction
 
+" better#defaults({base}, {dict})
+" set default variables
+function! better#defaults(base, dict) abort
+    for [l:var, l:value] in items(a:dict)
+        let l:name = empty(a:base) ? l:var : a:base..'_'..l:var
+        if !has_key(g:, l:name)
+            let g:[l:name] = l:value
+        endif
+    endfor
+endfunction
+
 " better#gui_running()
 " Vim/Neovim compatibility
 function! better#gui_running() abort

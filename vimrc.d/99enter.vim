@@ -17,9 +17,9 @@ if better#gui_running()
     call better#safe('GuiRenderLigatures 1')
     call better#safe('GuiWindowOpacity 1.0')
     call better#safe('set renderoptions=type:directx', has('directx'))
-    let g:drvo_glyph = [0x1F4C2, 0x1F4C4]
-    let g:fontlist = ['Inconsolata LGC', 'JetBrains Mono', 'Liberation Mono',
-        \ 'PT Mono', 'SF Mono', 'Ubuntu Mono']
+    call better#defaults('drvo', #{glyph: [0x1F4C2, 0x1F4C4]})
+    call better#defaults(v:null, #{fontlist: ['Inconsolata LGC', 'JetBrains Mono',
+        \ 'Liberation Mono', 'PT Mono', 'SF Mono', 'Ubuntu Mono']})
     14Font PT Mono
 elseif &t_Co >= 256
     call better#safe('set termguicolors', $TERM_PROGRAM isnot# 'Apple_Terminal')

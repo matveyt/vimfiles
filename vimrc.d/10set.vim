@@ -28,7 +28,8 @@ set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
 call better#safe('set scrollfocus')
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
 if &undodir is# '.'
-    let &undodir = better#stdpath('data', 'undo')
+    let &undodir = better#stdpath('data', 'site/undo')
+    call mkdir(&undodir, 'p', 0700)
 endif
 
 " indents and folds
@@ -53,23 +54,14 @@ if has('gui_running')
 endif
 
 " ftplugin config
-let g:asmsyntax = 'fasm'
-let g:c_gnu = 1
-let g:c_comment_strings = 1
-let g:c_space_errors = 1
-let g:c_no_curly_error = 1
-let g:c_syntax_for_h = 1
-let g:is_bash = 1
-let g:no_pdf_maps = 1
-let g:sh_fold_enabled = 7
-let g:tex_conceal = ''
-let g:tex_flavor = 'latex'
-let g:vim_indent_cont = shiftwidth()
-let g:vim_json_conceal = 0
-let g:vimsyn_embed = 'l'
-let g:vimsyn_folding = 'afl'
-let g:vimsyn_noerror = 1
+call better#defaults(v:null, #{asmsyntax: 'fasm', is_bash: 1, no_pdf_maps: 1})
+call better#defaults('c', #{gnu: 1, comment_strings: 1, no_space_errors: 1,
+    \ no_curly_error: 1, syntax_for_h: 1})
+call better#defaults('sh', #{fold_enabled: 7})
+call better#defaults('tex', #{conceal: '', flavor: 'latex'})
+call better#defaults('vim', #{indent_cont: shiftwidth(), json_conceal: 0})
+call better#defaults('vimsyn', #{embed: 'l', folding: 'afl', noerror: 1})
 
 " other plugin config
-let g:targets_nl = 'nN'
-let g:undotree_WindowLayout = 4
+call better#defaults('targets', #{nl: 'nN'})
+call better#defaults('undotree', #{WindowLayout: 4})
