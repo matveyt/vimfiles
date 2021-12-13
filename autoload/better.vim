@@ -23,15 +23,19 @@ function! better#bufwinid(buf) abort
     return l:winid
 endfunction
 
-" better#defaults({base}, {dict})
+" better#defaults({dict} [, {base}])
 " set default variables
-function! better#defaults(base, dict) abort
-    for [l:var, l:value] in items(a:dict)
-        let l:name = empty(a:base) ? l:var : a:base..'_'..l:var
-        if !has_key(g:, l:name)
-            let g:[l:name] = l:value
-        endif
-    endfor
+function! better#defaults(dict, ...) abort
+    if a:0
+        for [l:var, l:value] in items(a:dict)
+            let l:name = a:1..'_'..l:var
+            if !has_key(g:, l:name)
+                let g:[l:name] = l:value
+            endif
+        endfor
+    else
+        call extend(g:, a:dict, 'keep')
+    endif
 endfunction
 
 " better#gui_running()

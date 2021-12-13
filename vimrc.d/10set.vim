@@ -27,10 +27,6 @@ set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
 set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
 call better#safe('set scrollfocus')
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
-if &undodir is# '.'
-    let &undodir = better#stdpath('data', 'site/undo')
-    call mkdir(&undodir, 'p', 0700)
-endif
 
 " indents and folds
 set autoindent nosmartindent formatoptions=tcroqj matchpairs+=<:>
@@ -53,15 +49,25 @@ if has('gui_running')
     let g:no_buffers_menu = 1
 endif
 
+" extra directories
+call mkdir(better#stdpath('data', 'site/sessions'), 'p', 0700)
+call mkdir(better#stdpath('data', 'site/templates'), 'p', 0700)
+if &undodir is# '.'
+    let &undodir = better#stdpath('data', 'site/undo')
+    call mkdir(&undodir, 'p', 0700)
+endif
+
 " ftplugin config
-call better#defaults(v:null, #{asmsyntax: 'fasm', is_bash: 1, no_pdf_maps: 1})
-call better#defaults('c', #{gnu: 1, comment_strings: 1, no_space_errors: 1,
-    \ no_curly_error: 1, syntax_for_h: 1})
-call better#defaults('sh', #{fold_enabled: 7})
-call better#defaults('tex', #{conceal: '', flavor: 'latex'})
-call better#defaults('vim', #{indent_cont: shiftwidth(), json_conceal: 0})
-call better#defaults('vimsyn', #{embed: 'l', folding: 'afl', noerror: 1})
+call better#defaults(#{asmsyntax: 'fasm', is_bash: 1, no_pdf_maps: 1})
+call better#defaults(#{gnu: 1, comment_strings: 1, no_space_errors: 1,
+    \ no_curly_error: 1, syntax_for_h: 1}, 'c')
+call better#defaults(#{fold_enabled: 7}, 'sh')
+call better#defaults(#{conceal: '', flavor: 'latex'}, 'tex')
+call better#defaults(#{indent_cont: shiftwidth(), json_conceal: 0}, 'vim')
+call better#defaults(#{embed: 'l', folding: 'afl', noerror: 1}, 'vimsyn')
 
 " other plugin config
-call better#defaults('targets', #{nl: 'nN'})
-call better#defaults('undotree', #{WindowLayout: 4})
+call better#defaults(#{nl: 'nN'}, 'targets')
+call better#defaults(#{WindowLayout: 4}, 'undotree')
+call better#defaults(#{cache_directory: better#stdpath('data', 'site/unicode'),
+    \ data_directory: better#stdpath('data', 'site/unicode')}, 'Unicode')
