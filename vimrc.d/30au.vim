@@ -29,7 +29,7 @@ augroup vimStartup | au!
         \   if !empty(v:this_session) && !v:dying
         \ |     mksession! `=v:this_session`
         \ | endif
-augroup end
+augroup end | au!
 
 function s:timestamp(text, format, lines) abort
     let l:svpos = winsaveview()

@@ -15,15 +15,15 @@ endif
 set autoread backspace=indent,eol,start belloff=all complete=.,w,b confirm
 set diffopt+=vertical display+=lastline fillchars=vert:\ ,fold:\ ,diff:\ 
 set fileformats=unix,dos grepformat=%f:%l:%c:%m history=1000 keywordprg=:Man
-set guioptions-=t guioptions+=! guicursor+=a:blinkon0 linespace=1
-set lazyredraw nrformats=alpha,bin,hex shortmess=cfilnxoOtTI pyxversion=3
+set guioptions-=t guioptions+=! guicursor+=a:blinkon0 linespace=1 lazyredraw
+set modeline nrformats=alpha,bin,hex shortmess=cfilnxoOtTI pyxversion=3
 set scrolloff=2 sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu
 set keymodel=startsel mousemodel=extend selection=exclusive selectmode=
 set cursorline laststatus=2 mouse=ar number showmatch showtabline=2 title
 set switchbuf=useopen tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,]
 set nobackup nowritebackup nofsync nohidden nolangremap noruler noshowcmd
 set noshowmode nostartofline noswapfile viminfo=!,'100,<1000,s100,h
-set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
+set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize suffixes&
 set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
 call better#safe('set scrollfocus')
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
