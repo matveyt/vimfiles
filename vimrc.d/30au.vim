@@ -15,7 +15,7 @@ augroup vimStartup | au!
         \ |     call s:timestamp('(Last Change|Date):', '%Y %b %d', &modelines)
         \ | endif
     " never italicize comments
-    autocmd ColorScheme * hi Comment gui=NONE cterm=NONE
+    autocmd ColorScheme * hi Comment gui=NONE
     " prettify some buffers
     autocmd FileType man,qf setlocal colorcolumn& cursorline& list&
     " :h spell-SpellFileMissing

@@ -27,40 +27,37 @@ function s:init.xterm() abort
         \ !has('nvim') && ($TERM_PROGRAM is# 'mintty' || $TERM_PROGRAM is# 'tmux'))
 endfunction
 
-function s:init.term() abort
-endfunction
-
 function s:init.enter() abort
     if !exists('g:colors_name')
         set background=light
         silent! colorscheme modest
     endif
-    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
 
-    " if we have not opened anything yet then show MRU files list
     if bufnr('$') == 1 && better#is_blank_buffer()
         MRU
     endif
+
+    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
 endfunction
 
 function s:init.dispatch(what) abort
-    if self->get('did_'..a:what) == 0
+    if self->has_key(a:what) && self->get('did_'..a:what) == 0
         call self[a:what]()
         let self['did_'..a:what] = 1
     endif
 endfunction
 
+augroup vimEnter | au!
+    autocmd VimEnter * ++nested
+        \   call s:init.dispatch(better#gui_running() ? 'gui' : &t_Co >= 256 ?
+        \       'xterm' : 'term')
+        \ | call s:init.dispatch('enter')
+    silent! autocmd GUIEnter * ++nested call s:init.dispatch('gui')
+    silent! autocmd UIEnter * ++nested call s:init.dispatch(v:event.chan > 0 ?
+        \   'gui' : 'xterm')
+augroup end
+
 if v:vim_did_enter
-    call s:init.dispatch(better#gui_running() ? 'gui' : &t_Co >= 256 ? 'xterm' : 'term')
-    call s:init.dispatch('enter')
-else
-    augroup vimEnter | au!
-        autocmd VimEnter * ++once ++nested
-            \   call s:init.dispatch(better#gui_running() ? 'gui' : &t_Co >= 256 ?
-            \       'xterm' : 'term')
-            \ | call s:init.dispatch('enter')
-        silent! autocmd GUIEnter * ++nested call s:init.dispatch('gui')
-        silent! autocmd UIEnter * ++nested call s:init.dispatch(v:event.chan > 0 ?
-            \   'gui' : 'xterm')
-    augroup end
+    packloadall!
+    doautocmd VimEnter
 endif

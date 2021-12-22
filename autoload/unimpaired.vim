@@ -102,7 +102,7 @@ endfunction
 " unimpaired#toggle({letter}, {option} [, {value1}, {value2}])
 " create mappings to switch {option} value
 function! unimpaired#toggle(letter, option, ...) abort
-    if type(getbufvar('', '&'..a:option)) == v:t_string
+    if eval('&'..a:option)->type() is v:t_string
         " string option with {value1} or {value2}
         execute printf('nnoremap <silent>[o%s :setl %s=%s<CR>', a:letter, a:option, a:1)
         execute printf('nnoremap <silent>]o%s :setl %s=%s<CR>', a:letter, a:option, a:2)
