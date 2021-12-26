@@ -26,8 +26,11 @@ augroup vimStartup | au!
         \       expand('<amatch>'), &encoding), v:true)
     " save session on exit
     autocmd VimLeavePre *
-        \   if !empty(v:this_session) && !v:dying
-        \ |     mksession! `=v:this_session`
+        \   if !v:dying
+        \ |     call misc#bwipeout()
+        \ |     if !empty(v:this_session)
+        \ |         mksession! `=v:this_session`
+        \ |     endif
         \ | endif
 augroup end
 

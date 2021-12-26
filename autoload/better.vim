@@ -25,16 +25,16 @@ endfunction
 
 " better#defaults({dict} [, {base}])
 " set default variables
-function! better#defaults(dict, ...) abort
-    if a:0
+function! better#defaults(dict, base = v:null) abort
+    if empty(a:base)
+        call extend(g:, a:dict, 'keep')
+    else
         for [l:var, l:value] in items(a:dict)
-            let l:name = a:1..'_'..l:var
+            let l:name = a:base..'_'..l:var
             if !has_key(g:, l:name)
                 let g:[l:name] = l:value
             endif
         endfor
-    else
-        call extend(g:, a:dict, 'keep')
     endif
 endfunction
 
@@ -49,13 +49,6 @@ endfunction
 " check if current buffer is blank
 function! better#is_blank_buffer() abort
     return !&modified && empty(&buftype) && empty(bufname())
-endfunction
-
-" better#oldfiles(max)
-" get filtered v:oldfiles
-function! better#oldfiles(max) abort
-    let l:skip = glob2regpat($VIMRUNTIME..'/doc/*.txt')..'\|\~$'
-    return filter(v:oldfiles[:], {_, v -> match(v, l:skip) < 0})[: a:max - 1]
 endfunction
 
 " better#or({expr1} ...)

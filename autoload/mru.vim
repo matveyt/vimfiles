@@ -20,7 +20,7 @@ END
     if exists('*getmarklist')
         call s:add_group('Mark', getmarklist())
     endif
-    call s:add_group('MRU', better#oldfiles(a:max))
+    call s:add_group('MRU', v:oldfiles[: a:max - 1])
 
     setlocal bufhidden=wipe buftype=nofile cursorline matchpairs=
     setlocal nomodifiable nonumber norelativenumber nospell noswapfile nowrap

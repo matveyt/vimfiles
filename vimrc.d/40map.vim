@@ -143,7 +143,7 @@ nnoremap <silent><plug>marks <cmd>call misc#pick('marks',
             \ getline(v:val.pos[1]))')<CR>
 nnoremap <silent><plug>oldfiles <cmd>call misc#pick('oldfiles',
     \ 'edit %{fnameescape(items[result - 1])}',
-    \ better#oldfiles(v:count))<CR>
+    \ v:oldfiles[: v:count ? v:count - 1 : 9])<CR>
 nnoremap <silent><plug>registers <cmd>call misc#pick('registers',
     \ 'normal! "%{items[result - 1]}p',
     \ split('"0123456789-abcdefghijklmnopqrstuvwxyz:.%#=*+/', '\zs')
