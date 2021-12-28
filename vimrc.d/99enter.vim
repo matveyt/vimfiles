@@ -58,6 +58,8 @@ augroup vimEnter | au!
 augroup end
 
 if v:vim_did_enter
+    call getcompletion('g:loaded_', 'var')
+        \ ->filter('!empty(eval(v:val))')->map('"unlet "..v:val')->execute()
     packloadall!
     doautocmd VimEnter
 endif

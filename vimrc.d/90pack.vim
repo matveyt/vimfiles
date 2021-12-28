@@ -37,7 +37,7 @@ endfunction
 let s:pack.add = funcref('s:pack.call', ['add'])
 
 function s:pack.setup() abort
-    if exists('g:loaded_' . tr(self.name, '-', '_'))
+    if exists('g:loaded_' . self.name->tr('-', '_'))
         return
     endif
 

@@ -58,9 +58,9 @@ function! unimpaired#emulate() abort
     nnoremap <silent>=p :<C-U>call <SID>putreg(']p')<CR>=']
 
     " [op ]op yop
-    nnoremap <silent>[op :setl paste<Bar>au InsertLeave * ++once setl nopaste<CR>O
-    nnoremap <silent>]op :setl paste<Bar>au InsertLeave * ++once setl nopaste<CR>o
-    nnoremap <silent>yop :setl paste<Bar>au InsertLeave * ++once setl nopaste<CR>S
+    nnoremap <silent>[op :set paste<Bar>au InsertLeave * ++once set paste&<CR>O
+    nnoremap <silent>]op :set paste<Bar>au InsertLeave * ++once set paste&<CR>o
+    nnoremap <silent>yop :set paste<Bar>au InsertLeave * ++once set paste&<CR>S
 
     " unimpaired-encoding (except XML)
     nnoremap <expr><silent>[u opera#mapto('call <SID>url_encode()')

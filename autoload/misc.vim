@@ -64,16 +64,15 @@ function! misc#gcc_include(gcc = 'gcc', force = v:false, ft = &filetype) abort
     return s:[l:var]
 endfunction
 
-" misc#guifont({typeface}, {height})
+" misc#guifont({typeface} [, {height}])
 " set &guifont
-function! misc#guifont(typeface, height) abort
+function! misc#guifont(typeface, height = 0) abort
     let l:fonts = split(better#or(a:typeface, &guifont), ',')
-    let l:height = (a:height >= 10) ? a:height : get(s:, 'fontheight', 10) + a:height
     let l:prefix = has('gui_gtk') ? ' ' : ':h'
+    let s:fontheight = a:height >= 10 ? a:height : get(s:, 'fontheight', 10) + a:height
     call map(l:fonts, {_, v -> substitute(trim(v), '\v('..l:prefix..'(\d+))?$',
-        \ printf('\=%s..%d', string(l:prefix), l:height), '')})
+        \ printf('\=%s..%d', string(l:prefix), s:fontheight), '')})
     silent! let &guifont = join(l:fonts, ',')
-    let s:fontheight = l:height
 endfunction
 
 " misc#pick({name} [, {cmd} [, {items} [, {items2lines}]]])

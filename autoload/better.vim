@@ -42,7 +42,7 @@ endfunction
 " Vim/Neovim compatibility
 function! better#gui_running() abort
     return has('gui_running') || exists('*nvim_list_uis') &&
-        \ !empty(nvim_list_uis()) && nvim_list_uis()[-1].chan > 0
+        \ nvim_list_uis()->get(-1, {})->get('chan') > 0
 endfunction
 
 " better#is_blank_buffer()
@@ -97,7 +97,6 @@ endfunction
 
 " better#win_execute({id}, {command} [, {silent}])
 " Vim/Neovim compatibility
-" Note: Neovim doesn't have win_execute()
 function! better#win_execute(id, command, silent = 'silent') abort
     " call win_execute() if possible
     if exists('*win_execute')
@@ -105,14 +104,18 @@ function! better#win_execute(id, command, silent = 'silent') abort
     endif
     " try to switch the window
     let l:wcurr = win_getid()
-    if a:id != l:wcurr && !win_gotoid(a:id)
-        return
+    let l:goto = a:id >= 1000 && a:id != l:wcurr
+    if l:goto
+        noautocmd let l:goto = win_gotoid(a:id)
+        if !l:goto
+            return
+        endif
     endif
     " execute command and switch window back after that
     try | return execute(a:command, a:silent)
     finally
-        if a:id != l:wcurr
-            call win_gotoid(l:wcurr)
+        if l:goto
+            noautocmd call win_gotoid(l:wcurr)
         endif
     endtry
 endfunction
