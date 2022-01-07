@@ -1,7 +1,6 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-compiler! gcc
 set shell=bash shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash shelltemp&
 set shellquote= shellxescape= shellxquote=
 if has('win32')
@@ -29,7 +28,7 @@ call better#safe('set scrollfocus')
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
 
 " indents and folds
-set autoindent nosmartindent formatoptions=tcroqj matchpairs+=<:>
+set autoindent nosmartindent formatoptions=tcroqj
 set foldmethod=indent foldcolumn=1 foldlevel=3
 
 " tabs, wraps and case

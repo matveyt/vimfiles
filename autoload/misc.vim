@@ -14,7 +14,7 @@ endfunction
 " (un)comment line range
 function! misc#comment(line1, line2, pi = &preserveindent) abort
     let l:lnum = nextnonblank(a:line1)
-    let l:end = type(a:line2) == v:t_number ? a:line2 : line(a:line2)
+    let l:end = prevnonblank(a:line2)
     if l:lnum >= 1 && l:lnum <= l:end
         let l:pat = printf('^\(\s*\)\(%s\)$', printf(escape(&cms, '^$.*~[]\'), '\(.*\)'))
         let l:sub = '\=empty(submatch(2)) ? submatch(0) : submatch(1)..submatch(3)'
@@ -47,7 +47,7 @@ endfunction
 
 " misc#gcc_include([{gcc} [, {force} [, {ft}]]])
 " get GCC include dirs
-function! misc#gcc_include(gcc = 'gcc', force = v:false, ft = &filetype) abort
+function! misc#gcc_include(gcc = b:current_compiler, force = v:false, ft = &ft) abort
     let l:var = printf('%s_include_%s', fnamemodify(a:gcc, ':t:gs?[-.]?_?'), a:ft)
     if a:force || !has_key(s:, l:var)
         " $INCLUDE
@@ -61,7 +61,7 @@ function! misc#gcc_include(gcc = 'gcc', force = v:false, ft = &filetype) abort
             let s:[l:var] += map(l:include[l:ix1 : l:ix2], 'simplify(v:val)')
         endif
     endif
-    return s:[l:var]
+    return copy(s:[l:var])
 endfunction
 
 " misc#guifont({typeface} [, {height}])
