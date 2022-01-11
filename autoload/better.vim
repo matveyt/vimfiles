@@ -38,6 +38,12 @@ function! better#defaults(dict, base = v:null) abort
     endif
 endfunction
 
+" better#gettext({text})
+" Vim/Neovim compatibility
+function! better#gettext(text) abort
+    return exists('*gettext') ? gettext(a:text) : a:text
+endfunction
+
 " better#gui_running()
 " Vim/Neovim compatibility
 function! better#gui_running() abort

@@ -8,18 +8,15 @@ nnoremap <silent><plug>pick <cmd>call misc#pick('pick',
         \ 'registers', 'scriptnames', 'sessions', 'templates', 'windows'])<CR>
 
 nnoremap <silent><plug>args <cmd>call misc#pick('args', '%{result}argument', argv())<CR>
+nnoremap <silent><plug>colorscheme <cmd>call misc#pick('colorscheme')<CR>
+nnoremap <silent><plug>find <cmd>call misc#pick('find')<CR>
+nnoremap <silent><plug>font <cmd>call misc#pick('Font', v:null, g:fontlist)<CR>
 
 nnoremap <silent><plug>buffers <cmd>call misc#pick('buffer',
     \ '%{name} %{items[result - 1].bufnr}',
     \ getbufinfo({'buflisted': v:count == 0}),
-    \ 'printf("%2d %s", v:val.bufnr, empty(v:val.name) ? "[No Name]" :
+    \ 'printf("%2d %s", v:val.bufnr, empty(v:val.name) ? better#gettext("[No Name]") :
         \ fnamemodify(v:val.name, ":t"))')<CR>
-
-nnoremap <silent><plug>colorscheme <cmd>call misc#pick('colorscheme')<CR>
-
-nnoremap <silent><plug>find <cmd>call misc#pick('find')<CR>
-
-nnoremap <silent><plug>font <cmd>call misc#pick('Font', v:null, g:fontlist)<CR>
 
 nnoremap <silent><plug>history <cmd>call misc#pick('history',
     \ '%{lines[result - 1]}',

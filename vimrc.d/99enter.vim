@@ -1,9 +1,9 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-let s:init = {}
+let s:enter = {}
 
-function s:init.gui() abort
+function s:enter.gui() abort
     call better#safe('GuiAdaptiveColor 1')
     call better#safe('GuiAdaptiveFont 1')
     call better#safe('GuiAdaptiveStyle Fusion')
@@ -19,7 +19,7 @@ function s:init.gui() abort
     14Font PT Mono
 endfunction
 
-function s:init.xterm() abort
+function s:enter.xterm() abort
     call better#safe('set termguicolors', $TERM_PROGRAM isnot# 'Apple_Terminal')
     call better#safe('set ttyfast')
     call better#safe('set ttymouse=sgr', has('mouse_sgr'))
@@ -27,20 +27,20 @@ function s:init.xterm() abort
         \ !has('nvim') && ($TERM_PROGRAM is# 'mintty' || $TERM_PROGRAM is# 'tmux'))
 endfunction
 
-function s:init.enter() abort
+function s:enter.main() abort
     if !exists('g:colors_name')
         set background=light
         silent! colorscheme modest
     endif
 
+    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
+
     if bufnr('$') == 1 && better#is_blank_buffer()
         MRU
     endif
-
-    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
 endfunction
 
-function s:init.dispatch(what) abort
+function s:enter.do(what) abort
     if self->has_key(a:what) && self->get('did_'..a:what) == 0
         call self[a:what]()
         let self['did_'..a:what] = 1
@@ -49,12 +49,12 @@ endfunction
 
 augroup vimEnter | au!
     autocmd VimEnter * ++nested
-        \   call s:init.dispatch(better#gui_running() ? 'gui' : &t_Co >= 256 ?
+        \   call s:enter.do(better#gui_running() ? 'gui' : &t_Co >= 256 ?
         \       'xterm' : 'term')
-        \ | call s:init.dispatch('enter')
-    silent! autocmd GUIEnter * ++nested call s:init.dispatch('gui')
-    silent! autocmd UIEnter * ++nested call s:init.dispatch(v:event.chan > 0 ?
-        \   'gui' : 'xterm')
+        \ | call s:enter.do('main')
+    silent! autocmd GUIEnter * ++nested call s:enter.do('gui')
+    silent! autocmd UIEnter * ++nested
+        \   call s:enter.do(v:event.chan > 0 ? 'gui' : 'xterm')
 augroup end
 
 if v:vim_did_enter

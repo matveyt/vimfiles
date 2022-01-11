@@ -1,10 +1,10 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-set shell=bash shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash shelltemp&
-set shellquote= shellxescape= shellxquote=
+" shell
 if has('win32')
-    set noshelltemp
+    set shell=bash shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash noshelltemp
+    let &shellxescape = ''
     let &shellxquote = has('nvim') ? '' : '"'
     let $CYGWIN = 'noglob'
     let $MSYS = 'noglob'

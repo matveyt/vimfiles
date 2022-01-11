@@ -16,14 +16,14 @@ call better#defaults(has('nvim') ? #{node_provider: 0, perl_provider: 0,
     \ python_provider: 0, python3_provider: 0, ruby_provider: 0, remote_plugins: 0,
     \ shada_plugin: 0, tutor_mode_plugin: 0} : #{rrhelper: 0}, 'loaded')
 
-command! -bar PackClean  call s:pack.setup() | call s:pack.call('clean')
-command! -bar PackStatus call s:pack.setup() | call s:pack.call('status')
-command! -bar PackUpdate call s:pack.setup() | call s:pack.call('update')
+command! -bar PackClean  call s:pack.init() | call s:pack.call('clean')
+command! -bar PackStatus call s:pack.init() | call s:pack.call('status')
+command! -bar PackUpdate call s:pack.init() | call s:pack.call('update')
 
 " package manager
-let s:pack = {'site': 'https://github.com',
-    \ 'name': 'minpac', 'author': 'k-takata',
-    "\ 'name': 'vim-packager', 'author': 'kristijanhusak',
+let s:pack = #{site: 'https://github.com',
+    \ name: 'minpac', author: 'k-takata',
+    "\ name: 'vim-packager', author: 'kristijanhusak',
     \ }
 
 function s:pack.byname() abort
@@ -36,7 +36,7 @@ function s:pack.call(func, ...) abort
 endfunction
 let s:pack.add = funcref('s:pack.call', ['add'])
 
-function s:pack.setup() abort
+function s:pack.init() abort
     if exists('g:loaded_' . self.name->tr('-', '_'))
         return
     endif
