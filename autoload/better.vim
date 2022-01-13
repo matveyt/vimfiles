@@ -105,23 +105,25 @@ endfunction
 " Vim/Neovim compatibility
 function! better#win_execute(id, command, silent = 'silent') abort
     " call win_execute() if possible
-    if exists('*win_execute')
+    if a:id < 1000
+        return ''
+    elseif exists('*win_execute')
         return win_execute(a:id, a:command, a:silent)
     endif
-    " try to switch the window
-    let l:wcurr = win_getid()
-    let l:goto = a:id >= 1000 && a:id != l:wcurr
+    " try to switch active window
+    let l:curr = win_getid()
+    let l:goto = a:id != l:curr
     if l:goto
         noautocmd let l:goto = win_gotoid(a:id)
         if !l:goto
-            return
+            return ''
         endif
     endif
     " execute command and switch window back after that
     try | return execute(a:command, a:silent)
     finally
         if l:goto
-            noautocmd call win_gotoid(l:wcurr)
+            noautocmd call win_gotoid(l:curr)
         endif
     endtry
 endfunction
