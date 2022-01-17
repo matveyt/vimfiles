@@ -20,7 +20,8 @@ command! -bang -nargs=1 -complete=command Sorted
 
 " :Bwipeout[!]
 " wipe all deleted/unloaded buffers
-command! -bar -bang Bwipeout call misc#bwipeout(<bang>0)
+command! -bar -bang Bwipeout call misc#bwipeout(<bang>0 ? '!v:val.loaded' :
+    \ '!v:val.loaded && !v:val.listed')
 
 " :[range]Comment[!]
 " toggle comments

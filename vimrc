@@ -3,7 +3,8 @@
 
 runtime! vimrc.d/*.vim
 
-if !exists("did_load_filetypes") && !has("nvim")
-    filetype plugin indent on
-    syntax enable
+if !has("nvim")
+    call better#safe("filetype plugin on", !exists("#filetypeplugin#FileType"))
+    call better#safe("filetype indent on", !exists("#filetypeindent#FileType"))
+    call better#safe("syntax enable", !exists("#syntaxset#FileType"))
 endif

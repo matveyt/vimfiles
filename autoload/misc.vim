@@ -1,12 +1,12 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-" misc#bwipeout({listed})
-" wipe all deleted (unloaded & unlisted) or all unloaded buffers
-function! misc#bwipeout(listed = 0) abort
-    let l:buffers = filter(getbufinfo(), {_, v -> !v.loaded && (!v.listed || a:listed)})
+" misc#bwipeout({expr})
+" wipe some buffers
+function! misc#bwipeout(expr) abort
+    let l:buffers = getbufinfo()->filter(a:expr)
     if !empty(l:buffers)
-        execute 'bwipeout' join(map(l:buffers, {_, v -> v.bufnr}))
+        execute 'bwipeout' l:buffers->map('v:val.bufnr')->join()
     endif
 endfunction
 

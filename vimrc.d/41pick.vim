@@ -10,7 +10,7 @@ nnoremap <silent><plug>pick <cmd>call misc#pick('pick',
 nnoremap <silent><plug>args <cmd>call misc#pick('args', '%{result}argument', argv())<CR>
 nnoremap <silent><plug>colorscheme <cmd>call misc#pick('colorscheme')<CR>
 nnoremap <silent><plug>find <cmd>call misc#pick('find')<CR>
-nnoremap <silent><plug>font <cmd>call misc#pick('Font', v:null, g:fontlist)<CR>
+nnoremap <silent><plug>font <cmd>call misc#pick('Font')<CR>
 
 nnoremap <silent><plug>buffers <cmd>call misc#pick('buffer',
     \ '%{name} %{items[result - 1].bufnr}',
