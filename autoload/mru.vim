@@ -1,7 +1,7 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-" Show Session, Marks & MRU files
+" Show Sessions, Marks & MRU files
 function! mru#show(sesdir = '~', max = 10) abort
     let l:header =<< END
  _    _      _                            _          _   _ _           _

@@ -19,21 +19,21 @@ xnoremap ; :
 nnoremap <leader>; ;
 xnoremap <leader>; ;
 " Q to zoom current window
-nnoremap <silent>Q <cmd>Zoom<CR>
+nmap Q <cmd>Zoom<CR>
 " <Space> to toggle fold
 nnoremap <Space> za
 " <F8> to set colorscheme
 nmap <F8> <plug>colorscheme
 " <F9> to set &guifont; [count]<C-F9>/[count]<S-F9> to change font size
 nmap <F9> <plug>font
-nnoremap <silent><M-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
-nnoremap <silent><S-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
+nmap <M-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
+nmap <S-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
-nnoremap <silent><F11> <cmd>call term#start()<CR>
+nmap <F11> <cmd>call term#start()<CR>
 " <Ctrl-N> to add new tab
-nnoremap <silent><C-N> <cmd>$tabnew<CR>
+nmap <C-N> <cmd>$tabnew<CR>
 " <Ctrl-S> to save file
-nnoremap <silent><C-S> <cmd>update<CR>
+nmap <C-S> <cmd>update<CR>
 " move cursor inside quotes while typing
 noremap! "" ""<Left>
 noremap! '' ''<Left>
@@ -49,21 +49,21 @@ noremap! <S-Insert> <C-R>+
 " [count]<BS> to open "File Explorer" (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 " '\=' to cd to the current file's directory
-nnoremap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
+nmap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
 " '\h' to show the current highlight group
-nnoremap <silent><leader>h <cmd>Highlight!<CR>
+nmap <leader>h <cmd>Highlight!<CR>
 " '\p' to show what function we are in (like 'diff -p')
-nnoremap <leader>p <cmd>echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
+nmap <leader>p <cmd>echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
 " '\l' to toggle location list
-nnoremap <expr><silent><leader>l printf('<cmd>l%s<CR>',
+nmap <expr><leader>l printf('<cmd>l%s<CR>',
     \ getloclist(0, #{winid: 0}).winid ? 'close' : 'open')
 " '\q' to toggle quickfix
-nnoremap <expr><silent><leader>q printf('<cmd>c%s<CR>',
+nmap <expr><leader>q printf('<cmd>c%s<CR>',
     \ getqflist(#{winid: 0}).winid ? 'close' : 'open')
 " '\s' to open scratch buffer
-nnoremap <silent><leader>s <cmd>split +Scratch<CR>
+nmap <leader>s <cmd>split +Scratch<CR>
 " '\u' to toggle undotree
-nnoremap <leader>u <cmd>UndotreeToggle<CR>
+nmap <leader>u <cmd>UndotreeToggle<CR>
 " browse (a)rglist, (b)uffers, (f)ind, command-line (H)istory, (m)arks, (S)essions,
 " script(n)ames, (o)ldfiles, (r)egisters, (S)essions, (t)emplates, (w)indows;
 " '\\' for everything

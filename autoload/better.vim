@@ -2,9 +2,8 @@
 " https://github.com/matveyt/vimfiles
 
 " better#bufwinid({expr})
-" improved bufwinid():
-"     - prefer current window ID if it matches;
-"     - not confined to the current tab
+" prefer current window ID;
+" not confined to the current tab
 function! better#bufwinid(buf) abort
     let l:bufnr = bufnr(a:buf)
     if l:bufnr == -1
