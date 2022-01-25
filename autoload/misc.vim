@@ -78,12 +78,13 @@ endfunction
 " misc#pick({name} [, {cmd} [, {items} [, {items2lines}]]])
 " pick parameter and execute {cmd}
 function! misc#pick(...) abort
-    let l:name  = get(a:, 1)->empty() ? 'help' : a:1
-    let l:cmd   = get(a:, 2)->empty() ? '%{name} %{items[result - 1]}' : a:2
-    let l:items = get(a:, 3)->empty() ? getcompletion(l:name..' ', 'cmdline') : a:3
-    let l:lines = get(a:, 4)->empty() ? l:items : copy(l:items)->map(a:4)
-    call popup#menu(l:lines, #{title: printf('[%s]', l:name), maxheight: &pumheight ?
+    let l:name  = get(a:, 1, v:null) isnot v:null ? a:1 : 'help'
+    let l:cmd   = get(a:, 2, v:null) isnot v:null ? a:2 : '%{name} %{items[result - 1]}'
+    let l:items = get(a:, 3, v:null) isnot v:null ? a:3 :
+        \ getcompletion(l:name..' ', 'cmdline')
+    let l:lines = get(a:, 4, v:null) isnot v:null ? copy(l:items)->map(a:4) : l:items
+    call popup#menu(l:lines, #{title: l:name->printf('[%s]'), maxheight: &pumheight ?
         \ &pumheight : &lines / 2, minwidth: &pumwidth, callback: {id, result ->
         \ (result < 1 || result > len(items)) ? v:null :
-        \ execute(substitute(l:cmd, '%{\([^}]\+\)}', '\=eval(submatch(1))', 'g'), '')}})
+        \ l:cmd->substitute('%{\([^}]\+\)}', '\=eval(submatch(1))', 'g')->execute('')}})
 endfunction

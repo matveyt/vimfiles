@@ -24,7 +24,6 @@ set nobackup nowritebackup nofsync nohidden nolangremap noruler noshowcmd
 set noshowmode nostartofline noswapfile viminfo=!,'100,<1000,s100,h
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize suffixes&
 set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
-call better#safe('set scrollfocus')
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
 
 " indents and folds
@@ -34,18 +33,12 @@ set foldmethod=indent foldcolumn=1 foldlevel=3
 " tabs, wraps and case
 set nohlsearch nojoinspaces nowrap ignorecase incsearch infercase smartcase
 set tabstop& expandtab nosmarttab softtabstop=-1 shiftround shiftwidth=4
-set list listchars=tab:<->,trail:_,nbsp:+ textwidth=89 colorcolumn=+1
+set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
 
 " Russian keyboard and spelling
 if v:lang =~? '^ru'
     set keymap=russian-jcukenwin spelllang=ru_yo,en
     set iminsert& imsearch&
-endif
-
-" GVim menu bar
-if has('gui_running')
-    let g:do_no_lazyload_menus = 1
-    let g:no_buffers_menu = 1
 endif
 
 " extra directories
@@ -54,6 +47,11 @@ call mkdir(better#stdpath('data', 'site/templates'), 'p', 0700)
 if &undodir is# '.'
     let &undodir = better#stdpath('data', 'site/undo')
     call mkdir(&undodir, 'p', 0700)
+endif
+
+" GVim menu bar
+if has('gui_running')
+    call better#defaults(#{do_no_lazyload_menus: 1, no_buffers_menu: 1})
 endif
 
 " ftplugin config

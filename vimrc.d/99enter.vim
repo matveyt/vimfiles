@@ -13,6 +13,7 @@ function s:enter.gui() abort
     call better#safe('GuiRenderLigatures 1')
     call better#safe('GuiWindowOpacity 1.0')
     call better#safe('set renderoptions=type:directx', has('directx'))
+    call better#safe('set scrollfocus')
     call better#defaults(#{glyph: [0x1F4C2, 0x1F4C4]}, 'drvo')
     call better#defaults(#{fontlist: ['Inconsolata LGC', 'JetBrains Mono',
         \ 'Liberation Mono', 'PT Mono', 'SF Mono', 'Ubuntu Mono']})

@@ -71,7 +71,7 @@ function s:pack.init() abort
     call self.add('nightsense/stellarized', #{type: 'opt', frozen: 1})
 
     " my own plugins could sit under ~/.vim/pack/manual
-    if !isdirectory(better#stdpath('config', 'pack/manual'))
+    if !better#stdpath('config', 'pack/manual')->isdirectory()
         call self.add('matveyt/neoclip', #{type: 'opt'})
         call self.add('matveyt/vim-drvo')
         call self.add('matveyt/vim-filters')
