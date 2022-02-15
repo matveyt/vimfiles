@@ -20,8 +20,8 @@ set scrolloff=2 sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu
 set keymodel=startsel mousemodel=extend selection=exclusive selectmode=
 set cursorline laststatus=2 mouse=ar number showmatch showtabline=2 title
 set switchbuf=useopen tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,]
-set nobackup nowritebackup nofsync nohidden nolangremap noruler noshowcmd
-set noshowmode nostartofline noswapfile viminfo=!,'100,<1000,s100,h
+set nobackup nowritebackup nofsync nohidden noequalalways nolangremap noruler
+set noshowcmd noshowmode nostartofline noswapfile viminfo=!,'100,<1000,s100,h
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize suffixes&
 set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'

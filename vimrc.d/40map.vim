@@ -46,6 +46,7 @@ vnoremap <C-Insert> "+y
 vnoremap <S-Insert> "+p
 nnoremap <S-Insert> "+gP
 noremap! <S-Insert> <C-R>+
+tnoremap <S-Insert> <cmd>call term#sendkeys('', @+)<CR>
 " [count]<BS> to open "File Explorer" (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 " '\=' to cd to the current file's directory
