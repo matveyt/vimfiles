@@ -33,7 +33,7 @@ function! misc#diff(org = v:false, ...) abort
     let l:org = a:org || &modified && !a:0
     let l:spec = get(a:, 1, 'HEAD')
     execute matchstr(&diffopt, 'vertical') 'new'
-    setlocal bufhidden=wipe buftype=nofile noswapfile
+    setlocal bufhidden=wipe buftype=nofile nobuflisted noswapfile
     let &l:filetype = getbufvar(0, '&filetype')
     nnoremap <buffer>q <C-W>q
     execute 'silent file' l:org ? 'ORG' : l:spec

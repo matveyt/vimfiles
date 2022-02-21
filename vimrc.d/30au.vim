@@ -27,6 +27,7 @@ augroup vimStartup | au!
     " save session on exit
     autocmd VimLeavePre *
         \   if !v:dying
+        \ |     call misc#bwipeout('v:val.bufnr->getbufvar("&bt") ==# "quickfix"')
         \ |     call misc#bwipeout('v:val.bufnr->getbufvar("&ft") =~# "commit$"')
         \ |     if !empty(v:this_session)
         \ |         mksession! `=v:this_session`
