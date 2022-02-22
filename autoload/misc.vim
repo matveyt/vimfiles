@@ -75,6 +75,16 @@ function! misc#guifont(typeface, height = 0) abort
     silent! let &guifont = join(l:fonts, ',')
 endfunction
 
+" misc#nomove({cmd})
+" execute {cmd} w/o moving the cursor
+function! misc#nomove(cmd) abort
+    let l:pos = winsaveview()
+    try | return execute(a:cmd, '')
+    finally
+        call winrestview(l:pos)
+    endtry
+endfunction
+
 " misc#pick({name} [, {cmd} [, {items} [, {items2lines}]]])
 " pick parameter and execute {cmd}
 function! misc#pick(...) abort

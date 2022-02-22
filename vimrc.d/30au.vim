@@ -12,7 +12,9 @@ augroup vimStartup | au!
     " update timestamp before saving a buffer
     autocmd BufWrite *
         \   if &modified && &modeline && &modelines > 0
-        \ |     call s:timestamp('(Last Change|Date):', '%Y %b %d', &modelines)
+        \ |     call printf('silent! undojoin | keepj keepp 1,%ds/\v\C%s\s*\zs.*/%s/e',
+        \           &modelines, '%(Last Change|Date):', strftime('%Y %b %d'))
+        \           ->misc#nomove()
         \ | endif
     " never italicize comments
     autocmd ColorScheme * hi Comment gui=NONE
@@ -34,19 +36,3 @@ augroup vimStartup | au!
         \ |     endif
         \ | endif
 augroup end
-
-function s:timestamp(text, format, lines) abort
-    let l:svpos = winsaveview()
-    let l:lc_time = v:lc_time
-    try
-        call cursor(1, 1)
-        if search('\v\C'..a:text..'\s*\S', 'e', a:lines)
-            language time C
-            silent! undojoin
-            execute 'normal! "_C'..strftime(a:format)
-        endif
-    finally
-        execute 'language time' l:lc_time
-        call winrestview(l:svpos)
-    endtry
-endfunction

@@ -3,14 +3,7 @@
 
  " :[mods]Nomove {cmd}
  " save/restore cursor "quasi-modifier"
-command! -nargs=1 -complete=command Nomove
-    \   try
-    \ |     let s:svpos = winsaveview()
-    \ |     execute <q-mods> <q-args>
-    \ | finally
-    \ |     call winrestview(s:svpos)
-    \ |     unlet s:svpos
-    \ | endtry
+command! -nargs=1 -complete=command Nomove call misc#nomove(<q-args>)
 
 " :[mods]Sorted[!] {cmd}
 " sorted "quasi-modifier"
@@ -78,7 +71,7 @@ command! -count=10 -bar -nargs=? -complete=dir MRU
 " :[range]Trim[!]
 " trim trailing/leading space
 command! -range=% -bar -bang Trim
-    \   keepj keepp Nomove <line1>,<line2>s/\s\+$//e
+    \   Nomove keepj keepp <line1>,<line2>s/\s\+$//e
     \ | if <bang>0
     \ |     <line1>,<line2>left
     \ | endif

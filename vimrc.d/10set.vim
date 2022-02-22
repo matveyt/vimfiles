@@ -39,6 +39,7 @@ set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
 if v:lang =~? '^ru'
     set keymap=russian-jcukenwin spelllang=ru_yo,en
     set iminsert& imsearch&
+    language time C
 endif
 
 " extra directories
