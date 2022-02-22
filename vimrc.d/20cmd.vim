@@ -62,12 +62,6 @@ command! -bar -bang Highlight
     \   execute <bang>0..'verbose highlight'
     \       better#or(synIDattr(synID(line('.'), col('.'), 1), 'name'), 'Normal')
 
-" :[count]MRU [sesdir]
-" show MRU and Session files
-command! -count=10 -bar -nargs=? -complete=dir MRU
-    \   call mru#show(better#or(<q-args>, better#stdpath('data', 'site/sessions')),
-    \       <count>)
-
 " :[range]Trim[!]
 " trim trailing/leading space
 command! -range=% -bar -bang Trim
@@ -75,6 +69,12 @@ command! -range=% -bar -bang Trim
     \ | if <bang>0
     \ |     <line1>,<line2>left
     \ | endif
+
+" :[count]Welcome [sesdir]
+" show MRU and Session files
+command! -count=10 -bar -nargs=? -complete=dir Welcome
+    \   call welcome#show(better#or(<q-args>, better#stdpath('data', 'site/sessions')),
+    \       <count>)
 
 " :Zoom
 " toggle current window maximized

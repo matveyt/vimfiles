@@ -24,7 +24,7 @@ nmap Q <cmd>Zoom<CR>
 nnoremap <Space> za
 " <F8> to set colorscheme
 nmap <F8> <plug>colorscheme
-" <F9> to set &guifont; [count]<C-F9>/[count]<S-F9> to change font size
+" <F9> to set &guifont; [count]<M-F9>/[count]<S-F9> to change font size
 nmap <F9> <plug>font
 nmap <M-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
 nmap <S-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
@@ -46,7 +46,7 @@ vnoremap <C-Insert> "+y
 vnoremap <S-Insert> "+p
 nnoremap <S-Insert> "+gP
 noremap! <S-Insert> <C-R>+
-tnoremap <S-Insert> <cmd>call term#sendkeys('', @+)<CR>
+tmap <S-Insert> <cmd>call term#sendkeys('', @+)<CR>
 " [count]<BS> to open "File Explorer" (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 " '\=' to cd to the current file's directory

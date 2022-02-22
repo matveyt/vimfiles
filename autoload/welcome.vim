@@ -2,7 +2,7 @@
 " https://github.com/matveyt/vimfiles
 
 " Show Sessions, Marks & MRU files
-function! mru#show(sesdir = '~', max = 10) abort
+function! welcome#show(sesdir = '~', max = 10) abort
     let l:header =<< END
  _    _      _                            _          _   _ _           _
 | |  | |    | |                          | |        | | | (_)         | |

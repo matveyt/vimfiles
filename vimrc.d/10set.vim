@@ -10,7 +10,7 @@ if has('win32')
     let $MSYS = 'noglob'
 endif
 
-" move cursor and press 'K' to get help on option
+" misc. options
 set autoread backspace=indent,eol,start belloff=all complete=.,w,b confirm
 set diffopt+=vertical display+=lastline fillchars=vert:\ ,fold:\ ,diff:\ 
 set fileformats=unix,dos grepformat=%f:%l:%c:%m history=1000 keywordprg=:Man
