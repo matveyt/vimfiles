@@ -75,11 +75,12 @@ function! misc#guifont(typeface, height = 0) abort
     silent! let &guifont = join(l:fonts, ',')
 endfunction
 
-" misc#nomove({cmd})
-" execute {cmd} w/o moving the cursor
-function! misc#nomove(cmd) abort
+" misc#nomove({fmt} [, {expr1} ...])
+" format and execute command without moving cursor
+function! misc#nomove(fmt, ...) abort
+    let l:cmd = a:0 ? call('printf', [a:fmt] + a:000) : a:fmt
     let l:pos = winsaveview()
-    try | return execute(a:cmd, '')
+    try | return execute(l:cmd, '')
     finally
         call winrestview(l:pos)
     endtry

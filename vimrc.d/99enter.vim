@@ -12,7 +12,7 @@ function s:enter.gui() abort
     call better#safe('GuiPopupmenu 0')
     call better#safe('GuiRenderLigatures 1')
     call better#safe('GuiWindowOpacity 1.0')
-    call better#safe('set guiligatures')
+    call better#safe('set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~')
     call better#safe('set renderoptions=type:directx')
     call better#safe('set scrollfocus')
     call better#defaults(#{glyph: [0x1F4C2, 0x1F4C4]}, 'drvo')
