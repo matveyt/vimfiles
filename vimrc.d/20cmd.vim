@@ -3,7 +3,7 @@
 
  " :[mods]Nomove {cmd}
  " save/restore cursor "quasi-modifier"
-command! -nargs=1 -complete=command Nomove call misc#nomove(<q-args>)
+command! -nargs=+ -complete=command Nomove call misc#nomove(<f-args>)
 
 " :[mods]Sorted[!] {cmd}
 " sorted "quasi-modifier"
@@ -28,12 +28,12 @@ command! -bang -nargs=? Diff call misc#diff(<bang>0, <f-args>)
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script
 command! -range=% -bar -nargs=? Execute
-    \   call shebang#execute('%', <line1>, <line2>, <args>)
+    \   call shebang#execute('', <line1>, <line2>, <args>)
 
 " :[count]Font [typeface]...
 " set &guifont
 function s:fontcomplete(A, L, P) abort
-    return join(g:fontlist, "\n")
+    return better#gui_running() ? join(g:fontlist, "\n") : ''
 endfunction
 command! -count -nargs=? -complete=custom,s:fontcomplete Font
     \   if <count> || !empty(<q-args>)

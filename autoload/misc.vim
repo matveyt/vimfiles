@@ -77,8 +77,8 @@ endfunction
 
 " misc#nomove({fmt} [, {expr1} ...])
 " format and execute command without moving cursor
-function! misc#nomove(fmt, ...) abort
-    let l:cmd = a:0 ? call('printf', [a:fmt] + a:000) : a:fmt
+function! misc#nomove(...) abort
+    let l:cmd = stridx(a:1, '%') < 0 ? join(a:000) : call('printf', a:000)
     let l:pos = winsaveview()
     try | return execute(l:cmd, '')
     finally
