@@ -12,8 +12,10 @@ augroup vimStartup | au!
     " update timestamp before saving buffer
     autocmd BufWrite *
         \   if &modified && &modeline && &modelines > 0
-        \ |     call misc#nomove('undojoin | keepj keepp 1,%ds/\v\C%s\s*\zs.*/%s/e',
-        \           &modelines, '%(Last Change|Date):', strftime('%Y %b %d'))
+        \ |     call misc#nomove(
+        \           'silent! undojoin | keepj keepp 1,%ds/\v\C%s\s*\zs.*/%s/e',
+        \           min([&modelines, line('$')]), '%(Last Change|Date):',
+        \           strftime('%Y %b %d'))
         \ | endif
     " never italicize comments
     autocmd ColorScheme * hi Comment gui=NONE

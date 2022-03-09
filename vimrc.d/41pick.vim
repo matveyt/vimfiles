@@ -52,7 +52,7 @@ nmap <plug>sessions <cmd>call misc#pick('sessions',
 
 nmap <plug>templates <cmd>call misc#pick('templates',
     \ '-read ++edit %{fnameescape(items[result - 1])} <Bar>
-        \ Nomove ''[,'']s/\v\%\{([^}]+)\}/\=eval(submatch(1))/ge',
+        \ Nomove ''[,''] s/\v\%\{([^}]+)\}/\=eval(submatch(1))/ge',
     \ glob(better#stdpath('data', 'site/templates/%s/*',
         \ better#or(&filetype, 'empty')), v:false, v:true),
     \ 'fnamemodify(v:val, ":t")')<CR>
