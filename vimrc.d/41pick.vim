@@ -60,5 +60,5 @@ nmap <plug>templates <cmd>call misc#pick('templates',
 nmap <plug>windows <cmd>call misc#pick('windows',
     \ 'call win_gotoid(%{items[result - 1].winid})',
     \ getwininfo()->sort({w1, w2 -> w1.winid - w2.winid}),
-    \ 'printf("%d %s", v:val.winid, empty(bufname(v:val.bufnr)) ? "#"..v:val.bufnr :
-        \ fnamemodify(bufname(v:val.bufnr), ":t"))')<CR>
+    \ 'printf("%d %s", v:val.winid, better#or(fnamemodify(bufname(v:val.bufnr), ":t"),
+        \ "[buffer "..v:val.bufnr.."]"))')<CR>

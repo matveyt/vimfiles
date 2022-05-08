@@ -50,12 +50,6 @@ function s:gitcomplete(A, L, P) abort
 endfunction
 command! -nargs=* -complete=custom,s:gitcomplete Git !git -C %:p:h:S <args>
 
-" :GccInclude[!] [/path/to/gcc]
-" set local &path to GCC include dirs
-command! -bar -bang -nargs=? -complete=file GccInclude
-    \   let &l:path = misc#gcc_include(better#or(<q-args>, b:current_compiler), <bang>0)
-    \       ->insert('.')->add(',')->join(',')
-
 " :Highlight[!]
 " show :highlight under cursor
 command! -bar -bang Highlight
