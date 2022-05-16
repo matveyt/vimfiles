@@ -4,11 +4,13 @@
 " shell
 if has('win32')
     let &shell = exepath('bash')
-    set shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash noshelltemp
-    let &shellxescape = ''
-    let &shellxquote = has('nvim') ? '' : '"'
-    let $CYGWIN = 'noglob'
-    let $MSYS = 'noglob'
+    if empty(&shell)
+        set shell&
+    else
+        set shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash noshelltemp shellxescape=
+        let &shellxquote = has('nvim') ? '' : '"'
+        let [$CYGWIN, $MSYS] .= [' noglob', ' noglob']
+    endif
 endif
 
 " misc. options
