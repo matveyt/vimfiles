@@ -10,7 +10,8 @@ endif
 
 " disable standard plugins
 call better#defaults(#{getscriptPlugin: 0, gzip: 0, logiPat: 0, netrwPlugin: 0,
-    \ tarPlugin: 0, vimballPlugin: 0, zipPlugin: 0, 2html_plugin: 0}, 'loaded')
+    \ spellfile_plugin: 0, tarPlugin: 0, vimballPlugin: 0, zipPlugin: 0,
+    \ 2html_plugin: 0}, 'loaded')
 call better#defaults(has('nvim') ? #{node_provider: 0, perl_provider: 0,
     \ python_provider: 0, python3_provider: 0, ruby_provider: 0, remote_plugins: 0,
     \ shada_plugin: 0, tutor_mode_plugin: 0} : #{rrhelper: 0}, 'loaded')
