@@ -3,7 +3,7 @@
 
 " shell
 if has('win32')
-    let &shell = exepath('bash')
+    let &shell = exepath('bash')->tr('\', '/')
     if empty(&shell)
         set shell&
     else
@@ -23,8 +23,8 @@ set scrolloff=2 sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu
 set keymodel=startsel mousemodel=extend selection=exclusive selectmode=
 set cursorline laststatus=2 mouse=ar number showmatch showtabline=2 title
 set switchbuf=useopen tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,]
-set nobackup nowritebackup nofsync nohidden noequalalways nolangremap noruler
-set noshowcmd noshowmode nostartofline noswapfile viminfo=!,'100,<1000,s100,h
+set nobackup nowritebackup nofsync nohidden noequalalways noruler nostartofline
+set noshowcmd noshowmode noswapfile viminfo=!,'100,<1000,s100,h
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize suffixes&
 set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
@@ -41,8 +41,8 @@ set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
 " Russian keyboard and spelling
 if v:lang =~? '^ru'
     set keymap=russian-jcukenwin spelllang=ru_yo,en
-    set iminsert& imsearch&
-    language time C
+    set iminsert& imsearch& nolangremap
+    lmap <bar> /
 endif
 
 " extra directories
