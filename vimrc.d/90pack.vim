@@ -16,9 +16,9 @@ call better#defaults(has('nvim') ? #{node_provider: 0, perl_provider: 0,
     \ python_provider: 0, python3_provider: 0, ruby_provider: 0, remote_plugins: 0,
     \ shada_plugin: 0, tutor_mode_plugin: 0} : #{rrhelper: 0}, 'loaded')
 
-command! -bar PackClean  call s:pack.init() | call s:pack.call('clean')
-command! -bar PackStatus call s:pack.init() | call s:pack.call('status')
-command! -bar PackUpdate call s:pack.init() | call s:pack.call('update')
+command! -bar PackClean  call metapack#init(s:pack).call('clean')
+command! -bar PackStatus call metapack#init(s:pack).call('status')
+command! -bar PackUpdate call metapack#init(s:pack).call('update')
 
 " package manager
 let s:pack = #{site: 'https://github.com',
@@ -26,35 +26,7 @@ let s:pack = #{site: 'https://github.com',
     "\ name: 'vim-packager', author: 'kristijanhusak',
     \ }
 
-function s:pack.byname() abort
-    " foo-bar-baz => baz
-    return strpart(self.name, strridx(self.name, '-') + 1)
-endfunction
-
-function s:pack.call(func, ...) abort
-    return printf('%s#%s', self.byname(), a:func)->call(a:000)
-endfunction
-let s:pack.add = funcref('s:pack.call', ['add'])
-
-function s:pack.init() abort
-    if exists('g:loaded_'..tr(self.name, '-', '_'))
-        return
-    endif
-
-    " git-clone package manager
-    let l:local = better#stdpath('config', 'pack/%s/opt/%s', self.byname(), self.name)
-    let l:remote = printf('%s/%s/%s', self.site, self.author, self.name)
-    if !isdirectory(l:local)
-        echomsg 'Cloning into' l:local
-        silent call system(printf('git clone --depth=1 %s.git %s', l:remote,
-            \ shellescape(l:local)))
-    endif
-
-    " initialize package manager
-    execute 'packadd' self.name
-    call self.call('init', #{depth: 1, progress_open: 'vertical'})
-    call self.add(l:remote, #{type: 'opt'})
-
+function s:pack.plug() abort
     " plugins
     call self.add('tpope/vim-surround')
     call self.add('wellle/targets.vim')
@@ -70,7 +42,7 @@ function s:pack.init() abort
     call self.add('nightsense/snow', #{type: 'opt', frozen: 1})
     call self.add('nightsense/stellarized', #{type: 'opt', frozen: 1})
 
-    " my own plugins could sit under ~/.vim/pack/manual
+    " my own plugins can be under ~/.vim/pack/manual
     if !better#stdpath('config', 'pack/manual')->isdirectory()
         call self.add('matveyt/neoclip', #{type: 'opt'})
         call self.add('matveyt/vim-drvo')
