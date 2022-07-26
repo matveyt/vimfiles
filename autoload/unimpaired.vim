@@ -2,7 +2,7 @@
 " https://github.com/matveyt/vimfiles
 
 " unimpaired#emulate()
-" emulating vim-unimpaired plugin
+" emulation of tpope/vim-unimpaired plugin
 function! unimpaired#emulate() abort
     " unimpaired-next
     call unimpaired#nextprev('a', '')

@@ -28,7 +28,7 @@ command! -bang -nargs=? Diff call misc#diff(<bang>0, <f-args>)
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script
 command! -range=% -bar -nargs=? Execute
-    \   call shebang#execute('', <line1>, <line2>, <args>)
+    \   call shebang#execute('%', <line1>, <line2>, <args>)
 
 " :[count]Font [typeface]...
 " set &guifont
@@ -58,8 +58,8 @@ command! -bar -bang Highlight
 
 " :[range]Trim[!]
 " trim trailing/leading space
-command! -range=% -bar -bang Trim
-    \   Nomove keepj keepp <line1>,<line2>s/\s\+$//e
+command! -range=% -bar -bang Trim Nomove
+    \   keepj keepp <line1>,<line2>s/\s\+$//e
     \ | if <bang>0
     \ |     <line1>,<line2>left
     \ | endif

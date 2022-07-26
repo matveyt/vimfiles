@@ -1,7 +1,7 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-" disable default-mappings etc.
+" disable Neovim default-mappings etc.
 mapclear
 mapclear!
 tmapclear
@@ -14,7 +14,7 @@ endif
 " extra mappings as in tpope/vim-unimpaired
 call unimpaired#emulate()
 
-" ';' to get to the command line quickly
+" ';' to go quick to the command line
 nnoremap ; :
 xnoremap ; :
 " '\;' to repeat char search forward

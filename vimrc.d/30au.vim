@@ -3,10 +3,11 @@
 
 augroup vimStartup | au!
     " :h restore-cursor
-    autocmd BufRead * call getpos("'\"")->setpos('.')
-    " 'q' to close special windows/buffers (e.g. 'help')
+    " 'q' to close special windows/buffers, such as 'help'
     autocmd BufWinEnter *
-        \   if !empty(&buftype)
+        \   if empty(&buftype)
+        \ |     call getpos("'\"")->setpos('.')
+        \ | else
         \ |     execute 'nnoremap <buffer>q <C-W>c'
         \ | endif
     " update timestamp before saving buffer

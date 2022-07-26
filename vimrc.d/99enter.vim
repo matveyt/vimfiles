@@ -1,7 +1,24 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+augroup vimEnter | au!
+    autocmd VimEnter * ++nested
+        \   call s:enter.do(better#gui_running() ? 'gui' : &t_Co >= 256 ?
+        \       'xterm' : 'term')
+        \ | call s:enter.do('main')
+    silent! autocmd GUIEnter * ++nested call s:enter.do('gui')
+    silent! autocmd UIEnter * ++nested
+        \   call s:enter.do(v:event.chan > 0 ? 'gui' : 'xterm')
+augroup end
+
 let s:enter = {}
+
+function s:enter.do(what) abort
+    if self->has_key(a:what) && self->get('did_'..a:what) == 0
+        call self[a:what]()
+        let self['did_'..a:what] = 1
+    endif
+endfunction
 
 function s:enter.gui() abort
     call better#safe('GuiAdaptiveColor 1')
@@ -42,23 +59,7 @@ function s:enter.main() abort
     endif
 endfunction
 
-function s:enter.do(what) abort
-    if self->has_key(a:what) && self->get('did_'..a:what) == 0
-        call self[a:what]()
-        let self['did_'..a:what] = 1
-    endif
-endfunction
-
-augroup vimEnter | au!
-    autocmd VimEnter * ++nested
-        \   call s:enter.do(better#gui_running() ? 'gui' : &t_Co >= 256 ?
-        \       'xterm' : 'term')
-        \ | call s:enter.do('main')
-    silent! autocmd GUIEnter * ++nested call s:enter.do('gui')
-    silent! autocmd UIEnter * ++nested
-        \   call s:enter.do(v:event.chan > 0 ? 'gui' : 'xterm')
-augroup end
-
+" force VimEnter once again
 if v:vim_did_enter
     call getcompletion('g:loaded_', 'var')
         \ ->filter('!empty(eval(v:val))')->map('"unlet "..v:val')->execute()

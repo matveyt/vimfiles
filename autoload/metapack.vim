@@ -1,21 +1,16 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+function! metapack#init(pack) abort
+    " one time init
+    if !has_key(a:pack, 'init')
+        call extend(a:pack, s:meta).init()
+    endif
+
+    return a:pack
+endfunction
+
 let s:meta = {}
-
-function s:meta.byname() abort
-    " foo-bar.baz => bar
-    let l:dot = stridx(self.name, '.')
-    let l:name = l:dot < 0 ? self.name : strpart(self.name, 0, l:dot)
-    return strpart(l:name, strridx(l:name, '-') + 1)
-endfunction
-
-function s:meta.call(func, ...) abort
-    try
-        return printf('%s#%s', self.byname(), a:func)->call(a:000)
-    catch | endtry
-endfunction
-let s:meta.add = funcref('s:meta.call', ['add'])
 
 function s:meta.init() abort
     " git-clone package manager
@@ -39,11 +34,16 @@ function s:meta.init() abort
     call self.call('end')
 endfunction
 
-function! metapack#init(pack) abort
-    " one time init
-    if !has_key(a:pack, 'init')
-        call extend(a:pack, s:meta).init()
-    endif
-
-    return a:pack
+function s:meta.byname() abort
+    " foo-bar.baz => bar
+    let l:dot = stridx(self.name, '.')
+    let l:name = l:dot < 0 ? self.name : strpart(self.name, 0, l:dot)
+    return strpart(l:name, strridx(l:name, '-') + 1)
 endfunction
+
+function s:meta.call(func, ...) abort
+    try
+        return printf('%s#%s', self.byname(), a:func)->call(a:000)
+    catch | endtry
+endfunction
+let s:meta.add = funcref('s:meta.call', ['add'])
