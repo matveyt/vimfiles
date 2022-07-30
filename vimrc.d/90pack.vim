@@ -21,8 +21,7 @@ let s:pack = #{
 
 function s:pack.plug() abort
     " plugins
-    call self.add('tpope/vim-surround')
-    call self.add('wellle/targets.vim')
+    call self.add('wellle/targets.vim', #{frozen: 1})
     call self.add('mbbill/undotree')
     call self.add('chrisbra/unicode.vim', #{type: 'opt'})
 

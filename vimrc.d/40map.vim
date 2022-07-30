@@ -11,9 +11,6 @@ if exists('#nvim_cmdwin')
     augroup! nvim_cmdwin
 endif
 
-" extra mappings as in tpope/vim-unimpaired
-call unimpaired#emulate()
-
 " ';' to go quick to the command line
 nnoremap ; :
 xnoremap ; :

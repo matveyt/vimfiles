@@ -6,7 +6,7 @@ augroup vimStartup | au!
     " 'q' to close special windows/buffers, such as 'help'
     autocmd BufWinEnter *
         \   if empty(&buftype)
-        \ |     call getpos("'\"")->setpos('.')
+        \ |     call setpos('.', getpos("'\""))
         \ | else
         \ |     execute 'nnoremap <buffer>q <C-W>c'
         \ | endif
