@@ -16,10 +16,13 @@ command! -bang -nargs=1 -complete=command Sorted
 command! -bar -bang Bwipeout call misc#bwipeout(<bang>0 ? '!v:val.loaded' :
     \ '!v:val.loaded && !v:val.listed')
 
+" :[range]CEncode[!]
+" encode/decode C strings
+command! -range -bar -bang CEncode call misc#c_encode(<line1>, <line2>, <bang>v:true)
+
 " :[range]Comment[!]
 " toggle comments
-command! -range -bar -bang Comment
-    \   call misc#comment(<line1>, <line2>, <bang>&preserveindent)
+command! -range -bar -bang Comment call misc#comment(<line1>, <line2>, <bang>&pi)
 
 " :Diff[!] [spec]
 " show diff with original file or git object
@@ -63,6 +66,10 @@ command! -range=% -bar -bang Trim Nomove
     \ | if <bang>0
     \ |     <line1>,<line2>left
     \ | endif
+
+" :[range]UrlEncode[!]
+" encode/decode URLs
+command! -range -bar -bang UrlEncode call misc#url_encode(<line1>, <line2>, <bang>v:true)
 
 " :[count]Welcome [sesdir]
 " show MRU and Session files

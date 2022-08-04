@@ -2,10 +2,7 @@
 " https://github.com/matveyt/vimfiles
 
 " disable Neovim default-mappings etc.
-mapclear
-mapclear!
-tmapclear
-
+mapclear | mapclear! | tmapclear
 if exists('#nvim_cmdwin')
     autocmd! nvim_cmdwin
     augroup! nvim_cmdwin
@@ -33,7 +30,7 @@ nmap <F11> <cmd>call term#start()<CR>
 nmap <C-N> <cmd>$tabnew<CR>
 " <Ctrl-S> to save file
 nmap <C-S> <cmd>update<CR>
-" [count]<BS> to open "File Explorer" (vim-drvo)
+" [count]<BS> to open "FileExplorer" (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 " '\=' to cd to the current file's directory
 nmap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
@@ -66,21 +63,6 @@ nnoremap <S-Insert> "+gP
 noremap! <S-Insert> <C-R>+
 tmap <S-Insert> <cmd>call term#sendkeys('', @+)<CR>
 
-" browse (a)rglist, (b)uffers, (f)ind, command-line (H)istory, (m)arks, (S)essions,
-" script(n)ames, (o)ldfiles, (r)egisters, (S)essions, (t)emplates, (w)indows;
-" '\\' for everything
-nmap <leader><leader> <plug>pick;
-nmap <leader>a <plug>args;
-nmap <leader>b <plug>buffers;
-nmap <leader>f <plug>find;
-nmap <leader>H <plug>history;
-nmap <leader>m <plug>marks;
-nmap <leader>n <plug>scriptnames;
-nmap <leader>o <plug>oldfiles;
-nmap <leader>r <plug>registers;
-nmap <leader>S <plug>sessions;
-nmap <leader>t <plug>templates;
-nmap <leader>w <plug>windows;
 " gc to toggle comments
 nnoremap <expr><silent>gc opera#mapto('Comment!')
 xnoremap <expr><silent>gc opera#mapto('Comment!')

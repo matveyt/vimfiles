@@ -10,8 +10,8 @@ function! misc#bwipeout(expr) abort
     endif
 endfunction
 
-" misc#comment({line1}, {line2} [, {preserveindent}])
-" (un)comment line range
+" misc#comment({line1}, {line2} [, {pi}])
+" toggle comments
 function! misc#comment(line1, line2, pi = &preserveindent) abort
     let l:lnum = nextnonblank(a:line1)
     let l:end = prevnonblank(a:line2)
@@ -75,6 +75,15 @@ function! misc#guifont(typeface, height = 0) abort
     silent! let &guifont = join(l:fonts, ',')
 endfunction
 
+" misc#nextfile([{file} [, {offset}]])
+" find next file in the same directory with respect to 'wildignore'
+function! misc#nextfile(file = expand('%:p'), offset = 1) abort
+    let l:slash = exists('+shellslash') && !&shellslash ? '\' : '/'
+    let l:path = fnamemodify(a:file, ':h')..l:slash
+    let l:name = filter(getcompletion(l:path, 'file', 1), {_, v -> v[-1:] !=# l:slash})
+    return empty(l:name) ? '' : l:name[(index(l:name, a:file) + a:offset) % len(l:name)]
+endfunction
+
 " misc#nomove({fmt} [, {expr1} ...])
 " format and execute command without moving cursor
 function! misc#nomove(...) abort
@@ -98,4 +107,54 @@ function! misc#pick(...) abort
         \ &pumheight : &lines / 2, minwidth: &pumwidth, callback: {id, result ->
         \ (result < 1 || result > len(items)) ? v:null :
         \ l:cmd->substitute('{\([^}]\+\)}', '\=eval(submatch(1))', 'g')->execute('')}})
+endfunction
+
+" misc#put({how} [, {reg} [, {count}]])
+" put register linewise
+function! misc#put(how, reg = v:register, count = v:count1) abort
+    let l:type = getregtype(a:reg)
+    if l:type isnot# 'V'
+        let l:value = getreg(a:reg)
+        call setreg(a:reg, l:value, 'V')
+    endif
+    execute printf('normal! "%s%d%s', a:reg, a:count, a:how)
+    if l:type isnot# 'V'
+        call setreg(a:reg, l:value, l:type)
+    endif
+endfunction
+
+" misc#c_encode({line1}, {line2}, [{encode}])
+" C string encode/decode
+let s:escape = {"\007": '\a', "\010": '\b', "\011": '\t', "\012": '\n', "\013": '\v',
+    \ "\014": '\f', "\015": '\r', "\033": '\e', "\"": '\"', "'": '\''', '\': '\\'}
+let s:unescape = {'a': "\007", 'b': "\010", 't': "\011", 'n': "\012", 'v': "\013",
+    \ 'f': "\014", 'r': "\015", 'e': "\033"}
+function! misc#c_encode(line1, line2, encode = v:true) abort
+    if a:encode
+        let l:last = a:line2 - a:line1
+        call setline(a:line1, map(getline(a:line1, a:line2), {k, v -> substitute(v,
+            \ "[\001-\033\\\\\"']", '\=has_key(s:escape, submatch(0)) ? ' .
+            \ 's:escape[submatch(0)] : printf("\\%03o", char2nr(submatch(0)))', 'g') .
+            \ repeat('\n\', k < l:last)}))
+    else
+        call setline(a:line1, map(getline(a:line1, a:line2), {_, v -> substitute(v,
+            \ '\v\\(\o{1,3}|x\x{1,2}|u\x{4}|\U\x{8}|.)',
+            \ '\=has_key(s:unescape, submatch(1)) ? s:unescape[submatch(1)] : ' .
+            \ 'submatch(1) =~# "^[0-7xuU]" ? eval("\"\\"..submatch(1).."\"") : ' .
+            \ 'submatch(1)', 'g')}))
+    endif
+endfunction
+
+" misc#url_encode({line1}, {line2}, [{encode}])
+" URL encode/decode
+function! misc#url_encode(line1, line2, encode = v:true) range abort
+    if a:encode
+        call setline(a:line1, map(getline(a:line1, a:line2), {_, v ->
+            \ substitute(iconv(v, 'latin1', 'utf8'), '[^-[:alnum:]_.~:/?#@]',
+            \ '\=printf("%%%02X", char2nr(submatch(0), 1))', 'g')}))
+    else
+        call setline(a:line1, map(getline(a:line1, a:line2), {_, v ->
+            \ iconv(substitute(tr(v, '+', ' '), '%\(\x\x\)',
+            \ '\=nr2char(str2nr(submatch(1), 16), 1)', 'g'), 'utf-8', 'latin1')}))
+    endif
 endfunction

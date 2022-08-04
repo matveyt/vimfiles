@@ -1,6 +1,24 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+" browse (a)rglist, (b)uffers, (f)ind, command-line (H)istory, (m)arks, (S)essions,
+" script(n)ames, (o)ldfiles, (r)egisters, (S)essions, (t)emplates, (w)indows;
+" '\\' for everything
+nmap <leader><leader> <plug>pick;
+nmap <leader>a <plug>args;
+nmap <leader>b <plug>buffers;
+"nmap <leader>c <plug>colorscheme;
+nmap <leader>f <plug>find;
+"nmap <leader>F <plug>font;
+nmap <leader>H <plug>history;
+nmap <leader>m <plug>marks;
+nmap <leader>n <plug>scriptnames;
+nmap <leader>o <plug>oldfiles;
+nmap <leader>r <plug>registers;
+nmap <leader>S <plug>sessions;
+nmap <leader>t <plug>templates;
+nmap <leader>w <plug>windows;
+
 nmap <plug>pick; <cmd>call misc#pick('pick',
     \ '{substitute(maparg("<lt>plug>"..items[result - 1]..";", "n"),
         \"<[-[:alnum:]]\\+>", "", "g")}',
