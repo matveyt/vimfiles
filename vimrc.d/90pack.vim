@@ -8,16 +8,14 @@ else
     source $VIMRUNTIME/ftplugin/man.vim
 endif
 
-command! -bar PackClean  call metapack#init(s:pack).call('clean')
-command! -bar PackStatus call metapack#init(s:pack).call('status')
-command! -bar PackUpdate call metapack#init(s:pack).call('update')
+" https://github.com/k-takata/minpac
+let s:pack = {}
+"let s:pack.author = 'kristijanhusak'
+"let s:pack.manager = 'vim-packager'
 
-" package manager
-let s:pack = #{
-    \ site: 'https://github.com',
-    \ name: 'minpac', author: 'k-takata',
-    "\ name: 'vim-packager', author: 'kristijanhusak',
-    \ }
+command! -bar PackClean  call metapack#init(s:pack).clean()
+command! -bar PackStatus call metapack#init(s:pack).status()
+command! -bar PackUpdate call metapack#init(s:pack).update()
 
 function s:pack.plug() abort
     " plugins
@@ -26,13 +24,11 @@ function s:pack.plug() abort
     call self.add('chrisbra/unicode.vim', #{type: 'opt'})
 
     " color schemes
-    call self.add('w0ng/vim-hybrid', #{type: 'opt', frozen: 1})
-    call self.add('vim-scripts/Liquid-Carbon', #{type: 'opt', frozen: 1})
+    call self.add('itchyny/landscape.vim', #{type: 'opt', frozen: 1})
     call self.add('KeitaNakamura/neodark.vim', #{type: 'opt'})
-    call self.add('haishanh/night-owl.vim', #{type: 'opt'})
+    call self.add('haishanh/night-owl.vim', #{type: 'opt', frozen: 1})
+    call self.add('arcticicestudio/nord-vim', #{type: 'opt', frozen: 1})
     call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
-    call self.add('nightsense/snow', #{type: 'opt', frozen: 1})
-    call self.add('nightsense/stellarized', #{type: 'opt', frozen: 1})
 
     " my plugins can be under ~/.vim/pack/manual
     if better#stdpath('config', 'pack/manual')->isdirectory()
@@ -42,10 +38,10 @@ function s:pack.plug() abort
     " my plugins
     call self.add('matveyt/neoclip', #{type: 'opt'})
     call self.add('matveyt/vim-drvo')
-    call self.add('matveyt/vim-filters')
+    call self.add('matveyt/vim-filters', #{type: 'opt'})
     call self.add('matveyt/vim-guidedspace')
     call self.add('matveyt/vim-intl')
-    call self.add('matveyt/vim-jmake')
+    call self.add('matveyt/vim-jmake', #{type: 'opt'})
     call self.add('matveyt/vim-qmake', #{type: 'opt'})
     call self.add('matveyt/vim-modest', #{type: 'opt'})
     call self.add('matveyt/vim-moveit', #{type: 'opt'})

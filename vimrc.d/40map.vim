@@ -20,10 +20,10 @@ nmap Q <cmd>Zoom<CR>
 nnoremap <Space> za
 " <F8> to set colorscheme
 nmap <F8> <plug>colorscheme;
-" <F9> to set &guifont; [count]<M-F9>/[count]<S-F9> to change font size
+" <F9> to set &guifont; [count]<S-F9>/[count]<M-F9> to change font size
 nmap <F9> <plug>font;
-nmap <M-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
-nmap <S-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
+nmap <S-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
+nmap <M-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
 nmap <F11> <cmd>call term#start()<CR>
 " <Ctrl-N> to add new tab
