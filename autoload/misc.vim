@@ -95,6 +95,17 @@ function! misc#nomove(...) abort
     endtry
 endfunction
 
+" misc#once({func} [, sid [, ...]])
+" call function once
+function! misc#once(name, sid = expand('<SID>'), ...) abort
+    let s:called = get(s:, 'called', {})
+    let l:func = empty(a:sid) ? a:name : a:sid..a:name
+    if !has_key(s:called, l:func)
+        let s:called[l:func] = v:true
+        return better#call(l:func, a:000)
+    endif
+endfunction
+
 " misc#pick({name} [, {cmd} [, {items} [, {items2lines}]]])
 " pick parameter and execute {cmd}
 function! misc#pick(...) abort

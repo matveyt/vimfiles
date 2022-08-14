@@ -21,7 +21,7 @@ nmap <leader>w <plug>windows;
 
 nmap <plug>pick; <cmd>call misc#pick('pick',
     \ '{substitute(maparg("<lt>plug>"..items[result - 1]..";", "n"),
-        \"<[-[:alnum:]]\\+>", "", "g")}',
+        \ "<[-[:alnum:]]\\+>", "", "g")}',
     \ ['args', 'buffers', 'colorscheme', 'find', 'font', 'history', 'marks', 'oldfiles',
         \ 'registers', 'scriptnames', 'sessions', 'templates', 'windows'])<CR>
 
@@ -33,8 +33,8 @@ nmap <plug>font; <cmd>call misc#pick('Font')<CR>
 nmap <plug>buffers; <cmd>call misc#pick('buffer',
     \ '{name} {items[result - 1].bufnr}',
     \ getbufinfo({'buflisted': v:count == 0}),
-    \ 'printf("%2d %s", v:val.bufnr, empty(v:val.name) ? g:Gettext("[No Name]") :
-        \ fnamemodify(v:val.name, ":t"))')<CR>
+    \ 'printf("%2d %s", v:val.bufnr, empty(v:val.name) ?
+        \ better#call("gettext", "[No Name]") : fnamemodify(v:val.name, ":t"))')<CR>
 
 nmap <plug>history; <cmd>call misc#pick('history',
     \ '{lines[result - 1]}',

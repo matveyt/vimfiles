@@ -16,6 +16,12 @@ nnoremap <leader>; ;
 xnoremap <leader>; ;
 " Q to zoom current window
 nmap Q <cmd>Zoom<CR>
+" - to set unnamed register
+nmap - <cmd>call setreg('@',
+    \ #{points_to: v:register is '"' ? v:count % 10 : v:register})<CR>
+" + to set clipboard register
+nmap + <cmd>call setreg('+',
+    \ getreginfo(v:register is '"' ? v:count % 10 : v:register))<CR>
 " <Space> to toggle fold
 nnoremap <Space> za
 " <F8> to set colorscheme

@@ -22,6 +22,18 @@ function! better#bufwinid(buf) abort
     return l:winid
 endfunction
 
+" better#call({func}, {arglist})
+" better#call({func}, {arg1} ...)
+" safe function call
+function! better#call(func, ...) abort
+    let l:args = a:0 == 1 && type(a:1) == v:t_list ? a:1 : a:000
+    try
+        return call(a:func, l:args)
+    catch
+        return get(l:args, 0)
+    endtry
+endfunction
+
 " better#defaults({dict} [, {base}])
 " set default variables
 function! better#defaults(dict, base = v:null) abort

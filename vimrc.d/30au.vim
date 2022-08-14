@@ -1,7 +1,14 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-augroup vimStartup | au!
+augroup vimfiles | au!
+    " late init
+    autocmd VimEnter * ++nested
+        \   call misc#once(better#gui_running() ? 'gui' :
+        \       &t_Co >= 256 ? 'xterm' : 'term')
+        \ | call misc#once('main')
+    silent! autocmd GUIEnter * ++nested call misc#once('gui')
+    silent! autocmd UIEnter * ++nested call misc#once(v:event.chan > 0 ? 'gui' : 'xterm')
     " :h restore-cursor
     " 'q' to close special windows/buffers, such as 'help'
     autocmd BufWinEnter *
@@ -22,9 +29,7 @@ augroup vimStartup | au!
         \           strftime('%Y %b %d'))
         \ |     execute 'language time' remove(s:, 'lc_time')
         \ | endif
-    " never italicize comments
-    autocmd ColorScheme * hi Comment gui=NONE
-    " prettify some buffers
+    " adjust some buffers
     autocmd FileType man,qf setlocal colorcolumn& cursorline& list&
     " save session on exit
     autocmd VimLeavePre *
@@ -35,3 +40,50 @@ augroup vimStartup | au!
         \ |     endif
         \ | endif
 augroup end
+
+function s:gui() abort
+    call better#safe('GuiAdaptiveColor 1')
+    call better#safe('GuiAdaptiveFont 1')
+    call better#safe('GuiAdaptiveStyle Fusion')
+    call better#safe('GuiScrollBar 1')
+    call better#safe('GuiTabline 1')
+    call better#safe('GuiPopupmenu 0')
+    call better#safe('GuiRenderLigatures 1')
+    call better#safe('GuiWindowOpacity 1.0')
+    call better#safe('set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~')
+    call better#safe('set renderoptions=type:directx')
+    call better#safe('set scrollfocus')
+    call better#defaults(#{glyph: [0x1F4C2, 0x1F4C4]}, 'drvo')
+    call better#defaults(#{fontlist: ['Inconsolata LGC', 'JetBrains Mono',
+        \ 'Liberation Mono', 'PT Mono', 'SF Mono', 'Ubuntu Mono']})
+    14Font PT Mono
+endfunction
+
+function s:xterm() abort
+    call better#safe('set termguicolors', $TERM_PROGRAM isnot# 'Apple_Terminal')
+    call better#safe('set ttyfast')
+    call better#safe('set ttymouse=sgr', has('mouse_sgr'))
+    call better#safe("set t_EI=\e[2\\ q t_SR=\e[4\\ q t_SI=\e[6\\ q",
+        \ !has('nvim') && ($TERM_PROGRAM is# 'mintty' || $TERM_PROGRAM is# 'tmux'))
+endfunction
+
+function s:main() abort
+    if !exists('g:colors_name')
+        set background=light
+        silent! colorscheme modest
+    endif
+
+    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
+
+    if bufnr('$') == 1 && better#is_blank_buffer()
+        Welcome
+    endif
+endfunction
+
+" VimEnter one more time
+if v:vim_did_enter
+    call getcompletion('g:loaded_', 'var')
+        \ ->filter('!empty(eval(v:val))')->map('"unlet "..v:val')->execute()
+    packloadall!
+    doautocmd VimEnter
+endif
