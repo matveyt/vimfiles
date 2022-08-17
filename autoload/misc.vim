@@ -84,7 +84,7 @@ function! misc#nextfile(file = expand('%:p'), offset = 1) abort
     return empty(l:name) ? '' : l:name[(index(l:name, a:file) + a:offset) % len(l:name)]
 endfunction
 
-" misc#nomove({fmt} [, {expr1} ...])
+" misc#nomove({fmt}, {expr1} ...)
 " format and execute command without moving cursor
 function! misc#nomove(...) abort
     let l:cmd = stridx(a:1, '%') < 0 ? join(a:000) : call('printf', a:000)
@@ -95,7 +95,7 @@ function! misc#nomove(...) abort
     endtry
 endfunction
 
-" misc#once({func} [, sid [, ...]])
+" misc#once({func} [, {sid} [, ...]])
 " call function once
 function! misc#once(name, sid = expand('<SID>'), ...) abort
     let s:called = get(s:, 'called', {})

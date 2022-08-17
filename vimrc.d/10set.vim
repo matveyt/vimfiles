@@ -14,26 +14,26 @@ if has('win32')
 endif
 
 " misc. options
+let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
 set autoread backspace=indent,eol,start belloff=all complete=.,w,b confirm
 set diffopt+=vertical display+=lastline fillchars=vert:\ ,fold:\ ,diff:\ 
 set fileformats=unix,dos grepformat=%f:%l:%c:%m history=1000 keywordprg=:Man
 set guioptions-=t guioptions+=! guicursor+=a:blinkon0 linespace=1 lazyredraw
-set modeline nrformats=alpha,bin,hex shortmess=cfilnxoOtTI pyxversion=3
-set scrolloff=2 sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu
-set keymodel=startsel mousemodel=extend selection=exclusive selectmode=
-set cursorline laststatus=2 mouse=ar number showmatch showtabline=2 title
-set switchbuf=useopen tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,]
+set modeline nrformats=bin,hex shortmess=cfilnxoOtTI pyxversion=3 scrolloff=2
+set sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu keymodel=startsel
+set mousemodel=extend selection=exclusive selectmode= cursorline laststatus=2
+set mouse=ar number showmatch showtabline=2 suffixes& title switchbuf=useopen
+set tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,] wildoptions=
+set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
+set viewoptions=folds,cursor,curdir,slash,unix viminfo=!,'100,<1000,s100,h
 set nobackup nowritebackup nofsync nohidden noequalalways noruler nostartofline
-set noshowcmd noshowmode noswapfile viminfo=!,'100,<1000,s100,h
-set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize suffixes&
-set viewoptions=folds,cursor,curdir,slash,unix wildoptions=
-let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
+set noshowcmd noshowmode noswapfile
 
 " indents and folds
 set autoindent nosmartindent formatoptions=tcroqj
 set foldmethod=indent foldcolumn=1 foldlevel=3
 
-" tabs, wraps and case
+" tabs, wrap and case
 set nohlsearch nojoinspaces nowrap ignorecase incsearch infercase smartcase
 set tabstop& expandtab nosmarttab softtabstop=-1 shiftround shiftwidth=4
 set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1

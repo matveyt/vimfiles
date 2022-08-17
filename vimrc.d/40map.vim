@@ -8,22 +8,31 @@ if exists('#nvim_cmdwin')
     augroup! nvim_cmdwin
 endif
 
-" ';' to go quick to the command line
+" ';' to go to the command line quickly
 nnoremap ; :
 xnoremap ; :
 " '\;' to repeat char search forward
 nnoremap <leader>; ;
 xnoremap <leader>; ;
-" Q to zoom current window
-nmap Q <cmd>Zoom<CR>
+
+" scroll window when cursor is on the last line
+nnoremap <expr>j        line('.') == line('$') ? '<C-E>' : 'j'
+nnoremap <expr><Down>   line('.') == line('$') ? '<C-E>' : '<Down>'
+nnoremap <expr><C-J>    line('.') == line('$') ? '<C-E>' : '<C-J>'
+nnoremap <expr><C-M>    line('.') == line('$') ? '<C-E>' : '<C-M>'
+nnoremap <expr><C-N>    line('.') == line('$') ? '<C-E>' : '<C-N>'
+
 " - to set unnamed register
 nmap - <cmd>call setreg('@',
     \ #{points_to: v:register is '"' ? v:count % 10 : v:register})<CR>
 " + to set clipboard register
 nmap + <cmd>call setreg('+',
     \ getreginfo(v:register is '"' ? v:count % 10 : v:register))<CR>
+" Q to zoom current window
+nmap Q <cmd>Zoom<CR>
 " <Space> to toggle fold
 nnoremap <Space> za
+
 " <F8> to set colorscheme
 nmap <F8> <plug>colorscheme;
 " <F9> to set &guifont; [count]<S-F9>/[count]<M-F9> to change font size
@@ -38,6 +47,7 @@ nmap <C-N> <cmd>$tabnew<CR>
 nmap <C-S> <cmd>update<CR>
 " [count]<BS> to open "FileExplorer" (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
+
 " '\=' to cd to the current file's directory
 nmap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
 " '\h' to show the current highlight group
@@ -61,6 +71,7 @@ xnoremap > >gv
 " move cursor inside quotes while typing
 noremap! "" ""<Left>
 noremap! '' ''<Left>
+
 " copy-paste like Windows
 vnoremap <S-Del>    "+x
 vnoremap <C-Insert> "+y

@@ -19,16 +19,11 @@ command! -bar PackUpdate call metapack#init(s:pack).update()
 
 function s:pack.plug() abort
     " plugins
+    call self.add('romainl/Apprentice', #{type: 'opt'})
+    call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
     call self.add('wellle/targets.vim', #{frozen: 1})
     call self.add('mbbill/undotree')
     call self.add('chrisbra/unicode.vim', #{type: 'opt'})
-
-    " color schemes
-    call self.add('itchyny/landscape.vim', #{type: 'opt', frozen: 1})
-    call self.add('KeitaNakamura/neodark.vim', #{type: 'opt'})
-    call self.add('haishanh/night-owl.vim', #{type: 'opt', frozen: 1})
-    call self.add('arcticicestudio/nord-vim', #{type: 'opt', frozen: 1})
-    call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
 
     " my plugins can be under ~/.vim/pack/manual
     if better#stdpath('config', 'pack/manual')->isdirectory()
