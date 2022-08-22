@@ -4,7 +4,7 @@
 function! metapack#init(pack) abort
     " one time init
     if !has_key(a:pack, 'init')
-        call extend(a:pack, s:meta).init()
+        call extend(a:pack, s:meta, 'keep').init()
     endif
 
     return a:pack
@@ -15,6 +15,7 @@ let s:meta = #{
     \ site: 'https://github.com',
     \ author: 'k-takata',
     \ manager: 'minpac',
+    \ plug: {->0}
     \ }
 
 function s:meta.init() abort
@@ -33,9 +34,7 @@ function s:meta.init() abort
 
     " register plugins
     call self.add(l:remote, #{type: 'opt'})
-    if has_key(self, 'plug')
-        call self.plug()
-    endif
+    call self.plug()
 
     call self.call('end')
 endfunction

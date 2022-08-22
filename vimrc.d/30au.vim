@@ -1,7 +1,7 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-augroup vimfiles | au!
+augroup vimrc | au!
     " late init
     autocmd VimEnter * ++nested
         \   call misc#once(better#gui_running() ? 'gui' :
