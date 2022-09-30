@@ -55,10 +55,10 @@ nmap <leader>h <cmd>Highlight!<CR>
 " '\p' to show what function we are in (like 'diff -p')
 nmap <leader>p <cmd>echo getline(search('^[[:alpha:]$_]', 'bcnW'))<CR>
 " '\l' to toggle location list
-nmap <expr><leader>l printf('<cmd>l%s<CR>',
+nmap <expr><leader>l printf('<cmd>botright l%s<CR>',
     \ getloclist(0, #{winid: 0}).winid ? 'close' : 'open')
 " '\q' to toggle quickfix
-nmap <expr><leader>q printf('<cmd>c%s<CR>',
+nmap <expr><leader>q printf('<cmd>botright c%s<CR>',
     \ getqflist(#{winid: 0}).winid ? 'close' : 'open')
 " '\s' to open scratch buffer
 nmap <leader>s <cmd>split +Scratch<CR>

@@ -3,7 +3,8 @@
 
  " :[mods]Nomove {cmd}
  " save/restore cursor "quasi-modifier"
-command! -nargs=+ -complete=command Nomove call misc#nomove(<f-args>)
+command! -nargs=+ -complete=command Nomove
+    \   call misc#nomove(<f-args>)
 
 " :[mods]Sorted[!] {cmd}
 " sorted "quasi-modifier"
@@ -13,20 +14,23 @@ command! -bang -nargs=1 -complete=command Sorted
 
 " :Bwipeout[!]
 " wipe all deleted/unloaded buffers
-command! -bar -bang Bwipeout call misc#bwipeout(<bang>0 ? '!v:val.loaded' :
-    \ '!v:val.loaded && !v:val.listed')
+command! -bar -bang Bwipeout
+    \   call misc#bwipeout(<bang>0 ? '!v:val.loaded' : '!v:val.loaded && !v:val.listed')
 
 " :[range]CEncode[!]
 " encode/decode C strings
-command! -range -bar -bang CEncode call misc#c_encode(<line1>, <line2>, <bang>v:true)
+command! -range -bar -bang CEncode
+    \   call misc#c_encode(<line1>, <line2>, <bang>v:true)
 
 " :[range]Comment[!]
 " toggle comments
-command! -range -bar -bang Comment call misc#comment(<line1>, <line2>, <bang>&pi)
+command! -range -bar -bang Comment
+    \   call misc#comment(<line1>, <line2>, <bang>&pi)
 
 " :Diff[!] [spec]
 " show diff with original file or git object
-command! -bang -nargs=? Diff call misc#diff(<bang>0, <f-args>)
+command! -bang -nargs=? Diff
+    \   call misc#diff(<bang>0, <f-args>)
 
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script
@@ -51,7 +55,8 @@ function s:gitcomplete(A, L, P) abort
     return join(['add', 'branch', 'checkout', 'clone', 'commit', 'diff', 'init', 'log',
         \ 'merge', 'pull', 'push', 'remote', 'status'], "\n")
 endfunction
-command! -nargs=* -complete=custom,s:gitcomplete Git !git -C %:p:h:S <args>
+command! -nargs=* -complete=custom,s:gitcomplete Git
+    \   !git -C %:p:h:S <args>
 
 " :Highlight[!]
 " show :highlight under cursor
@@ -69,7 +74,8 @@ command! -range=% -bar -bang Trim Nomove
 
 " :[range]UrlEncode[!]
 " encode/decode URLs
-command! -range -bar -bang UrlEncode call misc#url_encode(<line1>, <line2>, <bang>v:true)
+command! -range -bar -bang UrlEncode
+    \   call misc#url_encode(<line1>, <line2>, <bang>v:true)
 
 " :[count]Welcome [sesdir]
 " show MRU and Session files

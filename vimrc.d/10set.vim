@@ -21,7 +21,7 @@ set fileformats=unix,dos grepformat=%f:%l:%c:%m history=1000 keywordprg=:Man
 set guioptions-=t guioptions+=! guicursor+=a:blinkon0 linespace=1 lazyredraw
 set modeline nrformats=bin,hex shortmess=cfilnxoOtTI pyxversion=3 scrolloff=2
 set sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu keymodel=startsel
-set mousemodel=extend selection=exclusive selectmode= cursorline laststatus=2
+set mousemodel=extend selection=exclusive selectmode& cursorline laststatus=2
 set mouse=ar number showmatch showtabline=2 suffixes& title switchbuf=useopen
 set tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,] wildoptions=
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
@@ -34,7 +34,7 @@ set autoindent nosmartindent formatoptions=tcroqj
 set foldmethod=indent foldcolumn=1 foldlevel=3
 
 " tabs, wrap and case
-set nohlsearch nojoinspaces nowrap ignorecase incsearch infercase smartcase
+set nojoinspaces nowrap ignorecase incsearch nohlsearch infercase smartcase
 set tabstop& expandtab nosmarttab softtabstop=-1 shiftround shiftwidth=4
 set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
 
