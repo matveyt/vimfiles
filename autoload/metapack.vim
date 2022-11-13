@@ -1,42 +1,41 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-function! metapack#init(pack) abort
-    " one time init
-    if !has_key(a:pack, 'init')
-        call extend(a:pack, s:meta, 'keep').init()
-    endif
-
-    return a:pack
-endfunction
-
 let s:meta = #{
     \ git: 'git clone --depth=1',
     \ site: 'https://github.com',
     \ author: 'k-takata',
-    \ manager: 'minpac',
-    \ plug: {->0}
+    \ manager: 'minpac'
     \ }
 
-function s:meta.init() abort
-    " git-clone package manager
-    let l:local = better#stdpath('config', 'pack/%s/opt/%s', self.byname(), self.manager)
-    let l:remote = printf('%s/%s/%s', self.site, self.author, self.manager)
-    if !isdirectory(l:local)
-        echomsg 'Cloning into' l:local
-        call system(printf('%s %s.git %s', self.git, l:remote, shellescape(l:local)))
+function! metapack#init(pack) abort
+    " one time init
+    if !has_key(a:pack, 'call')
+        call extend(a:pack, s:meta, 'keep')
+
+        " git-clone package manager
+        let l:local = better#stdpath('config', 'pack/%s/opt/%s', a:pack.byname(),
+            \ a:pack.manager)
+        let l:remote = printf('%s/%s/%s', a:pack.site, a:pack.author, a:pack.manager)
+        if !isdirectory(l:local)
+            echomsg 'Cloning into' l:local
+            call printf('%s %s.git %s', a:pack.git, l:remote, l:local->shellescape())
+                \ ->system()
+        endif
+
+        " initialize package manager
+        execute 'packadd' a:pack.manager
+        call a:pack.call('begin')
+        call a:pack.call('init', #{depth: 1, progress_open: 'vertical'})
+
+        " register plugins
+        call a:pack.add(l:remote, #{type: 'opt'})
+        call a:pack.init()
+
+        call a:pack.call('end')
     endif
 
-    " initialize package manager
-    execute 'packadd' self.manager
-    call self.call('begin')
-    call self.call('init', #{depth: 1, progress_open: 'vertical'})
-
-    " register plugins
-    call self.add(l:remote, #{type: 'opt'})
-    call self.plug()
-
-    call self.call('end')
+    return a:pack
 endfunction
 
 function s:meta.byname() abort

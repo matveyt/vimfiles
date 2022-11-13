@@ -17,7 +17,7 @@ command! -bar PackClean  call metapack#init(s:pack).clean()
 command! -bar PackStatus call metapack#init(s:pack).status()
 command! -bar PackUpdate call metapack#init(s:pack).update()
 
-function s:pack.plug() abort
+function s:pack.init() abort
     " plugins
     call self.add('romainl/Apprentice', #{type: 'opt'})
     call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
