@@ -45,6 +45,38 @@ function! misc#diff(org = v:false, ...) abort
     diffthis
 endfunction
 
+" misc#encode({line1}, {line2} [, {oper}])
+" C/URL encode/decode
+let s:c_escape = {"\007": '\a', "\010": '\b', "\011": '\t', "\012": '\n', "\013": '\v',
+    \ "\014": '\f', "\015": '\r', "\033": '\e', "\"": '\"', "'": '\''', '\': '\\'}
+let s:c_unescape = {'a': "\007", 'b': "\010", 't': "\011", 'n': "\012", 'v': "\013",
+    \ 'f': "\014", 'r': "\015", 'e': "\033"}
+function! misc#encode(line1, line2, oper) range abort
+    if a:oper is? 'URL'
+        let l:Func = {_, v ->
+            \ substitute(iconv(v, 'latin1', 'utf-8'), '[^-[:alnum:]_.~:/?#@]',
+            \ '\=printf("%%%02X", char2nr(submatch(0), 1))', 'g')}
+    elseif a:oper is? 'URL!'
+        let l:Func = {_, v ->
+            \ iconv(substitute(tr(v, '+', ' '), '%\(\x\x\)',
+            \ '\=nr2char(str2nr(submatch(1), 16), 1)', 'g'), 'utf-8', 'latin1')}
+    elseif a:oper is? 'C!'
+        let l:Func = {_, v -> substitute(v,
+            \ '\v\\(\o{1,3}|x\x{1,2}|u\x{4}|\U\x{8}|.)',
+            \ '\=has_key(s:c_unescape, submatch(1)) ? s:c_unescape[submatch(1)] : ' .
+            \ 'submatch(1) =~# "^[0-7xuU]" ? eval("\"\\"..submatch(1).."\"") : ' .
+            \ 'submatch(1)', 'g')}
+    else "if a:oper is? 'C'
+        let l:last = a:line2 - a:line1
+        let l:Func = {k, v -> substitute(v,
+            \ "[\001-\033\\\\\"']", '\=has_key(s:c_escape, submatch(0)) ? ' .
+            \ 's:c_escape[submatch(0)] : printf("\\%03o", char2nr(submatch(0)))', 'g') .
+            \ repeat('\n\', k < l:last)}
+    endif
+
+    call setline(a:line1, getline(a:line1, a:line2)->map(l:Func))
+endfunction
+
 " misc#gcc_include([{gcc} [, {force} [, {ft}]]])
 " get GCC include dirs
 function! misc#gcc_include(gcc = b:current_compiler, force = v:false, ft = &ft) abort
@@ -131,41 +163,5 @@ function! misc#put(how, reg = v:register, count = v:count1) abort
     execute printf('normal! "%s%d%s', a:reg, a:count, a:how)
     if l:type isnot# 'V'
         call setreg(a:reg, l:value, l:type)
-    endif
-endfunction
-
-" misc#c_encode({line1}, {line2}, [{encode}])
-" C string encode/decode
-let s:escape = {"\007": '\a', "\010": '\b', "\011": '\t', "\012": '\n', "\013": '\v',
-    \ "\014": '\f', "\015": '\r', "\033": '\e', "\"": '\"', "'": '\''', '\': '\\'}
-let s:unescape = {'a': "\007", 'b': "\010", 't': "\011", 'n': "\012", 'v': "\013",
-    \ 'f': "\014", 'r': "\015", 'e': "\033"}
-function! misc#c_encode(line1, line2, encode = v:true) abort
-    if a:encode
-        let l:last = a:line2 - a:line1
-        call setline(a:line1, map(getline(a:line1, a:line2), {k, v -> substitute(v,
-            \ "[\001-\033\\\\\"']", '\=has_key(s:escape, submatch(0)) ? ' .
-            \ 's:escape[submatch(0)] : printf("\\%03o", char2nr(submatch(0)))', 'g') .
-            \ repeat('\n\', k < l:last)}))
-    else
-        call setline(a:line1, map(getline(a:line1, a:line2), {_, v -> substitute(v,
-            \ '\v\\(\o{1,3}|x\x{1,2}|u\x{4}|\U\x{8}|.)',
-            \ '\=has_key(s:unescape, submatch(1)) ? s:unescape[submatch(1)] : ' .
-            \ 'submatch(1) =~# "^[0-7xuU]" ? eval("\"\\"..submatch(1).."\"") : ' .
-            \ 'submatch(1)', 'g')}))
-    endif
-endfunction
-
-" misc#url_encode({line1}, {line2}, [{encode}])
-" URL encode/decode
-function! misc#url_encode(line1, line2, encode = v:true) range abort
-    if a:encode
-        call setline(a:line1, map(getline(a:line1, a:line2), {_, v ->
-            \ substitute(iconv(v, 'latin1', 'utf8'), '[^-[:alnum:]_.~:/?#@]',
-            \ '\=printf("%%%02X", char2nr(submatch(0), 1))', 'g')}))
-    else
-        call setline(a:line1, map(getline(a:line1, a:line2), {_, v ->
-            \ iconv(substitute(tr(v, '+', ' '), '%\(\x\x\)',
-            \ '\=nr2char(str2nr(submatch(1), 16), 1)', 'g'), 'utf-8', 'latin1')}))
     endif
 endfunction

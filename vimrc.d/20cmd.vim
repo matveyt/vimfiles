@@ -20,7 +20,7 @@ command! -bar -bang Bwipeout
 " :[range]CEncode[!]
 " encode/decode C strings
 command! -range -bar -bang CEncode
-    \   call misc#c_encode(<line1>, <line2>, <bang>v:true)
+    \   call misc#encode(<line1>, <line2>, 'C<bang>')
 
 " :[range]Comment[!]
 " toggle comments
@@ -75,7 +75,7 @@ command! -range=% -bar -bang Trim Nomove
 " :[range]UrlEncode[!]
 " encode/decode URLs
 command! -range -bar -bang UrlEncode
-    \   call misc#url_encode(<line1>, <line2>, <bang>v:true)
+    \   call misc#encode(<line1>, <line2>, 'URL<bang>')
 
 " :[count]Welcome [sesdir]
 " show MRU and Session files
