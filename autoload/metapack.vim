@@ -2,7 +2,9 @@
 " https://github.com/matveyt/vimfiles
 
 let s:meta = #{
-    \ git: 'git clone --depth=1',
+    \ git: 'git',
+    \ depth: 1,
+    \ dir: better#stdpath('config'),
     \ site: 'https://github.com',
     \ author: 'k-takata',
     \ manager: 'minpac'
@@ -14,19 +16,19 @@ function! metapack#init(pack) abort
         call extend(a:pack, s:meta, 'keep')
 
         " git-clone package manager
-        let l:local = better#stdpath('config', 'pack/%s/opt/%s', a:pack.byname(),
+        let l:local = printf('%s/pack/%s/opt/%s', a:pack.dir, a:pack.byname(),
             \ a:pack.manager)
         let l:remote = printf('%s/%s/%s', a:pack.site, a:pack.author, a:pack.manager)
         if !isdirectory(l:local)
             echomsg 'Cloning into' l:local
-            call printf('%s %s.git %s', a:pack.git, l:remote, l:local->shellescape())
-                \ ->system()
+            call printf('%s clone --depth=%d %s.git %s', a:pack.git, a:pack.depth,
+                \ l:remote, l:local->shellescape())->system()
         endif
 
         " initialize package manager
         execute 'packadd' a:pack.manager
         call a:pack.call('begin')
-        call a:pack.call('init', #{depth: 1, progress_open: 'vertical'})
+        call a:pack.call('init', a:pack)
 
         " register plugins
         call a:pack.add(l:remote, #{type: 'opt'})

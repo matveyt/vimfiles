@@ -8,10 +8,10 @@ else
     source $VIMRUNTIME/ftplugin/man.vim
 endif
 
-" https://github.com/k-takata/minpac
 let s:pack = {}
-"let s:pack.author = 'kristijanhusak'
-"let s:pack.manager = 'vim-packager'
+let s:pack.manager = 'minpac'
+let s:pack.author = 'k-takata'
+let s:pack.progress_open = 'vertical'
 
 command! -bar PackClean  call metapack#init(s:pack).clean()
 command! -bar PackStatus call metapack#init(s:pack).status()
