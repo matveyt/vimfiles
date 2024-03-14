@@ -1,6 +1,17 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+" misc#aug_remove({name} ...)
+" remove augroup(s)
+function! misc#aug_remove(...) abort
+    for l:name in a:000
+        if exists('#'..l:name)
+            execute 'autocmd!' l:name
+            execute 'augroup!' l:name
+        endif
+    endfor
+endfunction
+
 " misc#bwipeout({expr})
 " wipe some buffers
 function! misc#bwipeout(expr) abort

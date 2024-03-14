@@ -68,6 +68,8 @@ function s:xterm() abort
 endfunction
 
 function s:main() abort
+    call misc#aug_remove('editorconfig', 'nvim_cmdwin')
+
     if !exists('g:colors_name')
         set background=light
         silent! colorscheme modest
@@ -75,15 +77,7 @@ function s:main() abort
 
     silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
 
-    if bufnr('$') == 1 && better#is_blank_buffer()
+    if bufnr('$') == 1 && better#is_blank_buffer(1)
         Welcome
     endif
 endfunction
-
-" VimEnter one more time
-if v:vim_did_enter
-    call getcompletion('g:loaded_', 'var')
-        \ ->filter('!empty(eval(v:val))')->map('"unlet "..v:val')->execute()
-    packloadall!
-    doautocmd VimEnter
-endif

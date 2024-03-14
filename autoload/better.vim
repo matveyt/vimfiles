@@ -56,10 +56,11 @@ function! better#gui_running() abort
         \ nvim_list_uis()->get(-1, {})->get('chan') > 0
 endfunction
 
-" better#is_blank_buffer()
-" check if current buffer is blank
-function! better#is_blank_buffer() abort
-    return !&modified && empty(&buftype) && empty(bufname())
+" better#is_blank_buffer([{buf}])
+" check if buffer is blank
+function! better#is_blank_buffer(buf = '') abort
+    return a:buf->bufname()->empty() && a:buf->getbufvar('&buftype')->empty() &&
+        \ !a:buf->getbufvar('&modified')
 endfunction
 
 " better#or({expr1} ...)

@@ -17,9 +17,7 @@ END
     endif
     call setline(1, l:header)
     call s:add_group('Session', glob(fnamemodify(a:sesdir, ':p')..'*.vim', 0, 1))
-    if exists('*getmarklist')
-        call s:add_group('Mark', getmarklist())
-    endif
+    call s:add_group('Mark', better#call('getmarklist'))
     call s:add_group('MRU', v:oldfiles[: a:max - 1])
 
     setlocal bufhidden=wipe buftype=nofile cursorline matchpairs=

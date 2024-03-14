@@ -1,12 +1,8 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-" disable Neovim default-mappings etc.
+" disable Neovim default-mappings
 mapclear | mapclear! | tmapclear
-if exists('#nvim_cmdwin')
-    autocmd! nvim_cmdwin
-    augroup! nvim_cmdwin
-endif
 
 " ';' to go to the command line quickly
 nnoremap ; :
