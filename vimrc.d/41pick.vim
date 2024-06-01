@@ -71,12 +71,12 @@ nmap <plug>sessions; <cmd>call misc#pick('sessions',
 nmap <plug>templates; <cmd>call misc#pick('templates',
     \ '-read ++edit {fnameescape(items[result - 1])} <Bar>
     \ Nomove ''[,''] s/{"{"}\([^}]\+\)}/\=eval(submatch(1))/ge',
-    \ glob(better#stdpath('data', 'site/templates/%s/*',
-        \ better#or(&filetype, 'empty')), v:false, v:true),
+    \ glob(better#stdpath('data', 'site/templates/%s/*', &filetype ?? 'empty'),
+        \ v:false, v:true),
     \ 'fnamemodify(v:val, ":t")')<CR>
 
 nmap <plug>windows; <cmd>call misc#pick('windows',
     \ 'call win_gotoid({items[result - 1].winid})',
     \ getwininfo()->sort({w1, w2 -> w1.winid - w2.winid}),
-    \ 'printf("%d %s", v:val.winid, better#or(fnamemodify(bufname(v:val.bufnr), ":t"),
-        \ "[buffer "..v:val.bufnr.."]"))')<CR>
+    \ 'printf("%d %s", v:val.winid, fnamemodify(bufname(v:val.bufnr), ":t") ??
+        \ "[buffer "..v:val.bufnr.."]")')<CR>

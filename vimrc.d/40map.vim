@@ -41,7 +41,7 @@ nmap <F11> <cmd>call term#start()<CR>
 nmap <C-N> <cmd>$tabnew<CR>
 " <Ctrl-S> to save file
 nmap <C-S> <cmd>update<CR>
-" [count]<BS> to open "FileExplorer" (vim-drvo)
+" [count]<BS> to open FileExplorer (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 
 " '\=' to cd to the current file's directory

@@ -3,25 +3,21 @@
 
 if has('nvim')
     packadd! neoclip
+    lua require"neoclip"
 else
     packadd! matchit
-    source $VIMRUNTIME/ftplugin/man.vim
 endif
 
-let s:pack = {}
-let s:pack.manager = 'minpac'
-let s:pack.author = 'k-takata'
-let s:pack.progress_open = 'vertical'
-
-command! -bar PackClean  call metapack#init(s:pack).clean()
-command! -bar PackStatus call metapack#init(s:pack).status()
-command! -bar PackUpdate call metapack#init(s:pack).update()
+" defaults to https://github.com/k-takata/minpac
+let s:pack = #{progress_open: 'vertical'}
+command -bar PackClean  call metapack#init(s:pack).clean()
+command -bar PackStatus call metapack#init(s:pack).status()
+command -bar PackUpdate call metapack#init(s:pack).update()
 
 function s:pack.init() abort
     " plugins
-    call self.add('romainl/Apprentice', #{type: 'opt'})
     call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
-    call self.add('wellle/targets.vim', #{frozen: 1})
+    call self.add('wellle/targets.vim')
     call self.add('mbbill/undotree')
     call self.add('chrisbra/unicode.vim', #{type: 'opt'})
 

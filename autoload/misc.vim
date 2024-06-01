@@ -110,7 +110,7 @@ endfunction
 " misc#guifont({typeface} [, {height}])
 " set &guifont
 function! misc#guifont(typeface, height = 0) abort
-    let l:fonts = split(better#or(a:typeface, &guifont), ',')
+    let l:fonts = split(a:typeface ?? &guifont, ',')
     let l:prefix = has('gui_gtk') ? ' ' : ':h'
     let s:fontheight = a:height >= 10 ? a:height : get(s:, 'fontheight', 10) + a:height
     call map(l:fonts, {_, v -> substitute(trim(v), '\v('..l:prefix..'(\d+))?$',

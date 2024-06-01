@@ -35,9 +35,7 @@ augroup vimrc | au!
     autocmd VimLeavePre *
         \   if !v:dying
         \ |     call misc#bwipeout('v:val.bufnr->getbufvar("&ft") =~# "^git"')
-        \ |     if !empty(v:this_session)
-        \ |         mksession! `=v:this_session`
-        \ |     endif
+        \ |     call better#safe('mksession! `=v:this_session`', !empty(v:this_session))
         \ | endif
 augroup end
 
@@ -69,13 +67,11 @@ endfunction
 
 function s:main() abort
     call misc#aug_remove('editorconfig', 'nvim_cmdwin')
-
+    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
     if !exists('g:colors_name')
         set background=light
         silent! colorscheme modest
     endif
-
-    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
 
     if bufnr('$') == 1 && better#is_blank_buffer(1)
         Welcome

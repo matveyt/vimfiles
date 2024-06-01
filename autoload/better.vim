@@ -63,18 +63,6 @@ function! better#is_blank_buffer(buf = '') abort
         \ !a:buf->getbufvar('&modified')
 endfunction
 
-" better#or({expr1} ...)
-" logical or: returns first non-empty argument or the last one
-function! better#or(...) abort
-    let l:arg = v:false
-    for l:arg in a:000
-        if !empty(l:arg)
-            break
-        endif
-    endfor
-    return l:arg
-endfunction
-
 " better#safe({what} [, {cond}])
 " execute command or set option safely
 function! better#safe(what, ...) abort
