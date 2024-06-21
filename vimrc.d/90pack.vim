@@ -3,7 +3,7 @@
 
 if has('nvim')
     packadd! neoclip
-    lua require"neoclip"
+    lua require"neoclip":setup()
 else
     packadd! matchit
 endif

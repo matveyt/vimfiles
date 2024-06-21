@@ -15,7 +15,7 @@ augroup vimrc | au!
         \   if empty(&buftype)
         \ |     call setpos('.', getpos("'\""))
         \ | else
-        \ |     execute 'nnoremap <buffer>q <C-W>c'
+        \ |     execute 'nn <buffer><expr>q empty(reg_recording()) ? ''<C-W>c'' : ''q'''
         \ | endif
     " update timestamp before saving buffer
     autocmd BufWrite *

@@ -60,7 +60,7 @@ endfunction
 " check if buffer is blank
 function! better#is_blank_buffer(buf = '') abort
     return a:buf->bufname()->empty() && a:buf->getbufvar('&buftype')->empty() &&
-        \ !a:buf->getbufvar('&modified')
+        \ a:buf->getbufvar('&modified') == 0
 endfunction
 
 " better#safe({what} [, {cond}])
