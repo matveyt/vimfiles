@@ -93,8 +93,8 @@ endfunction
 function! misc#gcc_include(gcc = b:current_compiler, force = v:false, ft = &ft) abort
     let l:var = printf('%s_include_%s', fnamemodify(a:gcc, ':t:gs?[-.]?_?'), a:ft)
     if a:force || !has_key(s:, l:var)
-        " $INCLUDE
-        let s:[l:var] = split($INCLUDE, has('win32') ? ';' : ':')
+        " $CPATH
+        let s:[l:var] = split($CPATH, has('win32') ? ';' : ':')
         " builtin dirs
         let l:cmd = printf('%s -x%s -v -E -', a:gcc, a:ft is# 'cpp' ? 'c++' : a:ft)
         let l:include = map(systemlist(l:cmd, []), 'trim(v:val)')

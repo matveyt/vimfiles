@@ -44,7 +44,7 @@ function s:gui() abort
     call better#safe('GuiAdaptiveFont 1')
     call better#safe('GuiAdaptiveStyle Fusion')
     call better#safe('GuiScrollBar 1')
-    call better#safe('GuiTabline 1')
+    call better#safe('GuiTabline 0')
     call better#safe('GuiPopupmenu 0')
     call better#safe('GuiRenderLigatures 1')
     call better#safe('GuiWindowOpacity 1.0')

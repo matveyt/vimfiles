@@ -26,8 +26,6 @@ nmap + <cmd>call setreg('+',
     \ getreginfo(v:register is '"' ? v:count % 10 : v:register))<CR>
 " Q to zoom current window
 nmap Q <cmd>Zoom<CR>
-" <Space> to toggle fold
-nnoremap <Space> za
 
 " <F8> to set colorscheme
 nmap <F8> <plug>colorscheme;
@@ -37,6 +35,8 @@ nmap <S-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
 nmap <M-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
 nmap <F11> <cmd>call term#start()<CR>
+" <C-@> to insert previously inserted text and stop insert (also in Normal mode)
+nnoremap <C-@> ".gP
 " <Ctrl-N> to add new tab
 nmap <C-N> <cmd>$tabnew<CR>
 " <Ctrl-S> to save file
