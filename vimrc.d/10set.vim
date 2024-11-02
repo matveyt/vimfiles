@@ -27,14 +27,14 @@ set tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,] wildoptions=
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
 set viewoptions=folds,cursor,curdir,slash,unix viminfo=!,'100,<1000,s100,h
 set nobackup nowritebackup nofsync nohidden noequalalways noruler nostartofline
-set noshowcmd noshowmode noswapfile
+set showcmd showcmdloc=statusline noshowmode noswapfile
 
 " indents and folds
 set autoindent nosmartindent formatoptions=tcroqj
 set foldmethod=indent foldcolumn=1 foldlevel=3
 
 " tabs, wrap and case
-set nojoinspaces nowrap ignorecase incsearch nohlsearch infercase smartcase
+set nojoinspaces nowrap ignorecase incsearch hlsearch infercase smartcase
 set tabstop& expandtab nosmarttab softtabstop=-1 shiftround shiftwidth=4
 set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
 

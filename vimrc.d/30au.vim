@@ -31,6 +31,8 @@ augroup vimrc | au!
         \ | endif
     " adjust some buffers
     autocmd FileType man,qf setlocal colorcolumn& cursorline& list&
+    " shut off &hlsearch
+    autocmd CursorHold,InsertEnter * eval !v:hlsearch || feedkeys("\<cmd>noh\r")
     " save session on exit
     autocmd VimLeavePre *
         \   if !v:dying
@@ -67,7 +69,7 @@ endfunction
 
 function s:main() abort
     call misc#aug_remove('editorconfig', 'nvim_cmdwin')
-    silent! let &statusline = stalin#build('mode,buffer,,flags,ruler')
+    silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
     if !exists('g:colors_name')
         set background=light
         silent! colorscheme modest
