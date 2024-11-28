@@ -7,4 +7,4 @@ setlocal commentstring=//%s
 setlocal complete+=i foldmethod=syntax
 
 compiler gcc
-let &l:path = misc#gcc_include()->insert('.')->add(',')->join(',')
+let &l:path = better#gcc_include()->insert('.')->add(',')->join(',')
