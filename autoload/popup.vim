@@ -44,7 +44,7 @@ function! popup#notification(what, options) abort
     endif
 endfunction
 
-function! popup#clear(force = v:false) abort
+function! popup#clear(force=v:false) abort
     if has('popupwin')
         return popup_clear(a:force)
     elseif has('nvim')
@@ -55,7 +55,7 @@ function! popup#clear(force = v:false) abort
     endif
 endfunction
 
-function! popup#close(id, result = 0) abort
+function! popup#close(id, result=0) abort
     if has('popupwin')
         call popup_close(a:id, a:result)
     elseif has('nvim')

@@ -7,7 +7,7 @@ let s:meta = #{
     \ dir: better#stdpath('config'),
     \ site: 'https://github.com',
     \ author: 'k-takata',
-    \ manager: 'minpac'
+    \ manager: 'minpac',
     \ }
 
 function! metapack#init(pack) abort
@@ -43,14 +43,12 @@ endfunction
 function s:meta.byname() abort
     " foo-bar.baz => bar
     let l:dot = stridx(self.manager, '.')
-    let l:name = l:dot < 0 ? self.manager : strpart(self.manager, 0, l:dot)
+    let l:name = (l:dot < 0) ? self.manager : strpart(self.manager, 0, l:dot)
     return strpart(l:name, strridx(l:name, '-') + 1)
 endfunction
 
 function s:meta.call(func, ...) abort
-    try
-        return printf('%s#%s', self.byname(), a:func)->call(a:000)
-    catch | endtry
+    return better#call(self.byname()..'#'..a:func, a:000)
 endfunction
 
 let s:meta.add = funcref('s:meta.call', ['add'])

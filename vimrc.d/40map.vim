@@ -18,6 +18,8 @@ nnoremap <expr><C-J>    line('.') == line('$') ? '<C-E>' : '<C-J>'
 nnoremap <expr><C-M>    line('.') == line('$') ? '<C-E>' : '<C-M>'
 nnoremap <expr><C-N>    line('.') == line('$') ? '<C-E>' : '<C-N>'
 
+" gl to toggle register type linewise-characterwise
+nmap gl <cmd>call setreg(v:register, '', getregtype() is# 'V' ? 'av' : 'aV')<CR>
 " - to set unnamed register
 nmap - <cmd>call setreg('@',
     \ #{points_to: v:register is '"' ? v:count % 10 : v:register})<CR>
@@ -31,8 +33,8 @@ nmap Q <cmd>Zoom<CR>
 nmap <F8> <plug>colorscheme;
 " <F9> to set &guifont; [count]<S-F9>/[count]<M-F9> to change font size
 nmap <F9> <plug>font;
-nmap <S-F9> <cmd>call misc#guifont(v:null, v:count1)<CR>
-nmap <M-F9> <cmd>call misc#guifont(v:null, -v:count1)<CR>
+nmap <S-F9> <cmd>call better#guifont(v:null, v:count1)<CR>
+nmap <M-F9> <cmd>call better#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
 nmap <F11> <cmd>call term#start()<CR>
 " <C-@> to insert previously inserted text and stop insert (also in Normal mode)

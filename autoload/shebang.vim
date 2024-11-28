@@ -44,14 +44,14 @@ endfunction
 
 " shebang#execute({buf}, {line1}, {line2} [, {win}])
 " Execute script from a buffer
-function! shebang#execute(buf, line1, line2, win = 0) abort
+function! shebang#execute(buf, line1, line2, win=0) abort
     " get buffer info
     let l:bufnr = bufnr(a:buf)
     if l:bufnr == -1 || !bufloaded(l:bufnr)
         throw 'Invalid buffer '..a:buf
     endif
     let l:fname = bufname(l:bufnr)
-    " can we source a whole file?
+    " can we source whole file?
     let l:dosource = (a:line1 == 1) && (a:line2 is# '$' || a:line2 >= 1 &&
         \ empty(getbufline(l:bufnr, a:line2 + 1))) && !empty(l:fname) &&
         \ !getbufvar(l:bufnr, '&modified') && empty(getbufvar(l:bufnr, '&buftype'))

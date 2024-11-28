@@ -4,7 +4,7 @@
  " :[mods]Nomove {cmd}
  " save/restore cursor "quasi-modifier"
 command -nargs=+ -complete=command Nomove
-    \   call misc#nomove(<f-args>)
+    \   call better#nomove(<f-args>)
 
 " :[mods]Sorted[!] {cmd}
 " sorted "quasi-modifier"
@@ -15,27 +15,28 @@ command -bang -nargs=1 -complete=command Sorted
 " :Bwipeout[!]
 " wipe all deleted/unloaded buffers
 command -bar -bang Bwipeout
-    \   call misc#bwipeout(<bang>0 ? '!v:val.loaded' : '!v:val.loaded && !v:val.listed')
+    \   call better#bwipeout(<bang>0 ? '!v:val.loaded' :
+    \       '!v:val.loaded && !v:val.listed')
 
 " :[range]CEncode[!]
 " encode/decode C strings
 command -range -bar -bang CEncode
-    \   call misc#encode(<line1>, <line2>, 'C<bang>')
+    \   call better#encode(<line1>, <line2>, 'C<bang>')
 
 " :[range]Comment[!]
 " toggle comments
 command -range -bar -bang Comment
-    \   call misc#comment(<line1>, <line2>, <bang>&pi)
+    \   call better#comment(<line1>, <line2>, <bang>&pi)
 
 " :Diff[!] [spec]
 " show diff with original file or git object
 command -bang -nargs=? Diff
-    \   call misc#diff(<bang>0, <f-args>)
+    \   call better#diff(<bang>0, <f-args>)
 
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script
 command -range=% -bar -nargs=? Execute
-    \   call shebang#execute('%', <line1>, <line2>, <args>)
+    \   call shebang#execute('', <line1>, <line2>, <args>)
 
 " :[count]Font [typeface]...
 " set &guifont
@@ -44,7 +45,7 @@ function s:fontcomplete(A, L, P) abort
 endfunction
 command -count -nargs=? -complete=custom,s:fontcomplete Font
     \   if <count> || !empty(<q-args>)
-    \ |     call misc#guifont(<q-args>, <count>)
+    \ |     call better#guifont(<q-args>, <count>)
     \ | else
     \ |     echo &guifont
     \ | endif
@@ -81,7 +82,7 @@ command -range=% -bar -bang Trim Nomove
 " :[range]UrlEncode[!]
 " encode/decode URLs
 command -range -bar -bang UrlEncode
-    \   call misc#encode(<line1>, <line2>, 'URL<bang>')
+    \   call better#encode(<line1>, <line2>, 'URL<bang>')
 
 " :[count]Welcome [sesdir]
 " show MRU and Session files

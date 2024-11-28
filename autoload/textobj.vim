@@ -1,7 +1,7 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
-const s:bignum = 0x7fffffff
+let s:bignum = 0x7fffffff
 
 function! textobj#indent(level, above, below) abort
     let [l:level, l:start, l:end] = [a:level, line('v'), line('.')]

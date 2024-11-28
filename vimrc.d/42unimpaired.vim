@@ -54,9 +54,9 @@ call s:nextprev('q', 'c')
 call s:nextprev('t', 't')
 
 " [f ]f [n ]n
-nnoremap <silent>[f :<C-U>edit <C-R>=misc#nextfile(expand('%:p'), -v:count1)
+nnoremap <silent>[f :<C-U>edit <C-R>=better#nextfile(-v:count1)
     \ ->fnamemodify(':.')->fnameescape()<CR><CR>
-nnoremap <silent>]f :<C-U>edit <C-R>=misc#nextfile(expand('%:p'), v:count1)
+nnoremap <silent>]f :<C-U>edit <C-R>=better#nextfile(v:count1)
     \ ->fnamemodify(':.')->fnameescape()<CR><CR>
 noremap <expr>[n search('\v^(\@\@ .+ \@\@\|[<=>\|]{7}([^<=>\|]\|$))', 'bnW')..'gg'
 noremap <expr>]n search('\v^(\@\@ .+ \@\@\|[<=>\|]{7}([^<=>\|]\|$))', 'nW')..'G'
@@ -87,20 +87,20 @@ call s:toggle('w', 'wrap')
 call s:toggle('x', 'cul', 'setl cul cuc', 'setl nocul nocuc')
 
 " unimpaired-pasting
-nnoremap <silent>[P :<C-U>call misc#put('[P')<CR>
-nnoremap <silent>]P :<C-U>call misc#put(']P')<CR>
+nnoremap <silent>[P :<C-U>call better#put('[P')<CR>
+nnoremap <silent>]P :<C-U>call better#put(']P')<CR>
 " [p and ]p to adjust indent and put linewise
-nnoremap <silent>[p :<C-U>call misc#put('[p')<CR>
-nnoremap <silent>]p :<C-U>call misc#put(']p')<CR>
+nnoremap <silent>[p :<C-U>call better#put('[p')<CR>
+nnoremap <silent>]p :<C-U>call better#put(']p')<CR>
 " <P and <p to put and shift left
-nnoremap <silent><P :<C-U>call misc#put('[P')<CR><']
-nnoremap <silent><p :<C-U>call misc#put(']p')<CR><']
+nnoremap <silent><P :<C-U>call better#put('[P')<CR><']
+nnoremap <silent><p :<C-U>call better#put(']p')<CR><']
 " >P and >p to put and shift right
-nnoremap <silent>>P :<C-U>call misc#put('[P')<CR>>']
-nnoremap <silent>>p :<C-U>call misc#put(']p')<CR>>']
+nnoremap <silent>>P :<C-U>call better#put('[P')<CR>>']
+nnoremap <silent>>p :<C-U>call better#put(']p')<CR>>']
 " =P and =p to put and re-indent
-nnoremap <silent>=P :<C-U>call misc#put('[P')<CR>=']
-nnoremap <silent>=p :<C-U>call misc#put(']p')<CR>=']
+nnoremap <silent>=P :<C-U>call better#put('[P')<CR>=']
+nnoremap <silent>=p :<C-U>call better#put(']p')<CR>=']
 
 " [op ]op yop
 nnoremap <silent>[op :set paste<Bar>au InsertLeave * ++once set paste&<CR>O

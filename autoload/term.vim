@@ -2,20 +2,17 @@
 " https://github.com/matveyt/vimfiles
 
 " term_start() compatibility wrapper
-function! term#start(cmd = v:null, opts = {}) abort
+function! term#start(cmd=v:null, opts={}) abort
     let l:cmd = empty(a:cmd) ? [&shell] : a:cmd
     if exists('*term_start')
         return term_start(l:cmd, a:opts)
     elseif exists('*termopen')
-        try
-            execute get(a:opts, 'curwin') ? 'enew' :
-                \ get(a:opts, 'vertical') ? 'vnew' : 'new'
-            call termopen(l:cmd, a:opts)
-            execute 'resize' get(a:opts, 'term_rows', '+0')
-            execute 'vertical resize' get(a:opts, 'term_cols', '+0')
-            startinsert
-            return bufnr()
-        catch | endtry
+        execute get(a:opts, 'curwin') ? 'enew' : get(a:opts, 'vertical') ? 'vnew' : 'new'
+        call termopen(l:cmd, a:opts)
+        execute 'resize' get(a:opts, 'term_rows', '+0')
+        execute 'vertical resize' get(a:opts, 'term_cols', '+0')
+        startinsert
+        return bufnr()
     endif
 endfunction
 
@@ -35,7 +32,7 @@ function! term#sendkeys(buf, keys) abort
     endif
     let l:winid = better#bufwinid(a:buf)
     " accept List too
-    let l:keys = (type(a:keys) == v:t_list) ? join(a:keys, "\r") . "\r" : a:keys
+    let l:keys = (type(a:keys) == v:t_list) ? join(a:keys, "\r").."\r" : a:keys
     if exists('*chansend')
         " Neovim has chansend()
         call chansend(getbufvar(a:buf, '&channel'), l:keys)
@@ -44,12 +41,13 @@ function! term#sendkeys(buf, keys) abort
         call term_sendkeys(a:buf, l:keys)
     else
         " try to put it directly (works in Neovim only?)
-        call better#win_execute(l:winid, "put =" .
+        call better#win_execute(l:winid, "put =" ..
             \ escape(tr(string(l:keys), "\n", "\r"), '|"'))
     endif
-    " scrolling may come in handy in Terminal-Normal mode
+    " scrolling could come in handy in Terminal-Normal mode
     call better#win_execute(l:winid, [
         \ 'if line("$") > line("w$")',
-            \ 'normal! 999999z-',
-        \ 'endif'])
+        \   'normal! 999999z-',
+        \ 'endif',
+        \ ])
 endfunction

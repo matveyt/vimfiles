@@ -9,7 +9,7 @@ if has('win32')
     else
         set shellcmdflag=-c shellredir=>%s\ 2>&1 shellslash noshelltemp shellxescape=
         let &shellxquote = has('nvim') ? '' : '"'
-        let [$CYGWIN, $MSYS] .= [' noglob', ' noglob']
+        let [$CYGWIN, $MSYS] ..= [' noglob', ' noglob']
     endif
 endif
 

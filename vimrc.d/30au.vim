@@ -4,11 +4,12 @@
 augroup vimrc | au!
     " late init
     autocmd VimEnter * ++nested
-        \   call misc#once(better#gui_running() ? 'gui' :
-        \       &t_Co >= 256 ? 'xterm' : 'term')
-        \ | call misc#once('main')
-    silent! autocmd GUIEnter * ++nested call misc#once('gui')
-    silent! autocmd UIEnter * ++nested call misc#once(v:event.chan > 0 ? 'gui' : 'xterm')
+        \   call better#once(better#gui_running() ? 'gui' : (&t_Co >= 256) ? 'xterm' :
+        \       'term')
+        \ | call better#once('main')
+    silent! autocmd GUIEnter * ++nested call better#once('gui')
+    silent! autocmd UIEnter * ++nested call better#once(v:event.chan > 0 ? 'gui' :
+        \       'xterm')
     " :h restore-cursor
     " 'q' to close special windows/buffers, such as 'help'
     autocmd BufWinEnter *
@@ -22,7 +23,7 @@ augroup vimrc | au!
         \   if &modified && &modeline && &modelines > 0
         \ |     let s:lc_time = v:lc_time
         \ |     language time C
-        \ |     call misc#nomove('
+        \ |     call better#nomove('
         \               silent! undojoin
         \           |   keepj keepp 1,%ds/\v\C%s\s*\zs.*/%s/e',
         \           min([&modelines, line('$')]), '%(Last Change|Date):',
@@ -36,7 +37,7 @@ augroup vimrc | au!
     " save session on exit
     autocmd VimLeavePre *
         \   if !v:dying
-        \ |     call misc#bwipeout('v:val.bufnr->getbufvar("&ft") =~# "^git"')
+        \ |     call better#bwipeout('v:val.bufnr->getbufvar("&ft") =~# "^git"')
         \ |     call better#safe('mksession! `=v:this_session`', !empty(v:this_session))
         \ | endif
 augroup end
@@ -68,7 +69,7 @@ function s:xterm() abort
 endfunction
 
 function s:main() abort
-    call misc#aug_remove('editorconfig', 'nvim_cmdwin')
+    call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
     silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
     if !exists('g:colors_name')
         set background=light
