@@ -1,6 +1,27 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+" Vim options
+set autoindent autoread backspace=indent,eol,start nobackup belloff=all browsedir=buffer
+set clipboard& colorcolumn=+1 complete=.,w,b completeopt& confirm cursorline
+set diffopt+=vertical display=lastline noequalalways fileformats=unix,dos
+set fillchars=vert:\ ,fold:\ ,diff:\  foldcolumn=1 foldlevel=3 foldmethod=indent
+set formatoptions=tcroqj nofsync grepformat=%f:%l:%c:%m
+let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
+set guicursor+=a:blinkon0 guioptions-=t guioptions+=! nohidden history=500 hlsearch
+set ignorecase incsearch infercase nojoinspaces keymodel=startsel keywordprg=:Man
+set laststatus=2 lazyredraw linespace=1 list listchars=tab:<->,trail:_ modeline mouse=ar
+set mousemodel=extend nrformats=bin,hex number pyxversion=3 noruler scrolloff=2
+set selection=exclusive selectmode&
+set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize shiftround shiftwidth=4
+set shortmess=cfiIlnoOtTx showcmd showcmdloc=statusline showmatch noshowmode
+set showtabline=2 sidescroll=1 sidescrolloff=0 signcolumn& smartcase nosmartindent
+set nosmarttab softtabstop=-1 nosplitbelow splitright nostartofline suffixes& noswapfile
+set switchbuf=useopen tabpagemax=20 tabstop& textwidth=89 timeout& timeoutlen& title
+set ttimeout ttimeoutlen=50 undofile viewoptions=folds,curdir,cursor,slash,unix
+set viminfo=!,'100,<1000,s100,h virtualedit=all whichwrap+=<,>,[,] wildmenu wildoptions=
+set nowrap nowritebackup
+
 " shell
 if has('win32')
     let &shell = exepath('bash')->tr('\', '/')
@@ -13,32 +34,7 @@ if has('win32')
     endif
 endif
 
-" misc. options
-let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
-set autoread backspace=indent,eol,start belloff=all complete=.,w,b confirm
-set diffopt+=vertical display+=lastline fillchars=vert:\ ,fold:\ ,diff:\ 
-set fileformats=unix,dos grepformat=%f:%l:%c:%m history=1000 keywordprg=:Man
-set guioptions-=t guioptions+=! guicursor+=a:blinkon0 linespace=1 lazyredraw
-set modeline nrformats=bin,hex shortmess=cfilnxoOtTI pyxversion=3 scrolloff=2
-set sidescroll=1 splitright ttimeout ttimeoutlen=50 wildmenu keymodel=startsel
-set mousemodel=extend selection=exclusive selectmode& cursorline laststatus=2
-set mouse=ar number showmatch showtabline=2 suffixes& title switchbuf=useopen
-set tabpagemax=20 undofile virtualedit=all whichwrap+=<,>,[,] wildoptions=
-set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize
-set viewoptions=folds,cursor,curdir,slash,unix viminfo=!,'100,<1000,s100,h
-set nobackup nowritebackup nofsync nohidden noequalalways noruler nostartofline
-set showcmd showcmdloc=statusline noshowmode noswapfile
-
-" indents and folds
-set autoindent nosmartindent formatoptions=tcroqj
-set foldmethod=indent foldcolumn=1 foldlevel=3
-
-" tabs, wrap and case
-set nojoinspaces nowrap ignorecase incsearch hlsearch infercase smartcase
-set tabstop& expandtab nosmarttab softtabstop=-1 shiftround shiftwidth=4
-set list listchars=tab:<->,trail:_ textwidth=89 colorcolumn=+1
-
-" Russian keyboard and spelling
+" keyboard and spelling
 if v:lang =~? '^ru'
     set keymap=russian-jcukenwin spelllang=ru_yo,en
     set iminsert& imsearch& nolangremap

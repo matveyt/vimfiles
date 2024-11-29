@@ -4,7 +4,7 @@
  " :[mods]Nomove {cmd}
  " save/restore cursor "quasi-modifier"
 command -nargs=+ -complete=command Nomove
-    \   call better#nomove(<f-args>)
+    \   call better#nomove(<q-args>)
 
 " :[mods]Sorted[!] {cmd}
 " sorted "quasi-modifier"
@@ -31,7 +31,7 @@ command -range -bar -bang Comment
 " :Diff[!] [spec]
 " show diff with original file or git object
 command -bang -nargs=? Diff
-    \   call better#diff(<bang>0, <f-args>)
+    \   call better#diff(<q-args> ?? (<bang>0 || &modified ? '' : 'HEAD'))
 
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script

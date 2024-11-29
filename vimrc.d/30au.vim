@@ -23,11 +23,11 @@ augroup vimrc | au!
         \   if &modified && &modeline && &modelines > 0
         \ |     let s:lc_time = v:lc_time
         \ |     language time C
-        \ |     call better#nomove('
+        \ |     call printf('
         \               silent! undojoin
         \           |   keepj keepp 1,%ds/\v\C%s\s*\zs.*/%s/e',
         \           min([&modelines, line('$')]), '%(Last Change|Date):',
-        \           strftime('%Y %b %d'))
+        \           strftime('%Y %b %d'))->better#nomove()
         \ |     execute 'language time' remove(s:, 'lc_time')
         \ | endif
     " adjust some buffers

@@ -84,18 +84,16 @@ function! better#defaults(dict, base=v:null) abort
     endif
 endfunction
 
-" better#diff([{org} [, {spec}]])
+" better#diff([{spec}])
 " improved :DiffOrig implementation
-function! better#diff(org=v:false, ...) abort
-    let l:org = a:org || &modified && !a:0
-    let l:spec = get(a:, 1, 'HEAD')
+function! better#diff(spec='HEAD') abort
     execute matchstr(&diffopt, 'vertical') 'new'
     setlocal bufhidden=wipe buftype=nofile nobuflisted noswapfile
     let &l:filetype = getbufvar(0, '&filetype')
     nnoremap <buffer>q <C-W>q
-    execute 'silent file' l:org ? 'ORG' : l:spec
-    execute 'silent read ++edit' l:org ? '#' : printf('!git -C %s show %s:./%s',
-        \ shellescape(expand('#:p:h'), 1), l:spec, shellescape(expand('#:t'), 1))
+    execute 'silent file' a:spec ?? 'ORIG'
+    execute 'silent read ++edit' empty(a:spec) ? '#' : printf('!git -C %s show %s:./%s',
+        \ shellescape(expand('#:p:h'), 1), a:spec, shellescape(expand('#:t'), 1))
     1delete_
     diffthis
     wincmd p
@@ -187,11 +185,11 @@ function! better#nextfile(offset=1, file=expand('%:p')) abort
     return empty(l:name) ? '' : l:name[(index(l:name, a:file) + a:offset) % len(l:name)]
 endfunction
 
-" better#nomove({fmt}, {expr1} ...)
-" format and execute command without moving cursor
-function! better#nomove(...) abort
+" better#nomove({cmd})
+" execute command while keeping cursor in place
+function! better#nomove(cmd) abort
     defer winrestview(winsaveview())
-    return execute(stridx(a:1, '%') < 0 ? join(a:000) : call('printf', a:000), '')
+    return execute(a:cmd, '')
 endfunction
 
 " better#once({func} [, {sid} [, ...]])
