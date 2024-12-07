@@ -30,9 +30,9 @@ function! term#sendkeys(buf, keys) abort
     if !term#running(a:buf)
         return
     endif
-    let l:winid = better#bufwinid(a:buf)
     " accept List too
     let l:keys = (type(a:keys) == v:t_list) ? join(a:keys, "\r").."\r" : a:keys
+
     if exists('*chansend')
         " Neovim has chansend()
         call chansend(getbufvar(a:buf, '&channel'), l:keys)
@@ -41,11 +41,12 @@ function! term#sendkeys(buf, keys) abort
         call term_sendkeys(a:buf, l:keys)
     else
         " try to put it directly (works in Neovim only?)
-        call better#win_execute(l:winid, "put =" ..
+        call better#win_execute(bufwinid(a:buf), "put =" ..
             \ escape(tr(string(l:keys), "\n", "\r"), '|"'))
     endif
+
     " scrolling could come in handy in Terminal-Normal mode
-    call better#win_execute(l:winid, [
+    call better#win_execute(bufwinid(a:buf), [
         \ 'if line("$") > line("w$")',
         \   'normal! 999999z-',
         \ 'endif',

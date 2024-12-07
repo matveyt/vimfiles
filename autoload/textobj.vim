@@ -80,7 +80,7 @@ function! textobj#set_chars(first, last) abort
     call setpos("'<", a:first)
     call setpos("'>", a:last)
     let l:vmode = visualmode() is# 'v' || empty(visualmode()) ? 'gv' : 'gvv'
-    let l:vmode .= &selection is# 'exclusive' ? 'l' : ''
+    let l:vmode ..= &selection is# 'exclusive' ? 'l' : ''
     return mode() is# 'n' ? printf(":\<C-U>normal! %s\<CR>", l:vmode) : l:vmode
 endfunction
 

@@ -15,7 +15,7 @@ function s:preprocess(script) abort
             else
                 " join line-continuation
                 if l:cont[1] is# '\'
-                    let a:script[l:curr - 1] .= l:cont[2]
+                    let a:script[l:curr - 1] ..= l:cont[2]
                 endif
                 unlet a:script[l:curr]
                 let l:last -= 1
@@ -74,7 +74,7 @@ function! shebang#execute(buf, line1, line2, win=0) abort
         " parse shebang line
         let l:shebang = getbufline(l:bufnr, 1)[0]
         if l:shebang !~# '^#!'
-            throw 'No shebang in buffer #' . l:bufnr
+            throw 'No shebang in buffer #'..l:bufnr
         endif
         let l:cmd = s:command(l:shebang, l:dosource ? l:fname : '-')
         if !empty(l:cmd)

@@ -4,7 +4,7 @@
 " Vim options
 set autoindent autoread backspace=indent,eol,start nobackup belloff=all browsedir=buffer
 set clipboard& colorcolumn=+1 complete=.,w,b completeopt& confirm cursorline
-set diffopt+=vertical display=lastline noequalalways fileformats=unix,dos
+set diffopt+=vertical display=lastline noequalalways expandtab fileformats=unix,dos
 set fillchars=vert:\ ,fold:\ ,diff:\  foldcolumn=1 foldlevel=3 foldmethod=indent
 set formatoptions=tcroqj nofsync grepformat=%f:%l:%c:%m
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
@@ -56,11 +56,11 @@ endif
 
 " disable standard plugins
 call better#defaults(#{gzip: 0, netrwPlugin: 0, spellfile_plugin: 0, tarPlugin: 0,
-    \ zipPlugin: 0, 2html_plugin: 0}, 'loaded')
+    \ tutor_mode_plugin: 0, zipPlugin: 0, 2html_plugin: 0}, 'loaded')
 call better#defaults(has('nvim') ? #{node_provider: 0, perl_provider: 0,
     \ python_provider: 0, python3_provider: 0, ruby_provider: 0, remote_plugins: 0,
-    \ shada_plugin: 0, tutor_mode_plugin: 0} : #{getscriptPlugin: 0, logiPat: 0,
-    \ rrhelper: 0, vimballPlugin: 0}, 'loaded')
+    \ shada_plugin: 0} : #{getscriptPlugin: 0, logiPat: 0, rrhelper: 0,
+    \ vimballPlugin: 0}, 'loaded')
 
 " ftplugin config
 call better#defaults(#{asmsyntax: 'fasm', is_bash: 1, no_pdf_maps: 1})

@@ -44,7 +44,7 @@ function s:on_enter() abort
     if empty(l:group) || empty(l:item)
         return "\<CR>"
     elseif l:group is# 'Mark'
-        return '`' . l:item[1]
+        return '`'..l:item[1]
     else
         return printf(":%s %s\<CR>", l:group is# 'Session' ? 'source' : 'edit',
             \ fnameescape(l:item[2]))

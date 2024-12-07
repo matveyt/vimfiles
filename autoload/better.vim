@@ -12,34 +12,11 @@ function! better#aug_remove(...) abort
     endfor
 endfunction
 
-" better#bufwinid({expr})
-" prefer current window ID;
-" not confined to the current tab
-function! better#bufwinid(buf) abort
-    let l:bufnr = bufnr(a:buf)
-    if l:bufnr == -1
-        " invalid buffer
-        return -1
-    elseif l:bufnr == bufnr()
-        " current buffer
-        return win_getid()
-    endif
-    " find in the current tab
-    let l:winid = bufwinid(l:bufnr)
-    if l:winid == -1
-        " find first match
-        let l:winid = get(win_findbuf(l:bufnr), 0, -1)
-    endif
-    return l:winid
-endfunction
-
 " better#bwipeout({expr})
 " wipe buffers matching {expr}
 function! better#bwipeout(expr) abort
     let l:buffers = getbufinfo()->filter(a:expr)
-    if !empty(l:buffers)
-        execute 'bwipeout' l:buffers->map('v:val.bufnr')->join()
-    endif
+    call better#safe('bwipeout'..join(map(l:buffers, 'v:val.bufnr')), !empty(l:buffers))
 endfunction
 
 " better#call({func}, {arglist})
@@ -185,11 +162,11 @@ function! better#nextfile(offset=1, file=expand('%:p')) abort
     return empty(l:name) ? '' : l:name[(index(l:name, a:file) + a:offset) % len(l:name)]
 endfunction
 
-" better#nomove({cmd})
+" better#nomove({cmd} [, {silent}])
 " execute command while keeping cursor in place
-function! better#nomove(cmd) abort
+function! better#nomove(cmd, silent='') abort
     defer winrestview(winsaveview())
-    return execute(a:cmd, '')
+    return execute(a:cmd, a:silent)
 endfunction
 
 " better#once({func} [, {sid} [, ...]])
@@ -203,26 +180,16 @@ function! better#once(name, sid=expand('<SID>'), ...) abort
     endif
 endfunction
 
-" better#pick({name} [, {cmd} [, {items} [, {items2lines}]]])
-" pick parameter and execute {cmd}
-function! better#pick(...) abort
-    let l:name  = get(a:, 1, v:null) isnot v:null ? a:1 : 'help'
-    let l:cmd   = get(a:, 2, v:null) isnot v:null ? a:2 : '{name} {items[result - 1]}'
-    let l:items = get(a:, 3, v:null) isnot v:null ? a:3 :
-        \ getcompletion(l:name..' ', 'cmdline')
-    let l:lines = get(a:, 4, v:null) isnot v:null ? copy(l:items)->map(a:4) : l:items
-    call popup#menu(l:lines, #{title: l:name->printf('[%s]'), maxheight: &pumheight ?
-        \ &pumheight : &lines / 2, minwidth: &pumwidth, callback: {id, result ->
-        \ (result < 1 || result > len(items)) ? v:null :
-        \ l:cmd->substitute('{\([^}]\+\)}', '\=eval(submatch(1))', 'g')->execute('')}})
-endfunction
-
-" better#put({how} [, {reg} [, {count}]])
+" better#putline({how} [, {reg} [, {count}]])
 " put register linewise
-function! better#put(how, reg=v:register, count=v:count1) abort
-    defer setreg(a:reg, '', 'a'..getregtype(a:reg))
-    call setreg(a:reg, '', 'aV')
-    execute printf('normal! "%s%d%s', a:reg, a:count, a:how)
+function! better#putline(how, reg=v:register, count=v:count1) abort
+    let l:info = getreginfo(a:reg)
+    let l:reg = get(l:info, 'points_to', a:reg)
+    if l:info.regtype isnot# 'V'
+        defer setreg(l:reg, '', 'a'..l:info.regtype)
+        call setreg(l:reg, '', 'aV')
+    endif
+    execute printf('normal! "%s%d%s', l:reg, a:count, a:how)
 endfunction
 
 " better#safe({what} [, {cond}])
@@ -249,12 +216,9 @@ endfunction
 function! better#stdpath(what, ...) abort
     let l:path = exists('*stdpath') ? stdpath(a:what) : strpart(&pp, 0, stridx(&pp, ','))
     if a:0
-        let l:path .= '/' . call('printf', a:000)
+        let l:path ..= '/'..call('printf', a:000)
     endif
-    if exists('+shellslash') && &shellslash
-        let l:path = tr(l:path, '\', '/')
-    endif
-    return l:path
+    return &shellslash ? tr(l:path, '\', '/') : l:path
 endfunction
 
 " better#win_execute({id}, {command} [, {silent}])

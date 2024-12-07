@@ -1,6 +1,20 @@
 " This is a part of my vim configuration.
 " https://github.com/matveyt/vimfiles
 
+" popup#pick({name} [, {cmd} [, {items} [, {items2lines}]]])
+" pick parameter and execute {cmd}
+function! popup#pick(...) abort
+    let l:name  = get(a:, 1, v:null) isnot v:null ? a:1 : 'help'
+    let l:cmd   = get(a:, 2, v:null) isnot v:null ? a:2 : '{name} {items[result - 1]}'
+    let l:items = get(a:, 3, v:null) isnot v:null ? a:3 :
+        \ getcompletion(l:name..' ', 'cmdline')
+    let l:lines = get(a:, 4, v:null) isnot v:null ? copy(l:items)->map(a:4) : l:items
+    call popup#menu(l:lines, #{title: l:name->printf('[%s]'), maxheight: &pumheight ?
+        \ &pumheight : &lines / 2, minwidth: &pumwidth, callback: {id, result ->
+        \ (result < 1 || result > len(items)) ? v:null :
+        \ l:cmd->substitute('{\([^}]\+\)}', '\=eval(submatch(1))', 'g')->execute('')}})
+endfunction
+
 " Supported options:
 "   line, col, pos, {max,min}{height,width}, firstline, title, wrap, close, highlight,
 "   padding, border, borderchars, time, cursorline, filter, filtermode, callback
