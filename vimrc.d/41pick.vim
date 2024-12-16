@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 " browse (a)rglist, (b)uffers, (f)ind, command-line (H)istory, (m)arks, (S)essions,

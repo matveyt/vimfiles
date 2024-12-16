@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 " better#aug_remove({name} ...)
@@ -16,14 +16,16 @@ endfunction
 " wipe buffers matching {expr}
 function! better#bwipeout(expr) abort
     let l:buffers = getbufinfo()->filter(a:expr)
-    call better#safe('bwipeout'..join(map(l:buffers, 'v:val.bufnr')), !empty(l:buffers))
+    if !empty(l:buffers)
+        execute 'bwipeout' join(map(l:buffers, 'v:val.bufnr'))
+    endif
 endfunction
 
 " better#call({func}, {arglist})
 " better#call({func}, {arg1} ...)
 " safe function call
 function! better#call(func, ...) abort
-    let l:args = (a:0 == 1 && type(a:1) == v:t_list) ? a:1 : a:000
+    let l:args = (get(a:, 1)->type() is v:t_list) ? a:1 : a:000
     try | noautocmd return call(a:func, l:args)
     catch | return get(l:args, 0)
     endtry
@@ -32,8 +34,7 @@ endfunction
 " better#comment({line1}, {line2} [, {pi}])
 " toggle comments
 function! better#comment(line1, line2, pi=&pi) abort
-    let l:lnum = nextnonblank(a:line1)
-    let l:end = prevnonblank(a:line2)
+    let [l:lnum, l:end] = [nextnonblank(a:line1), prevnonblank(a:line2)]
     if l:lnum >= 1 && l:lnum <= l:end
         let l:pat = printf('^\(\s*\)\(%s\)$', printf(escape(&cms, '^$.*~[]\'), '\(.*\)'))
         let l:sub = '\=empty(submatch(2)) ? submatch(0) : submatch(1)..submatch(3)'
@@ -41,8 +42,8 @@ function! better#comment(line1, line2, pi=&pi) abort
             let l:pat = a:pi ? '^\s*\zs.*' : '.*'
             let l:sub = printf(escape(&cms, '&\'), '&')
         endif
-        call setline(l:lnum, map(getline(l:lnum, l:end), {_, v -> empty(v) ? v :
-            \ substitute(v, l:pat, l:sub, '')}))
+        call getline(l:lnum, l:end)->map({_, v -> substitute(v, l:pat, l:sub, '')})
+            \ ->setline(l:lnum)
     endif
 endfunction
 
@@ -69,8 +70,9 @@ function! better#diff(spec='HEAD') abort
     let &l:filetype = getbufvar(0, '&filetype')
     nnoremap <buffer>q <C-W>q
     execute 'silent file' a:spec ?? 'ORIG'
-    execute 'silent read ++edit' empty(a:spec) ? '#' : printf('!git -C %s show %s:./%s',
-        \ shellescape(expand('#:p:h'), 1), a:spec, shellescape(expand('#:t'), 1))
+    execute 'silent read ++edit' empty(a:spec) ? '#' : printf('!%s -C %s show %s:./%s',
+        \ better#exepath('git'), shellescape(expand('#:p:h'), 1), a:spec,
+        \ shellescape(expand('#:t'), 1))
     1delete_
     diffthis
     wincmd p
@@ -106,7 +108,16 @@ function! better#encode(line1, line2, oper) range abort
             \ repeat('\n\', k < l:last)}
     endif
 
-    call setline(a:line1, getline(a:line1, a:line2)->map(l:Func))
+    return getline(a:line1, a:line2)->map(l:Func)->setline(a:line1)
+endfunction
+
+" better#exepath({tool})
+" preset/cached exepath()
+function! better#exepath(tool) abort
+    if !exists('g:exepath_{a:tool}')
+        let g:exepath_{a:tool} = exepath(a:tool)->tr('\', '/')
+    endif
+    return g:exepath_{a:tool}
 endfunction
 
 " better#gcc_include([{gcc} [, {ft} [, {force}]]])
@@ -129,14 +140,15 @@ function! better#gcc_include(gcc=b:current_compiler, ft=&ft, force=v:false) abor
 endfunction
 
 " better#guifont({typeface} [, {height}])
-" set &guifont
+" build &guifont from params
 function! better#guifont(typeface, height=0) abort
     let l:fonts = split(a:typeface ?? &guifont, ',')
     let l:prefix = has('gui_gtk') ? ' ' : ':h'
-    let s:fontheight = (a:height >= 10) ? a:height : get(s:, 'fontheight', 10) + a:height
+    let s:font_height = (a:height < 10) ? get(s:, 'font_height', 10) + a:height :
+        \ a:height
     call map(l:fonts, {_, v -> substitute(trim(v), '\v('..l:prefix..'(\d+))?$',
-        \ printf('\=%s..%d', string(l:prefix), s:fontheight), '')})
-    silent! let &guifont = join(l:fonts, ',')
+        \ printf('\=%s..%d', string(l:prefix), s:font_height), '')})
+    return join(l:fonts, ',')
 endfunction
 
 " better#gui_running()
@@ -148,13 +160,13 @@ endfunction
 
 " better#is_blank_buffer([{buf}])
 " check if buffer is blank
-function! better#is_blank_buffer(buf='') abort
+function! better#is_blank_buffer(buf='%') abort
     return a:buf->bufname()->empty() && a:buf->getbufvar('&buftype')->empty() &&
         \ a:buf->getbufvar('&modified') == 0
 endfunction
 
 " better#nextfile([{offset} [, {file}]])
-" find next file in the same directory with respect to 'wildignore'
+" find next file in the same directory with respect to &wildignore
 function! better#nextfile(offset=1, file=expand('%:p')) abort
     let l:slash = exists('+shellslash') && !&shellslash ? '\' : '/'
     let l:path = fnamemodify(a:file, ':h')..l:slash
@@ -173,40 +185,37 @@ endfunction
 " call function once
 function! better#once(name, sid=expand('<SID>'), ...) abort
     let s:called = get(s:, 'called', {})
-    let l:func = a:sid..a:name
-    if !has_key(s:called, l:func)
-        let s:called[l:func] = v:true
-        return better#call(l:func, a:000)
+    let l:name = a:sid..a:name
+    if !has_key(s:called, l:name)
+        let s:called[l:name] = v:true
+        return better#call(l:name, a:000)
     endif
 endfunction
 
-" better#putline({how} [, {reg} [, {count}]])
-" put register linewise
-function! better#putline(how, reg=v:register, count=v:count1) abort
+" better#putreg({type} [, {oper} [, {reg} [, {count}]]])
+" put register with type overridden
+function! better#putreg(type, oper='p', reg=v:register, count=v:count1) abort
     let l:info = getreginfo(a:reg)
     let l:reg = get(l:info, 'points_to', a:reg)
-    if l:info.regtype isnot# 'V'
+    if l:info.regtype isnot# a:type
         defer setreg(l:reg, '', 'a'..l:info.regtype)
-        call setreg(l:reg, '', 'aV')
+        call setreg(l:reg, '', 'a'..a:type)
     endif
-    execute printf('normal! "%s%d%s', l:reg, a:count, a:how)
+    execute 'normal! "'..l:reg..a:count..a:oper
 endfunction
 
-" better#safe({what} [, {cond}])
+" better#safe({what})
 " execute command or set option safely
-function! better#safe(what, ...) abort
-    if a:0
-        let l:cond = a:1
-    else
-        let [l:str, _, l:end] = matchstrpos(a:what, '\a\+')
-        if l:str is# 'set' || l:str =~# '^setl\%[ocal]$' || l:str =~# '^setg\%[lobal]$'
-            let l:str = matchstr(a:what, '\a\+', l:end + 1)
-            let l:cond = exists('+'..substitute(l:str, '^\C\%(inv\|no\)', '', ''))
-        else
-            let l:cond = exists(':'..l:str) == 2
+function! better#safe(what) abort
+    let [l:str, _, l:end] = matchstrpos(a:what, '\a\+')
+    if l:str is# 'set' || l:str =~# '^setl\%[ocal]$' || l:str =~# '^setg\%[lobal]$'
+        " set option
+        if exists('+'..substitute(matchstr(a:what, '\a\+', l:end + 1),
+            \ '^\C\%(inv\|no\)', '', ''))
+            execute a:what
         endif
-    endif
-    if l:cond
+    elseif exists(':'..l:str) == 2
+        " execute command
         execute a:what
     endif
 endfunction
@@ -214,11 +223,33 @@ endfunction
 " better#stdpath({what}, [{subdir} ...])
 " return full path to {subdir} under Vim/Neovim stdpath()
 function! better#stdpath(what, ...) abort
-    let l:path = exists('*stdpath') ? stdpath(a:what) : strpart(&pp, 0, stridx(&pp, ','))
-    if a:0
-        let l:path ..= '/'..call('printf', a:000)
+    if exists('*stdpath')
+        let l:path = stdpath(a:what)
+    else
+        if !exists('s:stdpath')
+            let l:packpath = split(&packpath, ',')
+            let l:directory = split(&directory, ',')
+            let s:stdpath = {}
+            let s:stdpath.config = l:packpath[0]
+            let s:stdpath.data = s:stdpath.config
+            let s:stdpath.config_dirs = l:packpath[1:]
+            let s:stdpath.data_dirs = []
+            let s:stdpath.cache = tempname()->fnamemodify(':h')
+            let s:stdpath.run = s:stdpath.cache
+            let s:stdpath.state = get(l:directory, 1, s:stdpath.cache)
+            let s:stdpath.log = s:stdpath.state
+        endif
+        let l:path = get(s:stdpath, a:what, '.')
     endif
-    return &shellslash ? tr(l:path, '\', '/') : l:path
+    if type(l:path) is v:t_string
+        if a:0
+            let l:path ..= '/'..call('printf', a:000)
+        endif
+        if &shellslash
+            let l:path = tr(l:path, '\', '/')
+        endif
+    endif
+    return l:path
 endfunction
 
 " better#win_execute({id}, {command} [, {silent}])

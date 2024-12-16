@@ -1,18 +1,17 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 " Vim options
-set autoindent autoread backspace=indent,eol,start nobackup belloff=all browsedir=buffer
-set clipboard& colorcolumn=+1 complete=.,w,b completeopt& confirm cursorline
-set diffopt+=vertical display=lastline noequalalways expandtab fileformats=unix,dos
+set autoindent autoread backspace=indent,eol,start nobackup belloff=all clipboard&
+set colorcolumn=+1 complete=.,w,b completeopt& confirm cursorline diffopt+=vertical
+set display=lastline noequalalways expandtab fileformats=unix,dos
 set fillchars=vert:\ ,fold:\ ,diff:\  foldcolumn=1 foldlevel=3 foldmethod=indent
 set formatoptions=tcroqj nofsync grepformat=%f:%l:%c:%m
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
-set guicursor+=a:blinkon0 guioptions-=t guioptions+=! nohidden history=500 hlsearch
-set ignorecase incsearch infercase nojoinspaces keymodel=startsel keywordprg=:Man
-set laststatus=2 lazyredraw linespace=1 list listchars=tab:<->,trail:_ modeline mouse=ar
-set mousemodel=extend nrformats=bin,hex number pyxversion=3 noruler scrolloff=2
-set selection=exclusive selectmode&
+set guicursor+=a:blinkon0 nohidden history=500 hlsearch ignorecase incsearch infercase
+set nojoinspaces keymodel=startsel keywordprg=:Man laststatus=2 lazyredraw linespace=1
+set list listchars=tab:<->,trail:_ modeline mouse=ar mousemodel=extend nrformats=bin,hex
+set number pyxversion=3 noruler scrolloff=2 selection=exclusive selectmode&
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize shiftround shiftwidth=4
 set shortmess=cfiIlnoOtTx showcmd showcmdloc=statusline showmatch noshowmode
 set showtabline=2 sidescroll=1 sidescrolloff=0 signcolumn& smartcase nosmartindent
@@ -24,7 +23,7 @@ set nowrap nowritebackup
 
 " shell
 if has('win32')
-    let &shell = exepath('bash')->tr('\', '/')
+    let &shell = better#exepath('bash')
     if empty(&shell)
         set shell&
     else

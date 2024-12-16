@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 " s:nextprev({letter}, {prefix})
@@ -87,20 +87,20 @@ call s:toggle('w', 'wrap')
 call s:toggle('x', 'cul', 'setl cul cuc', 'setl nocul nocuc')
 
 " unimpaired-pasting
-nnoremap <silent>[P :<C-U>call better#putline('[P')<CR>
-nnoremap <silent>]P :<C-U>call better#putline(']P')<CR>
+nnoremap <silent>[P :<C-U>call better#putreg('V', '[P')<CR>
+nnoremap <silent>]P :<C-U>call better#putreg('V', ']P')<CR>
 " [p and ]p to adjust indent and put linewise
-nnoremap <silent>[p :<C-U>call better#putline('[p')<CR>
-nnoremap <silent>]p :<C-U>call better#putline(']p')<CR>
+nnoremap <silent>[p :<C-U>call better#putreg('V', '[p')<CR>
+nnoremap <silent>]p :<C-U>call better#putreg('V', ']p')<CR>
 " <P and <p to put and shift left
-nnoremap <silent><P :<C-U>call better#putline('[P')<CR><']
-nnoremap <silent><p :<C-U>call better#putline(']p')<CR><']
+nnoremap <silent><P :<C-U>call better#putreg('V', '[P')<CR><']
+nnoremap <silent><p :<C-U>call better#putreg('V', ']p')<CR><']
 " >P and >p to put and shift right
-nnoremap <silent>>P :<C-U>call better#putline('[P')<CR>>']
-nnoremap <silent>>p :<C-U>call better#putline(']p')<CR>>']
+nnoremap <silent>>P :<C-U>call better#putreg('V', '[P')<CR>>']
+nnoremap <silent>>p :<C-U>call better#putreg('V', ']p')<CR>>']
 " =P and =p to put and re-indent
-nnoremap <silent>=P :<C-U>call better#putline('[P')<CR>=']
-nnoremap <silent>=p :<C-U>call better#putline(']p')<CR>=']
+nnoremap <silent>=P :<C-U>call better#putreg('V', '[P')<CR>=']
+nnoremap <silent>=p :<C-U>call better#putreg('V', ']p')<CR>=']
 
 " [op ]op yop
 nnoremap <silent>[op :set paste<Bar>au InsertLeave * ++once set paste&<CR>O

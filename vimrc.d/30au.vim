@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 augroup vimrc | au!
@@ -30,15 +30,15 @@ augroup vimrc | au!
         \           strftime('%Y %b %d'))->better#nomove()
         \ |     execute 'language time' remove(s:, 'lc_time')
         \ | endif
-    " adjust some buffers
-    autocmd FileType man,qf setlocal colorcolumn& cursorline& list&
     " shut off &hlsearch
     autocmd CursorHold,InsertEnter * eval !v:hlsearch || feedkeys("\<cmd>noh\r")
     " save session on exit
     autocmd VimLeavePre *
         \   if !v:dying
         \ |     call better#bwipeout('v:val.bufnr->getbufvar("&ft") =~# "^git"')
-        \ |     call better#safe('mksession! `=v:this_session`', !empty(v:this_session))
+        \ |     if !empty(v:this_session)
+        \ |         mksession! `=v:this_session`
+        \ |     endif
         \ | endif
 augroup end
 
@@ -51,30 +51,46 @@ function s:gui() abort
     call better#safe('GuiPopupmenu 0')
     call better#safe('GuiRenderLigatures 1')
     call better#safe('GuiWindowOpacity 1.0')
+    call better#safe('set browsedir=buffer')
     call better#safe('set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~')
+    call better#safe('set guioptions-=t')
+    call better#safe('set guioptions+=!')
     call better#safe('set renderoptions=type:directx')
     call better#safe('set scrollfocus')
     call better#defaults(#{glyph: [0x1F4C2, 0x1F4C4]}, 'drvo')
-    call better#defaults(#{fontlist: ['Inconsolata LGC', 'JetBrains Mono',
+    call better#defaults(#{font_list: ['Inconsolata LGC', 'JetBrains Mono',
         \ 'Liberation Mono', 'PT Mono', 'SF Mono', 'Ubuntu Mono']})
     14Font PT Mono
 endfunction
 
 function s:xterm() abort
-    call better#safe('set termguicolors', $TERM_PROGRAM isnot# 'Apple_Terminal')
     call better#safe('set ttyfast')
-    call better#safe('set ttymouse=sgr', has('mouse_sgr'))
-    call better#safe("set t_EI=\e[2\\ q t_SR=\e[4\\ q t_SI=\e[6\\ q",
-        \ !has('nvim') && ($TERM_PROGRAM is# 'mintty' || $TERM_PROGRAM is# 'tmux'))
+    if has('mouse_sgr')
+        set ttymouse=sgr
+    endif
+    let &termguicolors = ($TERM_PROGRAM isnot# 'Apple_Terminal')
+    if !has('nvim') && ($TERM_PROGRAM is# 'mintty' || $TERM_PROGRAM is# 'tmux')
+        let &t_EI = "\e[2 q"
+        let &t_SR = "\e[4 q"
+        let &t_SI = "\e[6 q"
+    endif
 endfunction
 
 function s:main() abort
-    call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
-    silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
-    if !exists('g:colors_name')
-        set background=light
-        silent! colorscheme modest
+    if !exists('#filetypeplugin#FileType')
+        filetype plugin on
     endif
+    if !exists('#filetypeindent#FileType')
+        filetype indent on
+    endif
+    if !exists('#syntaxset#FileType')
+        syntax enable
+    endif
+    call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
+
+    set background=light
+    silent! colorscheme modest
+    silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
 
     if bufnr('$') == 1 && better#is_blank_buffer(1)
         Welcome

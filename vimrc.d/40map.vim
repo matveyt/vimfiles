@@ -1,7 +1,7 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
-" disable Neovim default-mappings
+" remove Neovim default-mappings
 mapclear | mapclear! | tmapclear
 
 " ';' to go to the command line quickly
@@ -33,8 +33,8 @@ nmap Q <cmd>Zoom<CR>
 nmap <F8> <plug>colorscheme;
 " <F9> to set &guifont; [count]<S-F9>/[count]<M-F9> to change font size
 nmap <F9> <plug>font;
-nmap <S-F9> <cmd>call better#guifont(v:null, v:count1)<CR>
-nmap <M-F9> <cmd>call better#guifont(v:null, -v:count1)<CR>
+nmap <S-F9> <cmd>let &guifont = better#guifont(v:null, v:count1)<CR>
+nmap <M-F9> <cmd>let &guifont = better#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
 nmap <F11> <cmd>call term#start()<CR>
 " <C-@> to insert previously inserted text and stop insert (also in Normal mode)
@@ -76,7 +76,7 @@ vnoremap <C-Insert> "+y
 vnoremap <S-Insert> "+P
 nnoremap <S-Insert> "+gP
 noremap! <S-Insert> <C-R>+
-tmap <S-Insert> <cmd>call term#sendkeys('', @+)<CR>
+tmap <S-Insert> <cmd>call term#sendkeys('%', @+)<CR>
 
 " gc to toggle comments
 nnoremap <expr><silent>gc opera#mapto('Comment!')
@@ -107,7 +107,7 @@ noremap <expr><silent><plug>ii; textobj#indent(v:count1, 0, 0)
 noremap <expr><silent><plug>aI; textobj#indent(v:count1, 1, 1)
 noremap <expr><silent><plug>iI; textobj#indent(v:count1, 0, 1)
 for s:obj in ['ae', 'ie', 'al', 'il', 'ai', 'ii', 'aI', 'iI']
-    execute printf('omap %s <plug>%s;', s:obj, s:obj)
-    execute printf('xmap %s <plug>%s;', s:obj, s:obj)
+    execute 'omap' s:obj '<plug>'..s:obj..';'
+    execute 'xmap' s:obj '<plug>'..s:obj..';'
 endfor
 unlet s:obj

@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
  " :[mods]Nomove {cmd}
@@ -36,16 +36,16 @@ command -bang -nargs=? Diff
 " :[range]Execute [winnr]
 " execute VimScript or any "shebang"-script
 command -range=% -bar -nargs=? Execute
-    \   call shebang#execute('', <line1>, <line2>, <args>)
+    \   call shebang#execute('%', <line1>, <line2>, <args>)
 
 " :[count]Font [typeface]...
 " set &guifont
 function s:fontcomplete(A, L, P) abort
-    return better#gui_running() ? join(g:fontlist, "\n") : ''
+    return get(g:, 'font_list', [])->join("\n")
 endfunction
 command -count -nargs=? -complete=custom,s:fontcomplete Font
     \   if <count> || !empty(<q-args>)
-    \ |     call better#guifont(<q-args>, <count>)
+    \ |     let &guifont = better#guifont(<q-args>, <count>)
     \ | else
     \ |     echo &guifont
     \ | endif
@@ -57,12 +57,12 @@ function s:gitcomplete(A, L, P) abort
         \ 'merge', 'pull', 'push', 'remote', 'status'], "\n")
 endfunction
 command -nargs=* -complete=custom,s:gitcomplete Git
-    \   !git -C %:p:h:S <args>
+    \   execute '!' better#exepath('git') '-C %:p:h:S <args>'
 
 " :Highlight[!]
 " show :highlight under cursor
 command -bar -bang Highlight
-    \   execute <bang>0..'verbose highlight'
+    \   execute <bang>0 'verbose highlight'
     \       synIDattr(synID(line('.'), col('.'), 1), 'name') ?? 'Normal'
 
 " :Man [{number}] {name}

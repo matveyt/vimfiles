@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 let b:undo_ftplugin ..= ' | setl so< | nmapc <buffer>'

@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 " Show Sessions, Marks & MRU files
@@ -33,7 +33,7 @@ endfunction
 function s:add_group(title, items) abort
     if !empty(a:items)
         call append('$', ['', a:title] + map(a:items[:], {k, v ->
-            \ type(v) == v:t_string ? printf('[%d] %s', k, v) :
+            \ type(v) is v:t_string ? printf('[%d] %s', k, v) :
             \ printf('[%s] %s:%d', v.mark[1:], v.file, v.pos[1])}))
     endif
 endfunction
@@ -42,15 +42,15 @@ function s:on_enter() abort
     let l:group = getline(search('^\a\+$', 'bnW'))
     let l:item = matchlist(getline('.'), '^\[\([0-9A-Z]\+\)\] \(.*\)')
     if empty(l:group) || empty(l:item)
-        return "\<CR>"
+        return "\r"
     elseif l:group is# 'Mark'
         return '`'..l:item[1]
     else
-        return printf(":%s %s\<CR>", l:group is# 'Session' ? 'source' : 'edit',
+        return printf(":%s %s\r", l:group is# 'Session' ? 'source' : 'edit',
             \ fnameescape(l:item[2]))
     endif
 endfunction
 
 function s:on_quit() abort
-    return printf(":%s\<CR>", tabpagenr('$') > 1 || winnr('$') > 1 ? 'close' : 'enew')
+    return printf(":%s\r", tabpagenr('$') > 1 || winnr('$') > 1 ? 'close' : 'enew')
 endfunction

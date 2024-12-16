@@ -1,4 +1,4 @@
-" This is a part of my vim configuration.
+" This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
 " preprocess VimScript to allow
@@ -81,7 +81,7 @@ function! shebang#execute(buf, line1, line2, win=0) abort
             call term#start(l:cmd)
             if !l:dosource
                 " send script through stdin
-                call term#sendkeys('', l:script)
+                call term#sendkeys('%', l:script)
             endif
         endif
     endif
