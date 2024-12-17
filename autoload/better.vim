@@ -42,8 +42,8 @@ function! better#comment(line1, line2, pi=&pi) abort
             let l:pat = a:pi ? '^\s*\zs.*' : '.*'
             let l:sub = printf(escape(&cms, '&\'), '&')
         endif
-        call getline(l:lnum, l:end)->map({_, v -> substitute(v, l:pat, l:sub, '')})
-            \ ->setline(l:lnum)
+        call getline(l:lnum, l:end)->map({_, v -> empty(v) ? v :
+            \ substitute(v, l:pat, l:sub, '')})->setline(l:lnum)
     endif
 endfunction
 
