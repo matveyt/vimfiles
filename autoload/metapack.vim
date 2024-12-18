@@ -2,7 +2,6 @@
 " https://github.com/matveyt/vimfiles
 
 let s:meta = #{
-    \ git: better#exepath('git'),
     \ depth: 1,
     \ dir: better#stdpath('config'),
     \ site: 'https://github.com',
@@ -21,8 +20,8 @@ function! metapack#init(pack) abort
         let l:remote = printf('%s/%s/%s', a:pack.site, a:pack.author, a:pack.manager)
         if !isdirectory(l:local)
             echomsg 'Cloning into' l:local
-            call printf('%s clone --depth=%d %s.git %s', a:pack.git, a:pack.depth,
-                \ l:remote, l:local->shellescape())->system()
+            call printf('%s clone --depth=%d %s.git %s', better#exepath('git'),
+                \ a:pack.depth, l:remote, l:local->shellescape())->system()
         endif
 
         " initialize package manager
