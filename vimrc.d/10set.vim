@@ -18,8 +18,8 @@ set showtabline=2 sidescroll=1 sidescrolloff=0 signcolumn& smartcase nosmartinde
 set nosmarttab softtabstop=-1 nosplitbelow splitright nostartofline suffixes& noswapfile
 set switchbuf=useopen tabpagemax=20 tabstop& textwidth=89 timeout& timeoutlen& title
 set ttimeout ttimeoutlen=50 undofile viewoptions=folds,curdir,cursor,slash,unix
-set viminfo=!,'100,<1000,s100,h virtualedit=all whichwrap+=<,>,[,] wildmenu wildoptions=
-set nowrap nowritebackup
+set viminfo=!,'100,<1000,s100,h virtualedit=all whichwrap=b,s,<,>,[,] wildmenu
+set wildoptions= nowrap nowritebackup
 
 " shell
 if has('win32')

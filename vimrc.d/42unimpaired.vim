@@ -82,7 +82,7 @@ call s:toggle('r', 'rnu')
 call s:toggle('s', 'spell')
 call s:toggle('t', 'cc', &cc, '')
 call s:toggle('u', 'cuc')
-call s:toggle('v', 've', &ve, '')
+call s:toggle('v', 've', 'all', 'none')
 call s:toggle('w', 'wrap')
 call s:toggle('x', 'cul', 'setl cul cuc', 'setl nocul nocuc')
 
