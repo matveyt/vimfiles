@@ -43,20 +43,18 @@ augroup vimrc | au!
 augroup end
 
 function s:gui() abort
-    call better#safe('GuiAdaptiveColor 1')
-    call better#safe('GuiAdaptiveFont 1')
-    call better#safe('GuiAdaptiveStyle Fusion')
-    call better#safe('GuiScrollBar 1')
-    call better#safe('GuiTabline 0')
-    call better#safe('GuiPopupmenu 0')
-    call better#safe('GuiRenderLigatures 1')
-    call better#safe('GuiWindowOpacity 1.0')
-    call better#safe('set browsedir=buffer')
-    call better#safe('set guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~')
-    call better#safe('set guioptions-=t')
-    call better#safe('set guioptions+=!')
-    call better#safe('set renderoptions=type:directx')
-    call better#safe('set scrollfocus')
+    if get(g:, 'GuiLoaded')
+        silent! GuiAdaptiveColor 1
+        silent! GuiAdaptiveFont 1
+        silent! GuiAdaptiveStyle Fusion
+        silent! GuiScrollBar 1
+        silent! GuiTabline 0
+        silent! GuiPopupmenu 0
+        silent! GuiRenderLigatures 1
+        silent! GuiWindowOpacity 1.0
+    endif
+    silent! set browsedir=buffer guiligatures=!\"#$%&()*+-./:<=>?@[]^_{\|~
+    silent! set guioptions-=t guioptions+=! renderoptions=type:directx scrollfocus
     call better#defaults(#{glyph: [0x1F4C2, 0x1F4C4]}, 'drvo')
     call better#defaults(#{font_list: ['Inconsolata LGC', 'JetBrains Mono',
         \ 'Liberation Mono', 'PT Mono', 'SF Mono', 'Ubuntu Mono']})
@@ -64,11 +62,11 @@ function s:gui() abort
 endfunction
 
 function s:xterm() abort
-    call better#safe('set ttyfast')
+    silent! set ttyfast
     if has('mouse_sgr')
         set ttymouse=sgr
     endif
-    let &termguicolors = ($TERM_PROGRAM isnot# 'Apple_Terminal')
+    silent! let &termguicolors = ($TERM_PROGRAM isnot# 'Apple_Terminal')
     if !has('nvim') && ($TERM_PROGRAM is# 'mintty' || $TERM_PROGRAM is# 'tmux')
         let &t_EI = "\e[2 q"
         let &t_SR = "\e[4 q"
@@ -77,21 +75,14 @@ function s:xterm() abort
 endfunction
 
 function s:main() abort
-    if !exists('#filetypeplugin#FileType')
-        filetype plugin on
-    endif
-    if !exists('#filetypeindent#FileType')
-        filetype indent on
-    endif
-    if !exists('#syntaxset#FileType')
+    call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
+    if !exists('#FileType')
+        filetype plugin indent on
         syntax enable
     endif
-    call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
-
     set background=light
     silent! colorscheme modest
     silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
-
     if bufnr('$') == 1 && better#is_blank_buffer(1)
         Welcome
     endif

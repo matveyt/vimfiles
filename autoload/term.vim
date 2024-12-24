@@ -41,12 +41,12 @@ function! term#sendkeys(buf, keys) abort
         call term_sendkeys(a:buf, l:keys)
     else
         " try to put it directly (works in Neovim only?)
-        call better#win_execute(bufwinid(a:buf), "put =" ..
-            \ escape(tr(string(l:keys), "\n", "\r"), '|"'))
+        call win_execute(bufwinid(a:buf), "put ="..string(l:keys)->tr("\n", "\r")
+            \ ->escape('|"')
     endif
 
-    " scrolling could come in handy in Terminal-Normal mode
-    call better#win_execute(bufwinid(a:buf), [
+    " scrolling comes in handy for Terminal-Normal mode
+    call win_execute(bufwinid(a:buf), [
         \ 'if line("$") > line("w$")',
         \   'normal! 999999z-',
         \ 'endif',

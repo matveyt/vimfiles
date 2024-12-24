@@ -71,7 +71,7 @@ nmap <plug>sessions; <cmd>call popup#pick('sessions',
 nmap <plug>templates; <cmd>call popup#pick('templates',
     \ '-read ++edit {fnameescape(items[result - 1])} <Bar>
     \ Nomove ''[,''] s/{"{"}\([^}]\+\)}/\=eval(submatch(1))/ge',
-    \ glob(better#stdpath('data', 'site/templates/%s/*', &filetype ?? 'empty'),
+    \ glob(better#stdpath('data', 'site/templates', &filetype ?? 'empty', '*'),
         \ v:false, v:true),
     \ 'fnamemodify(v:val, ":t")')<CR>
 

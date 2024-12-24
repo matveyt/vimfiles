@@ -70,9 +70,8 @@ function! better#diff(spec='HEAD') abort
     let &l:filetype = getbufvar(0, '&filetype')
     nnoremap <buffer>q <C-W>q
     execute 'silent file' a:spec ?? 'ORIG'
-    execute 'silent read ++edit' empty(a:spec) ? '#' : printf('!%s -C %s show %s:./%s',
-        \ better#exepath('git'), shellescape(expand('#:p:h'), 1), a:spec,
-        \ shellescape(expand('#:t'), 1))
+    execute 'silent read ++edit' empty(a:spec) ? '#' :
+        \ printf('!%s -C #:p:h:S show %s:./#:t:S', better#exepath('git'), a:spec)
     1delete_
     diffthis
     wincmd p
@@ -204,69 +203,12 @@ function! better#putreg(type, oper='p', reg=v:register, count=v:count1) abort
     execute 'normal! "'..l:reg..a:count..a:oper
 endfunction
 
-" better#safe({what})
-" execute command or set option safely
-function! better#safe(what) abort
-    let [l:str, _, l:end] = matchstrpos(a:what, '\a\+')
-    if l:str is# 'set' || l:str =~# '^setl\%[ocal]$' || l:str =~# '^setg\%[lobal]$'
-        " set option
-        if exists('+'..substitute(matchstr(a:what, '\a\+', l:end + 1),
-            \ '^\C\%(inv\|no\)', '', ''))
-            execute a:what
-        endif
-    elseif exists(':'..l:str) == 2
-        " execute command
-        execute a:what
-    endif
-endfunction
-
 " better#stdpath({what}, [{subdir} ...])
 " return full path to {subdir} under Vim/Neovim stdpath()
 function! better#stdpath(what, ...) abort
-    if exists('*stdpath')
-        let l:path = stdpath(a:what)
-    else
-        if !exists('s:stdpath')
-            let l:packpath = split(&packpath, ',')
-            let l:directory = split(&directory, ',')
-            let s:stdpath = {}
-            let s:stdpath.config = l:packpath[0]
-            let s:stdpath.data = s:stdpath.config
-            let s:stdpath.config_dirs = l:packpath[1:]
-            let s:stdpath.data_dirs = []
-            let s:stdpath.cache = tempname()->fnamemodify(':h')
-            let s:stdpath.run = s:stdpath.cache
-            let s:stdpath.state = get(l:directory, 1, s:stdpath.cache)
-            let s:stdpath.log = s:stdpath.state
-        endif
-        let l:path = get(s:stdpath, a:what, '.')
+    let l:path = exists('*stdpath') ? stdpath(a:what) : strpart(&pp, 0, stridx(&pp, ','))
+    if a:0
+        let l:path ..= '/'..join(a:000, '/')
     endif
-    if type(l:path) is v:t_string
-        if a:0
-            let l:path ..= '/'..call('printf', a:000)
-        endif
-        if &shellslash
-            let l:path = tr(l:path, '\', '/')
-        endif
-    endif
-    return l:path
-endfunction
-
-" better#win_execute({id}, {command} [, {silent}])
-" Vim/Neovim compatibility
-function! better#win_execute(id, command, silent='silent') abort
-    " call win_execute() if possible
-    if a:id < 1000
-        return ''
-    elseif exists('*win_execute')
-        return win_execute(a:id, a:command, a:silent)
-    endif
-    " try to switch active window
-    let l:curr = win_getid()
-    if a:id != l:curr
-        defer better#call('win_gotoid', l:curr)
-        call better#call('win_gotoid', a:id)
-    endif
-    " execute command and switch window back after that
-    return execute(a:command, a:silent)
+    return &shellslash ? tr(l:path, '\', '/') : l:path
 endfunction
