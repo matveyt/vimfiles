@@ -3,10 +3,10 @@
 
 augroup vimrc | au!
     " late init
-    autocmd VimEnter * ++nested
+    autocmd VimEnter * ++nested ++once
         \   call better#once(better#gui_running() ? 'gui' : (&t_Co >= 256) ? 'xterm' :
         \       'term')
-        \ | call better#once('main')
+        \ | call better#once('enter')
     silent! autocmd GUIEnter * ++nested call better#once('gui')
     silent! autocmd UIEnter * ++nested call better#once(v:event.chan > 0 ? 'gui' :
         \       'xterm')
@@ -74,13 +74,8 @@ function s:xterm() abort
     endif
 endfunction
 
-function s:main() abort
+function s:enter() abort
     call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
-    if !exists('#FileType')
-        filetype plugin indent on
-        syntax enable
-    endif
-    set background=light
     silent! colorscheme modest
     silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
     if bufnr('$') == 1 && better#is_blank_buffer(1)
