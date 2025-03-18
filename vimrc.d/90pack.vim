@@ -1,13 +1,6 @@
 " This is a part of my Vim configuration
 " https://github.com/matveyt/vimfiles
 
-if has('nvim')
-    packadd! neoclip
-    lua require"neoclip":setup()
-else
-    packadd! matchit
-endif
-
 " defaults to https://github.com/k-takata/minpac
 let s:pack = #{progress_open: 'vertical'}
 command -bar PackClean  call metapack#init(s:pack).clean()
@@ -16,10 +9,8 @@ command -bar PackUpdate call metapack#init(s:pack).update()
 
 function s:pack.init() abort
     " plugins
-    call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
-    call self.add('wellle/targets.vim')
     call self.add('mbbill/undotree')
-    call self.add('chrisbra/unicode.vim', #{type: 'opt'})
+    call self.add('scheakur/vim-scheakur', #{type: 'opt', frozen: 1})
 
     " my plugins can be under ~/.vim/pack/manual
     if better#stdpath('config', 'pack/manual')->isdirectory()
@@ -41,3 +32,5 @@ function s:pack.init() abort
     call self.add('matveyt/vim-scratch')
     call self.add('matveyt/vim-stalin')
 endfunction
+
+packadd! `=has('nvim') ? 'neoclip' : 'matchit'`

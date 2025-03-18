@@ -71,7 +71,4 @@ call better#defaults(#{indent_cont: shiftwidth(), json_conceal: 0}, 'vim')
 call better#defaults(#{embed: 'l', folding: 'afl', noerror: 1}, 'vimsyn')
 
 " other plugin config
-call better#defaults(#{nl: 'nN'}, 'targets')
 call better#defaults(#{WindowLayout: 4}, 'undotree')
-call better#defaults(#{cache_directory: better#stdpath('data', 'site/unicode'),
-    \ data_directory: better#stdpath('data', 'site/unicode')}, 'Unicode')
