@@ -19,7 +19,8 @@ nnoremap <expr><C-M>    line('.') == line('$') ? '<C-E>' : '<C-M>'
 nnoremap <expr><C-N>    line('.') == line('$') ? '<C-E>' : '<C-N>'
 
 " gl to toggle register type linewise-characterwise
-nmap gl <cmd>call setreg(v:register, '', getregtype() is# 'V' ? 'av' : 'aV')<CR>
+nmap gl <cmd>call setreg(getreginfo(v:register)->get('points_to', v:register), '',
+    \ getregtype() is# 'V' ? 'av' : 'aV')<CR>
 " - to set unnamed register
 nmap - <cmd>call setreg('@',
     \ #{points_to: v:register is '"' ? v:count % 10 : v:register})<CR>
