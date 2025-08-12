@@ -46,6 +46,8 @@ nmap <C-N> <cmd>$tabnew<CR>
 nmap <C-S> <cmd>update<CR>
 " [count]<BS> to open FileExplorer (vim-drvo)
 nnoremap <silent><BS> :<C-U>edit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
+" [count]<C-W><BS> to vsplit FileExplorer (vim-drvo)
+nnoremap <silent><C-W><BS> :<C-U>vsplit %:p<C-R>=repeat(':h', v:count1)<CR><CR>
 
 " '\=' to cd to the current file's directory
 nmap <leader>= <cmd>lcd %:p:h <Bar> pwd<CR>
