@@ -65,6 +65,10 @@ command -bar -bang Highlight
     \   execute <bang>0 'verbose highlight'
     \       synIDattr(synID(line('.'), col('.'), 1), 'name') ?? 'Normal'
 
+" :[count]Isplit [args]
+" Like "CTRL-W i", but eat any number of args
+command! -count -nargs=* Isplit <count>wincmd i
+
 " :Man [{number}] {name}
 " Display the manual page for {name} in a section {number}
 if exists(':Man') != 2 && !has('nvim')

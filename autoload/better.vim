@@ -119,25 +119,6 @@ function! better#exepath(tool) abort
     return g:exepath_{a:tool}
 endfunction
 
-" better#gcc_include([{gcc} [, {ft} [, {force}]]])
-" get GCC include dirs
-function! better#gcc_include(gcc=b:current_compiler, ft=&ft, force=v:false) abort
-    let l:var = printf('%s_include_%s', fnamemodify(a:gcc, ':t:gs?[-.]?_?'), a:ft)
-    if a:force || !has_key(s:, l:var)
-        " $CPATH
-        let s:[l:var] = split($CPATH, has('win32') ? ';' : ':')
-        " builtin dirs
-        let l:cmd = printf('%s -x%s -v -E -', a:gcc, a:ft is# 'cpp' ? 'c++' : a:ft)
-        let l:include = map(systemlist(l:cmd, []), 'trim(v:val)')
-        let l:ix1 = match(l:include, '#include <\.\.\.>') + 1
-        let l:ix2 = match(l:include, '\.$', l:ix1) - 1
-        if l:ix1 <= l:ix2
-            let s:[l:var] += map(l:include[l:ix1 : l:ix2], 'simplify(v:val)')
-        endif
-    endif
-    return copy(s:[l:var])
-endfunction
-
 " better#guifont({typeface} [, {height}])
 " build &guifont from params
 function! better#guifont(typeface, height=0) abort

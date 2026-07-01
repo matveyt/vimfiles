@@ -31,7 +31,7 @@ augroup vimrc | au!
         \ |     execute 'language time' remove(s:, 'lc_time')
         \ | endif
     " shut off &hlsearch
-    autocmd CursorHold,InsertEnter * eval !v:hlsearch || feedkeys("\<cmd>noh\r")
+    autocmd CursorHold,InsertEnter * eval v:hlsearch && feedkeys("\<cmd>noh\r")
     " save session on exit
     autocmd VimLeavePre *
         \   if !v:dying
@@ -75,7 +75,8 @@ function s:xterm() abort
 endfunction
 
 function s:enter() abort
-    call better#aug_remove('editorconfig', 'nvim_cmdwin', 'nvim_swapfile')
+    call better#aug_remove('nvim.editorconfig', 'nvim.cmdwin', 'nvim.swapfile',
+        \ 'nvim.net.remotefile')
     silent! colorscheme modest
     silent! let &statusline = stalin#build('mode,buffer,,cmdloc,flags,ruler')
     if bufnr('$') == 1 && better#is_blank_buffer(1)

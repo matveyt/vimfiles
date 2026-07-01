@@ -23,7 +23,7 @@ function s:pack.init() abort
     call self.add('matveyt/vim-filters', #{type: 'opt'})
     call self.add('matveyt/vim-guidedspace')
     call self.add('matveyt/vim-intl')
-    call self.add('matveyt/vim-jmake', #{type: 'opt'})
+    call self.add('matveyt/vim-jmake')
     call self.add('matveyt/vim-qmake', #{type: 'opt'})
     call self.add('matveyt/vim-modest', #{type: 'opt'})
     call self.add('matveyt/vim-moveit', #{type: 'opt'})

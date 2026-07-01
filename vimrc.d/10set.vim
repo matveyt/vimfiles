@@ -5,13 +5,14 @@
 set autoindent autoread backspace=indent,eol,start nobackup belloff=all clipboard&
 set colorcolumn=+1 complete=.,w,b completeopt& confirm cursorline diffopt+=vertical
 set display=lastline noequalalways expandtab fileformats=unix,dos
-set fillchars=vert:\ ,fold:\ ,diff:\  foldcolumn=1 foldlevel=3 foldmethod=indent
+set fillchars=vert:\ ,fold:\ ,diff:\  foldcolumn=1 foldlevelstart=99 foldmethod=indent
 set formatoptions=tcroqj nofsync grepformat=%f:%l:%c:%m
 let &grepprg = executable('ag') ? 'ag --vimgrep $* -- %:p:h:S' : 'internal'
 set guicursor+=a:blinkon0 nohidden history=500 hlsearch ignorecase incsearch infercase
 set nojoinspaces keymodel=startsel keywordprg=:Man laststatus=2 lazyredraw linespace=1
-set list listchars=tab:<->,trail:_ modeline mouse=ar mousemodel=extend nrformats=bin,hex
-set number pyxversion=3 noruler scrolloff=2 selection=exclusive selectmode&
+set nolist listchars=tab:<->,trail:_ makeprg=make\ -C%:p:h:S modeline mouse=ar
+set mousemodel=extend nrformats=bin,hex number pyxversion=3 noruler scrolloff=2
+set selection=exclusive selectmode&
 set sessionoptions=blank,curdir,help,slash,tabpages,unix,winsize shiftround shiftwidth=4
 set shortmess=cfiIlnoOtTx showcmd showcmdloc=statusline showmatch noshowmode
 set showtabline=2 sidescroll=1 sidescrolloff=0 signcolumn& smartcase nosmartindent
@@ -32,6 +33,7 @@ if has('win32')
         let [$CYGWIN, $MSYS] ..= [' noglob', ' noglob']
     endif
 endif
+compiler! gcc
 
 " keyboard and spelling
 if v:lang =~? '^ru'

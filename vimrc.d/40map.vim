@@ -31,9 +31,9 @@ nmap + <cmd>call setreg('+',
 nmap Q <cmd>Zoom<CR>
 
 " <F8> to set colorscheme
-nmap <F8> <plug>colorscheme;
+nmap <F8> <plug>colors;
 " <F9> to set &guifont; [count]<S-F9>/[count]<M-F9> to change font size
-nmap <F9> <plug>font;
+nmap <F9> <plug>fonts;
 nmap <S-F9> <cmd>let &guifont = better#guifont(v:null, v:count1)<CR>
 nmap <M-F9> <cmd>let &guifont = better#guifont(v:null, -v:count1)<CR>
 " <F11> to open terminal
@@ -89,10 +89,10 @@ nnoremap <silent>gcc :Comment!<CR>
 nnoremap <expr><silent>gs opera#mapto('sort')
 xnoremap <expr><silent>gs opera#mapto('sort')
 nnoremap <silent>gss :sort<CR>
-" gx to execute script
-nnoremap <expr><silent>gx opera#mapto('Execute', 'line')
-xnoremap <expr><silent>gx opera#mapto('Execute', 'line')
-nnoremap <silent>gxx :Execute<CR>
+" gX to execute script
+nnoremap <expr><silent>gX opera#mapto('Execute', 'line')
+xnoremap <expr><silent>gX opera#mapto('Execute', 'line')
+nnoremap <silent>gXX :Execute<CR>
 " g<Space> to trim trailing whitespace
 nnoremap <expr><silent>g<Space> opera#mapto('Trim')
 xnoremap <expr><silent>g<Space> opera#mapto('Trim')

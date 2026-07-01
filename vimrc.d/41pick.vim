@@ -7,9 +7,10 @@
 nmap <leader><leader> <plug>pick;
 nmap <leader>a <plug>args;
 nmap <leader>b <plug>buffers;
-"nmap <leader>c <plug>colorscheme;
+"nmap <leader>C <plug>colors;
+nmap <leader>c <plug>compilers;
+"nmap <leader>F <plug>fonts;
 nmap <leader>f <plug>find;
-"nmap <leader>F <plug>font;
 nmap <leader>H <plug>history;
 nmap <leader>m <plug>marks;
 nmap <leader>n <plug>scriptnames;
@@ -18,23 +19,34 @@ nmap <leader>r <plug>registers;
 nmap <leader>S <plug>sessions;
 nmap <leader>t <plug>templates;
 nmap <leader>w <plug>windows;
+nmap <leader>x <plug>cross-compile;
 
 nmap <plug>pick; <cmd>call popup#pick('pick',
     \ '{substitute(maparg("<lt>plug>"..items[result - 1]..";", "n"),
         \ "<[-[:alnum:]]\\+>", "", "g")}',
-    \ ['args', 'buffers', 'colorscheme', 'find', 'font', 'history', 'marks', 'oldfiles',
-        \ 'registers', 'scriptnames', 'sessions', 'templates', 'windows'])<CR>
+    \ ['args', 'buffers', 'colors', 'compilers', 'cross-compile', 'find', 'fonts',
+        \ 'history', 'marks', 'oldfiles', 'registers', 'scriptnames', 'sessions',
+        \ 'templates', 'windows'])
+    \<CR>
 
 nmap <plug>args; <cmd>call popup#pick('args', 'argument {result}', argv())<CR>
-nmap <plug>colorscheme; <cmd>call popup#pick('colorscheme')<CR>
+nmap <plug>colors; <cmd>call popup#pick('colorscheme')<CR>
 nmap <plug>find; <cmd>call popup#pick('find')<CR>
-nmap <plug>font; <cmd>call popup#pick('Font')<CR>
+nmap <plug>fonts; <cmd>call popup#pick('Font')<CR>
 
 nmap <plug>buffers; <cmd>call popup#pick('buffer',
     \ '{name} {items[result - 1].bufnr}',
     \ getbufinfo({'buflisted': v:count == 0}),
     \ 'printf("%2d %s", v:val.bufnr, empty(v:val.name) ?
         \ better#call("gettext", "[No Name]") : fnamemodify(v:val.name, ":t"))')<CR>
+
+nmap <plug>compilers; <cmd>call popup#pick('compiler',
+    \ 'compiler! {items[result - 1]}',
+    \ cc#compilers())<CR>
+
+nmap <plug>cross-compile; <cmd>call popup#pick('target_arch',
+    \ 'let g:target_arch = items[result - 1] \| compiler! {g:current_compiler}',
+    \ cc#arch())<CR>
 
 nmap <plug>history; <cmd>call popup#pick('history',
     \ '{lines[result - 1]}',
